@@ -1,0 +1,27 @@
+body {
+    background-color: #d9d9d9;
+}
+html, body {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+    height: 40px;
+}
+.login-box {
+    background-color: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.btn-red {
+    background-color: #ef2b2d;
+    color: white;
+}
+.btn-red:hover {
+    background-color: #c92223;
+}
+
+

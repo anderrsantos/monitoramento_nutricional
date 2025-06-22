@@ -1,0 +1,99 @@
+<form id = "formulario_cadastro" class="container d-none py-5">
+  <div class="row g-3">
+    <!-- Nome -->
+    <div class="col-md-4">
+      <label for="nome" class="form-label">Nome</label>
+      <input type="text" class="form-control" id="nome" placeholder="Nome">
+    </div>
+
+    <!-- Sobrenome -->
+    <div class="col-md-4">
+      <label for="sobrenome" class="form-label">Sobrenome</label>
+      <input type="text" class="form-control" id="sobrenome" placeholder="Sobrenome">
+    </div>
+
+    <!-- Data de nascimento -->
+    <div class="col-md-4">
+      <label for="dataNascimento" class="form-label">Data de nascimento</label>
+      <input type="text" class="form-control" id="dataNascimento" placeholder="dd/mm/aaaa">
+    </div>
+
+    <!-- Email -->
+    <div class="col-12">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="Email">
+    </div>
+
+    <!-- Senha -->
+    <div class="col-md-6">
+      <label for="senha" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="senha" placeholder="Senha">
+    </div>
+
+    <!-- Confirmar senha -->
+    <div class="col-md-6">
+      <label for="confirmarSenha" class="form-label">Senha</label>
+      <input type="password" class="form-control" id="confirmarSenha" placeholder="Senha">
+    </div>
+
+    <!-- Peso -->
+    <div class="col-md-2">
+      <label for="peso" class="form-label">Peso</label>
+      <input type="text" class="form-control" id="peso" placeholder="kg">
+    </div>
+
+    <!-- Altura -->
+    <div class="col-md-2">
+      <label for="altura" class="form-label">Altura</label>
+      <input type="text" class="form-control" id="altura" placeholder="kg">
+    </div>
+
+    <!-- Vegetariano -->
+    <div class="col-md-2">
+      <label for="vegetariano" class="form-label">Vegetariano</label>
+      <input type="text" class="form-control" id="vegetariano" placeholder="kg">
+    </div>
+
+    <!-- Sexo -->
+    <div class="col-md-2">
+      <label for="sexo" class="form-label">Sexo</label>
+      <input type="text" class="form-control" id="sexo" placeholder="kg">
+    </div>
+  </div>
+
+  <!-- Botão -->
+  <div class="d-flex justify-content-center mt-5">
+    <button type="submit" class="btn btn-red px-5 py-2 rounded-pill">Criar Conta</button>
+  </div>
+</form>
+
+<form id="formulario_cadastro_verificacao" class="container py-5">
+
+  <div class="row justify-content-center">
+    <div class="col-md-auto text-center">
+      <label for="verificar_codigo" class="form-label">
+        Informe o código que foi enviado para o email:
+      </label>
+      <p class="text-muted mb-3">anderson@gmail.com</p>
+      <input
+        type="text"
+        class="form-control text-center"
+        id="verificar_codigo"
+        placeholder="Código de verificação"
+      />
+    </div>
+  </div>
+
+  <!-- Botão -->
+  <div class="d-flex justify-content-center mt-5">
+    <button type="submit" class="btn btn-red px-5 py-2 rounded-pill">Criar Conta</button>
+  </div>
+
+  <!-- Link -->
+  <div class="text-center mt-3">
+    <a href="#" id="enviar_denovo" class="text-decoration-none small">
+      Não recebeu o código? <strong>Enviar novamente</strong>
+    </a>
+  </div>
+
+</form>
