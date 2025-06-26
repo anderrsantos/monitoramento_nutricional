@@ -1,27 +1,83 @@
-body {
-    background-color: #d9d9d9;
+:root {
+  --primary: #ef2b2d;
+  --gray-light: #f0f0f0;
+  --gray-dark: #333;
+  --border-radius: 14px;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
-html, body {
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-}
-
-.logo {
-    height: 40px;
-}
-.login-box {
-    background-color: white;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-.btn-red {
-    background-color: #ef2b2d;
-    color: white;
-}
-.btn-red:hover {
-    background-color: #c92223;
+html {
+  scroll-behavior: smooth;
 }
 
+* {
+  font-family: 'Poppins', sans-serif;
+}
 
+.nutri {
+  font-weight: 700;
+}
+
+.tracker {
+  font-weight: 700;
+}
+
+.main-background {
+  background-image: url('/img/frutas.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  min-height: 100vh;
+}
+
+.overlay {
+  background: rgba(240, 239, 239, 0.733);
+  background-color: rgba(0, 0, 0, 0.534);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.bemvindo {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.btn {
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--border-radius);
+  transition: 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.btn.primary {
+  background: #198754
+;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(239, 43, 45, 0.4);
+}
+
+.btn.primary:hover {
+  background: #d92123;
+}
+
+.btn.outlined {
+  background: transparent;
+  border: 2px solid #ccc;
+  color: #333;
+}
+
+.btn.outlined:hover {
+  background: #e4e4e4;
+}
+
+.btn_entrar_mobile {
+    display: none;
+}
