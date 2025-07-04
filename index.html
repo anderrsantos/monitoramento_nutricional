@@ -1,118 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NutriTracker - Login</title>
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NutriTracker</title>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/style/styleMain.css">
-</head>
-<body class="bg-light">
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Navbar fixa no topo -->
-  <nav id="nav_bar" class="navbar navbar-expand-lg navbar-light bg-white px-4 py-2 position-fixed w-100 shadow-sm" style="z-index: 1000;">
-    <div class="container-fluid justify-content-between">
-      <!-- Botão Hamburguer -->
-      <button id = "bnt_hamburger" class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-      </button>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  
+  <body>
+    <div id="root"></div>
 
-      <!-- Logo -->
-      <a class="navbar-brand mx-auto d-flex align-items-center" href="#" id="logo">
-      <img src="img/logo.png" alt="Logo" style="height: 40px;">
-      <span class="ms-2 fw-bold text-success d-none d-lg-inline">NUTRI<span class="text-danger">TRACKER</span></span>
-      </a>
+    <!-- Vite app -->
+    <script type="module" src="/src/index.jsx"></script>
 
-      <!-- Conteúdo colapsável -->
-      <div class="collapse navbar-collapse" id="navbarContent" >
-          <!-- Centralizado no modo mobile -->
-          <div class="d-lg-none w-100 d-flex flex-column align-items-center mt-3">
-              <a href="src/html/paginaCadastro.html" id = "bnt_criarConta_mobile" class="btn outlined mb-2 w-75">Criar conta</a>
-              <a href="#formulario_login" id = "bnt_entrar_mobile" class="btn primary btn-red w-75" onclick="fecharMenuHamburger()">Entrar</a>
-          </div>
-
-          <!-- Visível apenas no desktop -->
-          <div class="d-none d-lg-flex ms-auto">
-              <a href="src/html/paginaCadastro.html" id = "bnt_criarConta_desktop" class="btn outlined me-2">Criar conta</a>
-              <a href="#formulario_login" id = "bnt_entrar_desktop" class="btn primary btn-red">Entrar</a>
-          </div>
-      </div>
-
-    </div>
-  </nav>
-
-  <!-- Conteúdo principal -->
-  <main class="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center position-relative py-5 main-background">
-    <!-- Camada branca semi-transparente -->
-    <div class="position-absolute top-0 start-0 w-100 h-100 overlay"></div>
-
-    <!-- Texto de introdução -->
-    <section class="col-md-7 z-1 px-4 text-md-start mt-5 text-center" style="max-width: 780px;">
-      <h1 class="d-5 fw-bold text-white mb-5 fs-1">
-        Encontre o <br>equilíbrio ideal<br>
-        entre alimentação <br>e cotidiano
-      </h1>
-    </section>
-
-    <!-- Formulário -->
-    <section id="formulario_login" class="col-md-5 d-flex justify-content-center align-items-center">
-      <form class="card p-5 shadow rounded-4" style="max-width: 400px;">
-        <h2 class="bemvindo mb-3 text-center">
-          Bem-vindo(a) ao <br>
-          <span class="nutri text-success">NUTRI</span><span class="tracker text-danger">TRACKER</span>
-        </h2>
-
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" id="email" class="form-control" placeholder="Digite seu e-mail" required>
-        </div>
-
-        <div class="mb-3">
-          <label for="senha" class="form-label">Senha</label>
-          <input type="password" id="senha" class="form-control" placeholder="Digite sua senha" required>
-        </div>
-
-        <div class="text-end mb-3">
-          <a href="#" class="text-decoration-none small text-muted">Esqueceu a sua senha?</a>
-        </div>
-
-        <button type="submit" class="btn btn-success w-100 py-2 fw-semibold">Entrar</button>
-
-        <div class="text-center mt-3">
-          Não tem uma conta? <br>
-          <a href="src/html/paginaCadastro.html" id="bnt_criarConta" class="bnt text-decoration-none small">Cadastre-se.</a>
-        </div>
-      </form>
-    </section>
-  </main>
-
-  <!-- Rodapé -->
-  <footer id="footer_body" class="bg-white border-top text-center py-3">
-      <div class="justify-content-center">
-        <p class="mb-1">© 2025 <strong>NutriTracker</strong>. Todos os direitos reservados.</p>
-        <div class="d-flex justify-content-center gap-3 small">
-          <a href="#" class="text-decoration-none">Política de Privacidade</a>
-          <a href="#" class="text-decoration-none">Termos de Uso</a>
-          <a href="#" class="text-decoration-none">Ajuda</a>
-          <a href="#" class="text-decoration-none">Manual</a>
-        </div>
-      </div>
-  </footer>
-
-  <script>
-    function fecharMenuHamburger() {
-      const navbarCollapse = document.getElementById('navbarContent');
-      if (navbarCollapse && navbarCollapse.classList.contains('show')) {
-        const collapse = bootstrap.Collapse.getOrCreateInstance(navbarCollapse);
-        collapse.hide();
-      }
-    }
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+    <!-- Bootstrap JS (Bundle inclui Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
