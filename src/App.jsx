@@ -17,7 +17,7 @@ function App() {
       {tela === 'registerConfirm' && (<RegisterConfirm irParaCadastroDados={() => setTela('registerDados')}
                                                         voltar={() => setTela('register')}
                                                         voltarHome={() => setTela('home')}/>)}
-      {tela === 'registerDados' && (<RegisterDados irParaRegisterConfirm={() => setTela('home')}
+      {tela === 'registerDados' && (<RegisterDados irParaConteudo={() => setTela('conteudo')}
                                                     voltar={() => setTela('register')}
                                                     voltarHome={() => setTela('home')}/>)}
       {tela === 'conteudo' && <Conteudo voltar={() => setTela('home')}/>}

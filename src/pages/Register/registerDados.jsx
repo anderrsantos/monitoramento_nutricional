@@ -3,7 +3,7 @@ import '../../index.css'
 import React from 'react'
 import logo from '../../assets/logo.png'
 
-function RegisterDados({ irParaConteudo, voltar, voltarHome }) {
+function RegisterDados({ irParaConteudo, voltar, voltarHome}) {
   const irParaConteudoLocal = () => {
     irParaConteudo()
   }
