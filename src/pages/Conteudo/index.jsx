@@ -1,11 +1,49 @@
 import '../../index.css'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../../assets/logo.png'
+import GraficoAnel from '../../components/GraficoAnel';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+
 
 function Conteudo({ voltar }) {
-    const voltarLocal = () => {
-        voltar()
+  //Estado iniciao do usuário teste (usando useState para fazer a ligação com o Backend depois)
+  const [nomeUsuario, setNomeUsuario] = useState('Adrian');
+  const [aguaConsumidaMl, setAguaConsumidaMl] = useState(0);
+  const [metaAguaMl, setMetaAguaMl] = useState(2450);
+  const [pesoKg, setPesoKg] = useState(70);
+  const [imc, setImc] = useState(22.8);
+  const [showModal, setShowModal] = useState(false);
+  const [aguaInputMl, setAguaInputMl] = useState(250);
+  const [calorias, setCalorias] = useState(0);
+  const [metaCalorias, setMetaCalorias] = useState(2900);
+
+  //Calcular a meta de água de cada pessoa
+  useEffect(() => {
+    if (pesoKg > 0) {
+      const metaCalculada = Math.round(pesoKg * 35);
+      setMetaAguaMl(metaCalculada);
     }
+  }, [pesoKg]);
+
+  //Funções de interação
+  const voltarLocal = () => {
+    voltar()
+  }
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
+  const handleSalvarAgua = () => {
+    if (aguaInputMl > 0) {
+      setAguaConsumidaMl(aguaConsumidaMl + aguaInputMl);
+    }
+    handleCloseModal();
+  };
+
+  const aguaConsumidaL = (aguaConsumidaMl / 1000).toFixed(1);
+  const metaAguaL = (metaAguaMl / 1000).toFixed(1);
+
   return (
     <>
       {/* Navbar fixa */}
@@ -25,161 +63,91 @@ function Conteudo({ voltar }) {
       </nav>
 
       <main className="container py-4 mt-5 pt-5">
-        {/* Seção Resumo */}
-        <section className="mb-5">
-          <h2 className="mb-4">Olá, usuário!</h2>
-          <div className="row g-3">
-            <div className="col-md-4">
-              <div className="card text-center shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title">IMC atual</h5>
-                  <p className="display-6 fw-semibold text-primary">22.8</p>
-                </div>
-              </div>
-            </div>
+        <header className="mb-4">
+          <h2 className="mb-4">Olá, {nomeUsuario}!</h2>
+          <p className="text-muted">Aqui está o seu resumo de hoje.</p>
+        </header>
 
-            <div className="col-md-4">
-              <div className="card text-center shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title">Água hoje</h5>
-                  <p className="h4">5 copos</p>
-                  <button className="btn btn-outline-primary btn-sm mt-2">+ Adicionar</button>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <div className="card text-center shadow-sm">
-                <div className="card-body">
-                  <h5 className="card-title">Refeições</h5>
-                  <p className="h4">2 cadastradas</p>
-                  <button className="btn btn-outline-success btn-sm mt-2">+ Nova refeição</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Seção Progresso */}
-        <section className="mb-5">
-          <h2 className="mb-4">Progresso Diário</h2>
-          <div className="row gy-3">
-            <div className="col-md-4">
-              <label className="form-label">Calorias</label>
-              <div className="progress">
-                <div
-                  className="progress-bar bg-danger"
-                  role="progressbar"
-                  style={{ width: '65%' }}
-                  aria-valuenow="1250"
-                  aria-valuemin="0"
-                  aria-valuemax="1920"
-                >
-                  1250 / 1920
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <label className="form-label">Água</label>
-              <div className="progress">
-                <div
-                  className="progress-bar bg-info"
-                  role="progressbar"
-                  style={{ width: '62%' }}
-                  aria-valuenow="5"
-                  aria-valuemin="0"
-                  aria-valuemax="8"
-                >
-                  5 / 8
-                </div>
-              </div>
-            </div>
-
-            <div className="col-md-4">
-              <label className="form-label">Exercício</label>
-              <div className="progress">
-                <div
-                  className="progress-bar bg-success"
-                  role="progressbar"
-                  style={{ width: '75%' }}
-                  aria-valuenow="1.5"
-                  aria-valuemin="0"
-                  aria-valuemax="2.0"
-                >
-                  1.5 / 2.0h
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Seção Estatísticas */}
-      <section className="container py-4">
-        <h2 className="mb-4">Estatísticas da Semana</h2>
-
-        {/* Gráfico de Calorias */}
-        <div className="row align-items-center mb-4">
-          <div className="col-md-4">
-            <h3 className="text-primary">1250 <span className="h6">Kcal</span></h3>
-            <p className="text-muted">Meta: 1920 Kcal</p>
-          </div>
-          <div className="col-md-8">
-            <div className="d-flex justify-content-between text-center">
-              {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((dia, index) => {
-                const heights = [44, 34, 100, 47, 32, 79, 24];
-                const cores = ['primary', 'primary', 'warning', 'primary', 'primary', 'primary', 'primary'];
-                return (
-                  <div className="flex-fill mx-1 bg-light p-2 rounded" style={{ height: '100px' }} key={dia}>
-                    <div
-                      className={`bg-${cores[index]} w-100 mb-1 rounded`}
-                      style={{ height: `${heights[index]}%` }}
-                    ></div>
-                    <small>{dia === 'Qua' ? <strong>{dia}</strong> : dia}</small>
+        <div className="row g-4">
+          {/* Coluna progresso diário */}
+          <section className="col-md-7">
+            <div className="card shadow-sm h-100">
+              <div className="card-body">
+                <h5 className="card-title mb-4">Progresso de Hoje</h5>
+                <div className="row text-center">
+                  <div className="col-md-6 mb-3">
+                    <div className="d-flex flex-column align-items-center">
+                      <GraficoAnel
+                        valor={calorias}
+                        meta={metaCalorias}
+                        cor="#dc3545"
+                        unidade="Kcal"
+                      />
+                      <p className="mt-2 mb-0"><strong>Calorias</strong></p>
+                    </div>
                   </div>
-                );
-              })}
+                  <div className="col-md-6 mb-3">
+                    <div className="d-flex flex-column align-items-center">
+                      <GraficoAnel
+                        valor={aguaConsumidaMl}
+                        meta={metaAguaMl}
+                        cor="#0dcaf0"
+                        unidade="ml"
+                      />
+                      <p className="mt-2 mb-0"><strong>Água</strong></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </section>
 
-        {/* Blocos Estatísticos */}
-        <div className="row row-cols-2 row-cols-md-4 g-3">
-          <div className="col">
-            <div className="card text-center shadow-sm">
+          {/* Coluna Secundária*/}
+          <section className="col-md-5">
+            <div className="card shadow-sm mb-4">
               <div className="card-body">
-                <h5>🏃 Exercício</h5>
-                <p className="fw-semibold">2.0 horas</p>
+                <h5 className="card-title mb-3">Registro Rápido</h5>
+                <div className="d-grid gap-2">
+                  <button className="btn btn-primary btn-sm">+ Nova Refeição</button>
+                  <button onClick={handleShowModal} className="btn btn-info text-white btn-sm">+ Adicionar Água</button>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col">
-            <div className="card text-center shadow-sm">
+
+            <div className="card shadow-sm">
               <div className="card-body">
-                <h5>❤️ BPM</h5>
-                <p className="fw-semibold">86 bpm</p>
+                <h5 className="card-title mb-3">Estatísticas da Semana</h5>
+                <div className="d-flex justify-content-between text-center mb-3">
+                  {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((dia, index) => {
+                    const heights = [44, 34, 100, 47, 32, 79, 24];
+                    const cores = ['primary', 'primary', 'warning', 'primary', 'primary', 'primary', 'primary'];
+                    return (
+                      <div className="flex-fill mx-1 bg-light p-2 rounded" style={{ height: '100px' }} key={dia}>
+                        <div
+                          className={`bg-${cores[index]} w-100 mb-1 rounded`}
+                          style={{ height: `${heights[index]}%` }}
+                        ></div>
+                        <small>{dia === 'Qua' ? <strong>{dia}</strong> : dia}</small>
+                      </div>
+                    );
+                  })}
+                </div>
+                <hr className="my-3" />
+                <div className="row text-center">
+                  <div className="col-6">
+                    <h5> IMC</h5>
+                    <p className="fw-semibold">{imc}</p>
+                  </div>
+                  <div className="col-6">
+                    <h5>Peso</h5>
+                    <p className="fw-semibold">70 kg</p>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col">
-            <div className="card text-center shadow-sm">
-              <div className="card-body">
-                <h5>⚖️ Peso</h5>
-                <p className="fw-semibold">70 kg</p>
-              </div>
-            </div>
-          </div>
-          <div className="col">
-            <div className="card text-center shadow-sm">
-              <div className="card-body">
-                <h5>💧 Água</h5>
-                <p className="fw-semibold">5 copos</p>
-              </div>
-            </div>
-          </div>
+          </section>
         </div>
-      </section>
+      </main>
 
       {/* Rodapé */}
       <footer className="bg-white border-top text-center py-3 mt-auto">
@@ -193,7 +161,33 @@ function Conteudo({ voltar }) {
           </div>
         </div>
       </footer>
+
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Adicionar Água</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Digite a quantidade de água que você bebeu:</p>
+          <input
+            type="number"
+            className="form-control"
+            value={aguaInputMl}
+            onChange={e => setAguaInputMl(parseInt(e.target.value))}
+            placeholder="Ex: 250"
+          />
+          <small className="text-muted">Valor em ml</small>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleSalvarAgua}>
+            Salvar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
+
   );
 }
 
