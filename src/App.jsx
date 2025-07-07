@@ -4,6 +4,7 @@ import Register from './pages/Register/index.jsx'
 import RegisterConfirm from './pages/Register/registerConfirm.jsx'
 import RegisterDados from './pages/Register/registerDados.jsx'
 import Conteudo from './pages/Conteudo/index.jsx'
+import EditPerfil from './pages/EditPerfil/index.jsx'
 
 function App() {
   const [tela, setTela] = useState('home')
@@ -20,8 +21,9 @@ function App() {
       {tela === 'registerDados' && (<RegisterDados irParaConteudo={() => setTela('conteudo')}
                                                     voltar={() => setTela('register')}
                                                     voltarHome={() => setTela('home')}/>)}
-      {tela === 'conteudo' && <Conteudo voltar={() => setTela('home')}/>}
+      {tela === 'conteudo' && <Conteudo voltar={() => setTela('home')} irParaPerfil={() => setTela('edit-perfil')}/>}
 
+      {tela === 'edit-perfil' && <EditPerfil voltar={() => setTela('conteudo')}/>}
 
     </>
   )

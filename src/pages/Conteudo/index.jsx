@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
 
-function Conteudo({ voltar }) {
+function Conteudo({ voltar, irParaPerfil }) {
   //Estado iniciao do usuário teste (usando useState para fazer a ligação com o Backend depois)
   const [nomeUsuario, setNomeUsuario] = useState('Adrian');
   const [aguaConsumidaMl, setAguaConsumidaMl] = useState(0);
@@ -63,10 +63,17 @@ function Conteudo({ voltar }) {
       </nav>
 
       <main className="container py-4 mt-5 pt-5">
-        <header className="mb-4">
-          <h2 className="mb-4">Olá, {nomeUsuario}!</h2>
-          <p className="text-muted">Aqui está o seu resumo de hoje.</p>
+        <header className="mb-4 d-flex justify-content-between align-items-center">
+          <div>
+            <h2>Olá, {nomeUsuario}!</h2>
+            <p className="text-muted mb-0">Aqui está o seu resumo de hoje.</p>
+          </div>
+
+          <button onClick={irParaPerfil} className="btn outlined">
+            Editar Perfil
+          </button>
         </header>
+
 
         <div className="row g-4">
           {/* Coluna progresso diário */}
@@ -108,7 +115,7 @@ function Conteudo({ voltar }) {
               <div className="card-body">
                 <h5 className="card-title mb-3">Registro Rápido</h5>
                 <div className="d-grid gap-2">
-                  <button className="btn btn-primary btn-sm">+ Nova Refeição</button>
+                  <button className="btn secondary">+ Nova Refeição</button>
                   <button onClick={handleShowModal} className="btn btn-info text-white btn-sm">+ Adicionar Água</button>
                 </div>
               </div>
@@ -118,20 +125,33 @@ function Conteudo({ voltar }) {
               <div className="card-body">
                 <h5 className="card-title mb-3">Estatísticas da Semana</h5>
                 <div className="d-flex justify-content-between text-center mb-3">
-                  {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((dia, index) => {
-                    const heights = [44, 34, 100, 47, 32, 79, 24];
-                    const cores = ['primary', 'primary', 'warning', 'primary', 'primary', 'primary', 'primary'];
-                    return (
-                      <div className="flex-fill mx-1 bg-light p-2 rounded" style={{ height: '100px' }} key={dia}>
-                        <div
-                          className={`bg-${cores[index]} w-100 mb-1 rounded`}
-                          style={{ height: `${heights[index]}%` }}
-                        ></div>
-                        <small>{dia === 'Qua' ? <strong>{dia}</strong> : dia}</small>
-                      </div>
-                    );
-                  })}
-                </div>
+    {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((dia, index) => {
+        const heights = [44, 34, 100, 47, 32, 79, 24];
+
+        const coresEspecificas = [
+            '#dc3545',
+            '#dc3545',
+            '#ade754',
+            '#dc3545',
+            '#dc3545',
+            '#dc3545',
+            '#dc3545'
+        ];
+
+        return (
+            <div className="flex-fill mx-1 rounded d-flex flex-column justify-content-end" style={{ height: '100px' }} key={dia}>
+                <div
+                    className="w-100 mb-1 rounded"
+                    style={{
+                        height: `${heights[index]}%`,
+                        backgroundColor: coresEspecificas[index]
+                    }}
+                ></div>
+                <small>{dia === 'Qua' ? <strong>{dia}</strong> : dia}</small>
+            </div>
+        );
+    })}
+</div>
                 <hr className="my-3" />
                 <div className="row text-center">
                   <div className="col-6">
@@ -140,7 +160,7 @@ function Conteudo({ voltar }) {
                   </div>
                   <div className="col-6">
                     <h5>Peso</h5>
-                    <p className="fw-semibold">70 kg</p>
+                    <p className="fw-semibold">{pesoKg}kg</p>
                   </div>
                 </div>
               </div>
@@ -187,6 +207,8 @@ function Conteudo({ voltar }) {
         </Modal.Footer>
       </Modal>
     </>
+
+
 
   );
 }
