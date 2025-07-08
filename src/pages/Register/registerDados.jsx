@@ -2,18 +2,50 @@ import './style.css'
 import '../../index.css'
 import React from 'react'
 import logo from '../../assets/logo.png'
+import api from '../../services/api.js' 
 
-function RegisterDados({ irParaConteudo, voltar, voltarHome}) {
-  const irParaConteudoLocal = () => {
-    irParaConteudo()
-  }
-
+function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
   const voltarLocal = () => {
     voltar()
   }
 
   const voltarHomeLocal = () => {
     voltarHome()
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    const nome = event.target.nome.value
+    const sobrenome = event.target.sobrenome.value
+    const dataNascimento = event.target.data_nascimento.value
+    const peso = event.target.peso.value
+    const altura = event.target.altura.value
+    const sexo = event.target.sexo.value
+    const meta = event.target.meta.value
+    const nivelAtividade = event.target.nivel_atividade.value
+
+    try {
+      const response = await api.post('/perfil', {
+        email: usuario.email,
+        password: usuario.password,
+        codigo: usuario.codigo,
+        nome,
+        sobrenome,
+        dataNascimento,
+        peso,
+        altura,
+        sexo,
+        meta,
+        nivelAtividade
+      })
+
+      // Sucesso: envia os dados atualizados para a tela Conteudo
+      irParaConteudo(response.data)
+    } catch (error) {
+      console.error('Erro ao salvar dados:', error)
+      alert('Erro ao salvar dados. Por favor, tente novamente.')
+    }
   }
 
   return (
@@ -34,7 +66,7 @@ function RegisterDados({ irParaConteudo, voltar, voltarHome}) {
         </div>
       </nav>
 
-      {/* Conteúdo principal */} 
+      {/* Conteúdo principal */}
       <main className="d-flex align-items-center justify-content-center min-vh-100 pt-5">
         <div className="card shadow p-4 bg-white w-100 position-relative" style={{ maxWidth: '600px' }}>
           {/* Botão Fechar */}
@@ -44,7 +76,7 @@ function RegisterDados({ irParaConteudo, voltar, voltarHome}) {
             Complete seus <span className="text-success">dados</span> pessoais
           </h4>
 
-          <form id="form_dados">
+          <form id="form_dados" onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="nome" className="form-label">Nome</label>
               <input type="text" id="nome" name="nome" className="form-control" placeholder="Digite seu nome" required />
@@ -103,16 +135,7 @@ function RegisterDados({ irParaConteudo, voltar, voltarHome}) {
             </div>
 
             <div className="d-grid">
-              <button
-                type="submit"
-                className="btn btn-success"
-                onClick={(e) => {
-                  e.preventDefault()
-                  irParaConteudoLocal()
-                }}
-              >
-                Salvar dados
-              </button>
+              <button type="submit" className="btn btn-success">Salvar dados</button>
             </div>
           </form>
         </div>

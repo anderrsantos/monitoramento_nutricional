@@ -2,9 +2,13 @@ import '../../index.css'
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 import frutasImg from '../../assets/frutas.jpg'
+import api from '../../services/api.js'
 
 function Home({ irParaCadastro, irParaConteudo }) {
   const [menuAberto, setMenuAberto] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
   const toggleMenu = () => setMenuAberto(prev => !prev)
   const fecharMenu = () => setMenuAberto(false)
@@ -14,19 +18,29 @@ function Home({ irParaCadastro, irParaConteudo }) {
     fecharMenu()
   }
 
-  const irParaConteudoLocal = () => {
-    irParaConteudo()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setErrorMessage('')
+
+    try {
+      console.log('Tentando fazer login com:', { email, password })
+      const response = await api.post('/login', { email, password })
+      console.log('Login bem-sucedido:', response.data)
+      
+      irParaConteudo(response.data)
+    } catch (error) {
+      const message = error.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.'
+      setErrorMessage(message)
+    }
   }
-  
+
   return (
     <>
-      {/* Navbar fixa no topo */}
       <nav
         id="nav_bar"
         className="navbar navbar-expand-lg navbar-light bg-white px-4 py-2 position-fixed w-100 shadow-sm z-3 top-0 start-0"
       >
         <div className="container-fluid justify-content-between start-0">
-          {/* Botão Hamburguer */}
           <button
             className="navbar-toggler border-0 shadow-none"
             type="button"
@@ -35,7 +49,6 @@ function Home({ irParaCadastro, irParaConteudo }) {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* Logo */}
           <a className="navbar-brand mx-auto d-flex align-items-center" href="#" id="logo">
             <img className="logo_main" src={logo} alt="Logo" />
             <span className="ms-2 fw-bold text-success d-none d-lg-inline">
@@ -43,9 +56,7 @@ function Home({ irParaCadastro, irParaConteudo }) {
             </span>
           </a>
 
-          {/* Conteúdo colapsável */}
           <div className={`collapse navbar-collapse ${menuAberto ? 'show' : ''}`} id="navbarContent">
-            {/* Mobile */}
             <div className="d-lg-none w-100 d-flex flex-column align-items-center mt-3">
               <a className="btn outlined mb-2 w-75" onClick={criarConta}>Criar conta</a>
               <a href="#formulario_login" className="btn primary btn-red w-75" onClick={fecharMenu}>
@@ -53,7 +64,6 @@ function Home({ irParaCadastro, irParaConteudo }) {
               </a>
             </div>
 
-            {/* Desktop */}
             <div className="d-none d-lg-flex ms-auto">
               <a className="btn outlined me-2" onClick={criarConta}>Criar conta</a>
               <a href="#formulario_login" className="btn primary btn-red">Entrar</a>
@@ -62,12 +72,10 @@ function Home({ irParaCadastro, irParaConteudo }) {
         </div>
       </nav>
 
-      {/* Conteúdo principal */}
       <main
         className="container-fluid d-flex flex-column flex-md-row justify-content-between align-items-center position-relative py-5 main-background"
         style={{ backgroundImage: `url(${frutasImg})` }}
       >
-        {/* Overlay visível mas atrás do conteúdo */}
         <div className="position-absolute top-0 start-0 w-100 h-100 overlay" style={{ zIndex: 0 }}></div>
 
         <section className="col-md-7 z-1 px-4 text-md-start mt-5 text-center" style={{ maxWidth: '780px', zIndex: 1 }}>
@@ -78,7 +86,11 @@ function Home({ irParaCadastro, irParaConteudo }) {
         </section>
 
         <section id="formulario_login" className="col-md-5 d-flex justify-content-center align-items-center" style={{ zIndex: 1 }}>
-          <form className="card p-5 shadow rounded-4" style={{ maxWidth: '400px' }}>
+          <form
+            className="card p-5 shadow rounded-4"
+            style={{ maxWidth: '400px' }}
+            onSubmit={handleSubmit}
+          >
             <h2 className="bemvindo mb-3 text-center">
               Bem-vindo(a) ao <br />
               <span className="nutri text-success">NUTRI</span>
@@ -86,20 +98,43 @@ function Home({ irParaCadastro, irParaConteudo }) {
             </h2>
 
             <div className="mb-3">
-              <label htmlFor="email" className="form-label">Email</label>
-              <input type="email" id="email" className="form-control" placeholder="Digite seu e-mail" required />
+              <label htmlFor="inputEmail" className="form-label">Email</label>
+              <input
+                type="email"
+                id="inputEmail"
+                name="email"
+                className="form-control"
+                placeholder="Digite seu e-mail"
+                required
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+              />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="senha" className="form-label">Senha</label>
-              <input type="password" id="senha" className="form-control" placeholder="Digite sua senha" required />
+              <label htmlFor="inputSenha" className="form-label">Senha</label>
+              <input
+                type="password"
+                id="inputSenha"
+                name="senha"
+                className="form-control"
+                placeholder="Digite sua senha"
+                required
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+              />
+              {errorMessage && (
+                <p className="text-danger small mt-2">{errorMessage}</p>
+              )}
             </div>
 
             <div className="text-end mb-3">
               <a href="#" className="text-decoration-none small text-muted">Esqueceu a sua senha?</a>
             </div>
 
-            <button type="submit" className="btn btn-success w-100 py-2 fw-semibold" onClick={irParaConteudoLocal}>Entrar</button>
+            <button type="submit" className="btn btn-success w-100 py-2 fw-semibold">
+              Entrar
+            </button>
 
             <div className="text-center mt-3">
               Não tem uma conta? <br />
@@ -109,7 +144,6 @@ function Home({ irParaCadastro, irParaConteudo }) {
         </section>
       </main>
 
-      {/* Rodapé */}
       <footer id="footer_body" className="bg-white border-top text-center py-3">
         <div className="justify-content-center">
           <p className="mb-1">© 2025 <strong>NutriTracker</strong>. Todos os direitos reservados.</p>

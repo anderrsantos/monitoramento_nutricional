@@ -1,15 +1,29 @@
 import './style.css'
 import '../../index.css'
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 
 function Register({ irParaRegisterConfirm, voltar }) {
-  const irParaRegisterConfirmLocal = () => {
-    irParaRegisterConfirm()
-  }
+  const [aviso, setAviso] = useState('')
 
   const voltarLocal = () => {
     voltar()
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const email = event.target.email.value
+    const password = event.target.senha.value
+    const confirmPassword = event.target.confirmar.value
+
+    if (password !== confirmPassword) {
+      setAviso('As senhas não coincidem. Por favor, tente novamente.')
+      return
+    } else {
+      setAviso('')
+      console.log('Email:', email, 'Password:', password)
+      irParaRegisterConfirm({ email, password })
+    }
   }
 
   return (
@@ -32,7 +46,11 @@ function Register({ irParaRegisterConfirm, voltar }) {
 
       {/* Conteúdo principal */}
       <main className="d-flex align-items-center justify-content-center min-vh-100">
-        <form className="card shadow-sm p-4 rounded-4 position-relative center" style={{ maxWidth: '450px', width: '100%' }}>
+        <form
+          onSubmit={handleSubmit} 
+          className="card shadow-sm p-4 rounded-4 position-relative center"
+          style={{ maxWidth: '450px', width: '100%' }}
+        >
           {/* Botão Fechar */}
           <button
             type="button"
@@ -50,26 +68,47 @@ function Register({ irParaRegisterConfirm, voltar }) {
           {/* Email */}
           <div className="mb-3">
             <label htmlFor="email" className="form-label">Email</label>
-            <input type="email" id="email" className="form-control" placeholder="Digite seu e-mail" required />
+            <input
+              type="email"
+              id="email"
+              name="email" 
+              className="form-control"
+              placeholder="Digite seu e-mail"
+              required
+            />
           </div>
 
           {/* Senha */}
           <div className="mb-3">
             <label htmlFor="senha" className="form-label">Senha</label>
-            <input type="password" id="senha" className="form-control" placeholder="Digite sua senha" required />
+            <input
+              type="password"
+              id="senha"
+              name="senha" 
+              className="form-control"
+              placeholder="Digite sua senha"
+              required
+            />
           </div>
 
           {/* Confirmar senha */}
           <div className="mb-4">
             <label htmlFor="confirmar" className="form-label">Confirmar senha</label>
-            <input type="password" id="confirmar" className="form-control" placeholder="Repita sua senha" required />
+            <input
+              type="password"
+              id="confirmar"
+              name="confirmar"
+              className="form-control"
+              placeholder="Repita sua senha"
+              required
+            />
           </div>
+
 
           {/* Botão */}
           <button
-            type="button"
+            type="submit"
             className="btn btn-success w-100 fw-semibold"
-            onClick={irParaRegisterConfirmLocal}
           >
             Criar conta
           </button>
@@ -77,7 +116,17 @@ function Register({ irParaRegisterConfirm, voltar }) {
           {/* Link de login */}
           <div className="text-center mt-3">
             Já possui uma conta? <br />
-            <a href="#" className="text-decoration-none small" onClick={voltarLocal}>Conecte-se</a>
+            <a href="#" className="text-decoration-none small" onClick={(e) => { e.preventDefault(); voltarLocal(); }}>
+              Conecte-se
+            </a>
+
+          {/* Aviso de erro */}
+          {aviso && (
+            <div className="text-danger small">
+              {aviso}
+            </div>
+          )}
+
           </div>
         </form>
       </main>
