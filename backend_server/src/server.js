@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import { PrismaClient, Prisma } from '../generated/prisma/index.js';
+import email from '../../backend_email/src/email.js'; 
+
+let codigo = 0;
 
 const prisma = new PrismaClient();
 const app = express();
@@ -9,14 +12,40 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Enviar código por e-mail
+app.post('/serviceEmail', async (req, res) => {
+  try {
+    console.log('Requisição recebida para enviar código por email:', req.body);
+    const emailDestinatario = req.body.email;
+    if (!emailDestinatario) {
+      return res.status(400).json({ message: 'Email não fornecido.' });
+    }
+
+    codigo = Math.floor(100000 + Math.random() * 900000); // Gera um código de 6 dígitos
+
+    await email.sendEmailCodigo(emailDestinatario, codigo);
+
+    res.status(200).json({ message: 'Código de verificação enviado para o email.' });
+  } catch (error) {
+    console.error('Erro ao enviar email:', error);
+    res.status(500).json({ message: 'Erro ao enviar email.' });
+  }
+});
+
 // Registrar usuário
 app.post('/register', async (req, res) => {
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const { email, password, codigoRecebido } = req.body;
+
+    if (Number(codigoRecebido) !== codigo) {
+      return res.status(400).json({ message: 'Código de verificação inválido.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
-        email: req.body.email,
+        email: email,
         password: hashedPassword,
       },
     });
@@ -63,6 +92,8 @@ app.post('/login', async (req, res) => {
     res.status(500).json({ message: 'Erro interno no servidor.' });
   }
 });
+
+
 
 // Listar todos os usuários
 app.get('/showUsers', async (req, res) => {

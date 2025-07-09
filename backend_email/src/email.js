@@ -1,0 +1,30 @@
+const nodemail = require('nodemailer');
+
+const transporter = nodemail.createTransport({
+  host: process.env.HOST_MAIL,
+  port: Number(process.env.PORT_MAIL),
+  secure: Number(process.env.PORT_MAIL) === 465,
+  auth: {
+    user: process.env.USERNAME_MAIL,
+    pass: process.env.PASSWORD_MAIL,
+  }
+});
+
+
+const sendEmailCodigo = async (email, codigo) => {
+  console.log('Sending email to:', email);
+  console.log('Using code:', codigo);
+  
+  try {
+    const info = await transporter.sendMail({
+      from: `NutriTracker <${process.env.USERNAME_MAIL}>`, 
+      to: email, 
+      subject: 'Envio do código de permissão.', 
+      html: `<p>Olá,</p><p>Seu código de permissão é: <strong>${codigo}</strong></p><p>Atenciosamente,<br>NutriTracker</p>`,
+      text: `Olá,\n\nSeu código de permissão é: ${codigo}\n\nAtenciosamente,\nNutriTracker`
+    });
+    console.log('Message sent: %s', info.messageId);
+  } catch (error) {
+    console.error('Error sending email:', error);
+  }
+}

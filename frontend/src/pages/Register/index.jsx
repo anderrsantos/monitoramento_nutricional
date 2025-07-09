@@ -2,12 +2,26 @@ import './style.css'
 import '../../index.css'
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
+import api from '../../services/api.js'
 
 function Register({ irParaRegisterConfirm, voltar }) {
   const [aviso, setAviso] = useState('')
 
   const voltarLocal = () => {
     voltar()
+  }
+
+  const enviarCodigoEmail = (email) => {
+    console.log('Enviando código para o email:', email)
+    api.post('/email', { email, nome: 'Usuário' }) // Pode ajustar nome se houver
+      .then((response) => {
+        console.log('Código enviado para o email:', response.data)
+        setAviso('Código enviado com sucesso.')
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar o código:', error)
+        setAviso('Erro ao enviar o código. Por favor, tente novamente.')
+      })
   }
 
   const handleSubmit = async (event) => {
@@ -19,11 +33,13 @@ function Register({ irParaRegisterConfirm, voltar }) {
     if (password !== confirmPassword) {
       setAviso('As senhas não coincidem. Por favor, tente novamente.')
       return
-    } else {
-      setAviso('')
-      console.log('Email:', email, 'Password:', password)
-      irParaRegisterConfirm({ email, password })
     }
+
+    setAviso('')
+    console.log('Email:', email, 'Password:', password)
+    
+    enviarCodigoEmail(email) 
+    irParaRegisterConfirm({ email, password })
   }
 
   return (
@@ -104,7 +120,6 @@ function Register({ irParaRegisterConfirm, voltar }) {
             />
           </div>
 
-
           {/* Botão */}
           <button
             type="submit"
@@ -119,15 +134,14 @@ function Register({ irParaRegisterConfirm, voltar }) {
             <a href="#" className="text-decoration-none small" onClick={(e) => { e.preventDefault(); voltarLocal(); }}>
               Conecte-se
             </a>
+          </div>
 
           {/* Aviso de erro */}
           {aviso && (
-            <div className="text-danger small">
+            <div className="text-center mt-3 text-danger small fw-semibold">
               {aviso}
             </div>
           )}
-
-          </div>
         </form>
       </main>
     </>

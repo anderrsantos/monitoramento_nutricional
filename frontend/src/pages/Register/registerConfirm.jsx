@@ -1,10 +1,12 @@
 import './style.css'
 import '../../index.css'
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 import api from '../../services/api.js'
 
 function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
+  const [aviso, setAviso] = useState('')
+
   const voltarLocal = () => {
     voltar()
   }
@@ -13,16 +15,30 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
     voltarHome()
   }
 
+  const eventEmail = (event) => {
+    event.preventDefault()
+
+    api.post('/email', { email: usuario.email}) // Certifique-se de ter `nome`
+      .then((response) => {
+        console.log('Código enviado para o email:', response.data)
+        setAviso('Código reenviado com sucesso.')
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar o código:', error)
+        setAviso('Erro ao enviar o código. Por favor, tente novamente.')
+      })
+  }
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const codigo = event.target.codigo.value
+    const codigoRecebido = event.target.codigo.value
 
     try {
       const response = await api.post('/register', {
         email: usuario.email,
         password: usuario.password,
+        codigo: codigoRecebido
       })
-      // Sucesso: envia os dados atualizados para a próxima etapa
       irParaCadastroDados(response.data)
     } catch (res) {
       console.error('Erro ao fazer registro:', res)
@@ -51,7 +67,7 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
             type="button"
             className="btn-close position-absolute top-0 end-0 m-3"
             aria-label="Fechar"
-            onClick={voltarLocal}
+            onClick={voltarHomeLocal}
           ></button>
 
           <h5 className="text-center fw-semibold mb-4 mt-2">
@@ -74,6 +90,22 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
             <div className="d-grid">
               <button type="submit" className="btn btn-success">Confirmar</button>
             </div>
+
+            <div className="text-center mt-3">
+              <button
+                type="button"
+                className="btn btn-link text-decoration-none"
+                onClick={eventEmail}
+              >
+                Reenviar código
+              </button>
+            </div>
+
+            {aviso && (
+              <div className="text-center mt-2 text-danger fw-semibold">
+                {aviso}
+              </div>
+            )}
           </form>
         </div>
       </main>
@@ -82,3 +114,4 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
 }
 
 export default RegisterConfirm
+
