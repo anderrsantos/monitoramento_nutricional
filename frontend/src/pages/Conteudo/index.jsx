@@ -78,7 +78,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
     setListaResultados([])
     try {
       const response = await fetch(
-        `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(nome)}&search_simple=1&action=process&json=1`
+        `http://localhost:3000/api/openfoodfacts?search=${encodeURIComponent(nome)}`
       )
       const data = await response.json()
       if (data.products && data.products.length > 0) {

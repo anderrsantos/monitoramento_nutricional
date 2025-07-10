@@ -18,7 +18,7 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
   const eventEmail = (event) => {
     event.preventDefault()
 
-    api.post('/email', { email: usuario.email}) // Certifique-se de ter `nome`
+    api.post('/serviceEmail', { email: usuario.email}) // Certifique-se de ter `nome`
       .then((response) => {
         console.log('Código enviado para o email:', response.data)
         setAviso('Código reenviado com sucesso.')

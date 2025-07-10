@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
 import { PrismaClient, Prisma } from '../generated/prisma/index.js';
-import email from '../../backend_email/src/email.js'; 
+import { sendEmailCodigo } from '../../backend_email/src/email.js';
+import fetch from 'node-fetch';
 
 let codigo = 0;
 
@@ -23,7 +24,7 @@ app.post('/serviceEmail', async (req, res) => {
 
     codigo = Math.floor(100000 + Math.random() * 900000); // Gera um código de 6 dígitos
 
-    await email.sendEmailCodigo(emailDestinatario, codigo);
+    await sendEmailCodigo(emailDestinatario, codigo);
 
     res.status(200).json({ message: 'Código de verificação enviado para o email.' });
   } catch (error) {
@@ -31,6 +32,7 @@ app.post('/serviceEmail', async (req, res) => {
     res.status(500).json({ message: 'Erro ao enviar email.' });
   }
 });
+
 
 // Registrar usuário
 app.post('/register', async (req, res) => {
@@ -68,7 +70,7 @@ app.post('/register', async (req, res) => {
 // Login
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  
+
   console.log('Login attempt:', { email, password });
 
   try {
@@ -133,6 +135,21 @@ app.get('/searchUser', async (req, res) => {
   } catch (error) {
     console.error('Erro ao buscar usuário:', error);
     res.status(500).json({ message: 'Erro interno do servidor.' });
+  }
+});
+
+// Proxy para Open Food Facts
+app.get('/api/openfoodfacts', async (req, res) => {
+  const { search } = req.query;
+  if (!search) return res.status(400).json({ error: 'Parâmetro de busca obrigatório' });
+
+  try {
+    const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(search)}&search_simple=1&action=process&json=1`;
+    const response = await fetch(url);
+    const data = await response.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: 'Erro ao buscar na Open Food Facts' });
   }
 });
 

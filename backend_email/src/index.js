@@ -1,6 +1,6 @@
-const nodemailer = require('nodemailer');
+const nodemail = require('nodemailer');
 
-const transporter = nodemailer.createTransport({
+const transporter = nodemail.createTransport({
   host: process.env.HOST_MAIL,
   port: Number(process.env.PORT_MAIL),
   secure: Number(process.env.PORT_MAIL) === 465,
@@ -10,23 +10,18 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-const sendEmailCodigo = async (email, codigo) => {
-  console.log('Sending email to:', email);
-  console.log('Using code:', codigo);
 
+const sendEmailCodigo = async (email, codigo) => {
   try {
     const info = await transporter.sendMail({
-      from: `NutriTracker <${process.env.USERNAME_MAIL}>`,
-      to: email,
-      subject: 'Envio do código de permissão.',
+      from: `NutriTracker <${process.env.USERNAME_MAIL}>`, 
+      to: email, 
+      subject: 'Envio do código de permissão.', 
       html: `<p>Olá,</p><p>Seu código de permissão é: <strong>${codigo}</strong></p><p>Atenciosamente,<br>NutriTracker</p>`,
       text: `Olá,\n\nSeu código de permissão é: ${codigo}\n\nAtenciosamente,\nNutriTracker`
     });
-
     console.log('Message sent: %s', info.messageId);
   } catch (error) {
     console.error('Error sending email:', error);
   }
-};
-
-module.exports = { sendEmailCodigo };
+}

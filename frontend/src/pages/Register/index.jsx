@@ -13,7 +13,7 @@ function Register({ irParaRegisterConfirm, voltar }) {
 
   const enviarCodigoEmail = (email) => {
     console.log('Enviando código para o email:', email)
-    api.post('/email', { email, nome: 'Usuário' }) // Pode ajustar nome se houver
+    api.post('/serviceEmail', {email:email}) // Pode ajustar nome se houver
       .then((response) => {
         console.log('Código enviado para o email:', response.data)
         setAviso('Código enviado com sucesso.')
