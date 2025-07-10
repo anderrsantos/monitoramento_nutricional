@@ -2,12 +2,41 @@ import './style.css'
 import '../../index.css'
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
+import api from '../../services/api.js'
 
 function Register({ irParaRegisterConfirm, voltar }) {
   const [aviso, setAviso] = useState('')
 
   const voltarLocal = () => {
     voltar()
+  }
+
+  const enviarCodigoEmail = (email) => {
+    api.post('/serviceEmail', {email:email}) // Pode ajustar nome se houver
+      .then((response) => {
+        console.log('Código enviado para o email:', response.data)
+        setAviso('Código enviado com sucesso.')
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar o código:', error)
+        setAviso('Erro ao enviar o código. Por favor, tente novamente.')
+      })
+  }
+200
+  const verificarEmail = (email) => {
+    api.get('/searchUser',{email:email})
+      .then((response) => {
+        if (response.status === 200 && response.data.length > 0) {
+          setAviso('Este email já está cadastrado. Por favor, use outro email.')
+          return false // Retorna false se o email já estiver cadastrado
+        }
+
+      })
+      .catch((error) => {
+        alert('Erro ao verificar o email. Por favor, tente novamente mais tarde.')
+        setAviso('')
+      })
+    return true // Retorna true se o email não estiver cadastrado, false caso contrário
   }
 
   const handleSubmit = async (event) => {
@@ -19,10 +48,14 @@ function Register({ irParaRegisterConfirm, voltar }) {
     if (password !== confirmPassword) {
       setAviso('As senhas não coincidem. Por favor, tente novamente.')
       return
-    } else {
-      setAviso('')
-      console.log('Email:', email, 'Password:', password)
-      irParaRegisterConfirm({ email, password })
+    }
+
+    setAviso('')
+    console.log('Email:', email, 'Password:', password)
+    
+    if (verificarEmail(email)) {
+          enviarCodigoEmail(email) 
+          irParaRegisterConfirm({ email, password })
     }
   }
 
@@ -104,7 +137,6 @@ function Register({ irParaRegisterConfirm, voltar }) {
             />
           </div>
 
-
           {/* Botão */}
           <button
             type="submit"
@@ -119,15 +151,14 @@ function Register({ irParaRegisterConfirm, voltar }) {
             <a href="#" className="text-decoration-none small" onClick={(e) => { e.preventDefault(); voltarLocal(); }}>
               Conecte-se
             </a>
+          </div>
 
           {/* Aviso de erro */}
           {aviso && (
-            <div className="text-danger small">
+            <div className="text-center mt-3 text-danger small fw-semibold">
               {aviso}
             </div>
           )}
-
-          </div>
         </form>
       </main>
     </>

@@ -16,6 +16,17 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [aguaInputMl, setAguaInputMl] = useState(250)
   const [calorias, setCalorias] = useState(0)
   const [metaCalorias, setMetaCalorias] = useState(2900)
+  // NOVO: Modal de refeição
+  const [showRefeicaoModal, setShowRefeicaoModal] = useState(false)
+  const [alimentoBusca, setAlimentoBusca] = useState('')
+  const [resultadoAlimento, setResultadoAlimento] = useState(null)
+  const [listaResultados, setListaResultados] = useState([])
+  const [buscandoAlimento, setBuscandoAlimento] = useState(false)
+  const [erroBusca, setErroBusca] = useState('')
+  // Estado para lista de alimentos da refeição
+  const [alimentosRefeicao, setAlimentosRefeicao] = useState([])
+  // Estado para quantidade do alimento selecionado
+  const [quantidadeSelecionada, setQuantidadeSelecionada] = useState(100)
 
   // Carrega dados do usuário do backend
   useEffect(() => {
@@ -58,6 +69,82 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
     }
     handleCloseModal()
   }
+
+  // NOVO: Função para buscar alimento na Open Food Facts
+  async function buscarAlimento(nome) {
+    setBuscandoAlimento(true)
+    setErroBusca('')
+    setResultadoAlimento(null)
+    setListaResultados([])
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/openfoodfacts?search=${encodeURIComponent(nome)}`
+      )
+      const data = await response.json()
+      if (data.products && data.products.length > 0) {
+        setListaResultados(data.products.slice(0, 5))
+      } else {
+        setErroBusca('Nenhum alimento encontrado.')
+      }
+    } catch (e) {
+      setErroBusca('Erro ao buscar alimento.')
+    }
+    setBuscandoAlimento(false)
+  }
+
+  // Quando o usuário seleciona um alimento da lista
+  function selecionarAlimento(alimento) {
+    setResultadoAlimento(alimento)
+  }
+
+  // Função utilitária para calcular calorias se não houver valor oficial
+  function calcularCaloriasEstimadas(nutriments) {
+    const proteinas = parseFloat(nutriments?.proteins) || 0;
+    const carboidratos = parseFloat(nutriments?.carbohydrates) || 0;
+    const gorduras = parseFloat(nutriments?.fat) || 0;
+    if (proteinas === 0 && carboidratos === 0 && gorduras === 0) return null;
+    return (proteinas * 4 + carboidratos * 4 + gorduras * 9).toFixed(0);
+  }
+
+  // Função para calcular calorias proporcionais à quantidade
+  function calcularCaloriasPorQuantidade(alimento, quantidade) {
+    const nutr = alimento.nutriments || {}
+    // calorias por 100g/ml
+    let kcal = nutr.energy_kcal
+    if (!kcal) {
+      const estimada = calcularCaloriasEstimadas(nutr)
+      kcal = estimada ? parseFloat(estimada) : null
+    }
+    if (!kcal) return null
+    // valor padrão é por 100g/ml
+    return ((kcal * quantidade) / 100).toFixed(1)
+  }
+
+  // Adicionar alimento à refeição
+  function adicionarAlimentoNaRefeicao() {
+    if (!resultadoAlimento) return
+    const calorias = calcularCaloriasPorQuantidade(resultadoAlimento, quantidadeSelecionada)
+    setAlimentosRefeicao(prev => [
+      ...prev,
+      {
+        alimento: resultadoAlimento,
+        quantidade: quantidadeSelecionada,
+        calorias: calorias,
+      }
+    ])
+    setResultadoAlimento(null)
+    setQuantidadeSelecionada(100)
+    setListaResultados([])
+    setAlimentoBusca('')
+  }
+
+  // Remover alimento da refeição
+  function removerAlimentoDaRefeicao(idx) {
+    setAlimentosRefeicao(prev => prev.filter((_, i) => i !== idx))
+  }
+
+  // Calorias totais da refeição
+  const totalCaloriasRefeicao = alimentosRefeicao.reduce((acc, item) => acc + (parseFloat(item.calorias) || 0), 0).toFixed(1)
 
   const aguaConsumidaL = (aguaConsumidaMl / 1000).toFixed(1)
   const metaAguaL = (metaAguaMl / 1000).toFixed(1)
@@ -113,7 +200,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
               <div className="card-body">
                 <h5 className="card-title mb-3">Registro Rápido</h5>
                 <div className="d-grid gap-2">
-                  <button className="btn secondary">+ Nova Refeição</button>
+                  <button className="btn secondary" onClick={() => setShowRefeicaoModal(true)}>+ Nova Refeição</button>
                   <button onClick={handleShowModal} className="btn btn-info text-white btn-sm">+ Adicionar Água</button>
                 </div>
               </div>
@@ -175,6 +262,114 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>Cancelar</Button>
           <Button variant="primary" onClick={handleSalvarAgua}>Salvar</Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* MODAL NOVA REFEIÇÃO */}
+      <Modal show={showRefeicaoModal} onHide={() => setShowRefeicaoModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Adicionar Refeição</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <label htmlFor="alimentoBusca" className="form-label">Digite o nome do alimento:</label>
+          <input
+            id="alimentoBusca"
+            type="text"
+            className="form-control mb-2"
+            value={alimentoBusca}
+            onChange={e => setAlimentoBusca(e.target.value)}
+            placeholder="Ex: banana, arroz, pão..."
+          />
+          <Button
+            variant="success"
+            className="mb-2"
+            onClick={() => buscarAlimento(alimentoBusca)}
+            disabled={buscandoAlimento || !alimentoBusca.trim()}
+          >
+            {buscandoAlimento ? 'Buscando...' : 'Buscar'}
+          </Button>
+          {erroBusca && <div className="text-danger small mb-2">{erroBusca}</div>}
+          {/* Lista de resultados para seleção */}
+          {listaResultados.length > 0 && !resultadoAlimento && (
+            <div className="list-group mb-2">
+              <div className="mb-1 small">Selecione o alimento correto:</div>
+              {listaResultados.map((item, idx) => (
+                <button
+                  key={item.code || idx}
+                  className="list-group-item list-group-item-action d-flex align-items-center"
+                  onClick={() => selecionarAlimento(item)}
+                >
+                  {item.image_thumb_url && (
+                    <img src={item.image_thumb_url} alt="thumb" style={{width: 32, height: 32, objectFit: 'cover', marginRight: 8, borderRadius: 4}} />
+                  )}
+                  <span>{item.product_name || 'Nome não disponível'}</span>
+                </button>
+              ))}
+            </div>
+          )}
+          {/* Exibe dados nutricionais do alimento selecionado */}
+          {resultadoAlimento && (
+            <div className="border rounded p-2 mt-2">
+              <strong>{resultadoAlimento.product_name || 'Nome não disponível'}</strong>
+              <ul className="mb-0">
+                <li>
+                  Calorias: {
+                    resultadoAlimento.nutriments?.energy_kcal
+                      ? `${resultadoAlimento.nutriments.energy_kcal} kcal`
+                      : calcularCaloriasEstimadas(resultadoAlimento.nutriments)
+                        ? `${calcularCaloriasEstimadas(resultadoAlimento.nutriments)} kcal (estimado)`
+                        : 'N/A'
+                  } por 100g/ml
+                </li>
+                <li>Proteínas: {resultadoAlimento.nutriments?.proteins || 'N/A'} g</li>
+                <li>Carboidratos: {resultadoAlimento.nutriments?.carbohydrates || 'N/A'} g</li>
+                <li>Gorduras: {resultadoAlimento.nutriments?.fat || 'N/A'} g</li>
+              </ul>
+              <div className="mt-2">
+                <label className="form-label">Quantidade consumida (g/ml):</label>
+                <input
+                  type="number"
+                  min="1"
+                  className="form-control mb-2"
+                  value={quantidadeSelecionada}
+                  onChange={e => setQuantidadeSelecionada(Number(e.target.value))}
+                />
+                <div className="mb-2 small text-muted">Valores nutricionais são geralmente por 100g/ml. Informe a quantidade consumida para calcular o valor proporcional.</div>
+                <Button variant="primary" onClick={adicionarAlimentoNaRefeicao}>
+                  Adicionar alimento à refeição
+                </Button>
+                <Button variant="outline-primary" size="sm" className="ms-2" onClick={() => setResultadoAlimento(null)}>
+                  Buscar outro alimento
+                </Button>
+              </div>
+            </div>
+          )}
+          {/* Lista de alimentos adicionados à refeição */}
+         {alimentosRefeicao.length > 0 && (
+           <div className="mt-4">
+             <h6>Alimentos adicionados:</h6>
+             <ul className="list-group mb-2">
+               {alimentosRefeicao.map((item, idx) => (
+                 <li key={idx} className="list-group-item d-flex justify-content-between align-items-center">
+                   <span>
+                     {item.alimento.product_name || 'Nome não disponível'}<br />
+                     <small className="text-muted">{item.quantidade}g/ml</small>
+                   </span>
+                   <span>
+                     {item.calorias ? `${item.calorias} kcal` : 'N/A'}
+                     <Button variant="danger" size="sm" className="ms-2" onClick={() => removerAlimentoDaRefeicao(idx)}>
+                       Remover
+                     </Button>
+                   </span>
+                 </li>
+               ))}
+             </ul>
+             <div className="fw-bold">Total de calorias da refeição: {totalCaloriasRefeicao} kcal</div>
+           </div>
+         )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowRefeicaoModal(false)}>Fechar</Button>
         </Modal.Footer>
       </Modal>
     </>

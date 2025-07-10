@@ -15,7 +15,56 @@ datasource db {
 }
 
 model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   @unique
-  password String
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  email       String     @unique
+  password    String
+  perfil      Perfil?    @relation
+  meta        meta?      @relation
+  consumoAgua ConsumoAgua[]
+  refeicoes    Refeicao[]
 }
+
+model Perfil {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  nome           String
+  sobrenome      String
+  dataNascimento DateTime
+  peso           Float
+  altura         Float
+  sexo           String
+  objetivo       String
+  nivelAtividade String
+  usuarioId      String
+  usuario        User          @relation(fields: [usuarioId], references: [id])
+}
+
+model ConsumoAgua {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  horario       DateTime
+  quantidadeMl  Int
+  usuarioId     String
+  usuario       User     @relation(fields: [usuarioId], references: [id])
+}
+
+model Refeicao {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  nome        String
+  carboidrato Float
+  horario     DateTime
+  proteina    Float
+  calorias    Float
+  usuarioId   String
+  usuario     User     @relation(fields: [usuarioId], references: [id])
+}
+
+model Meta {
+  id                String   @id @default(auto()) @map("_id") @db.ObjectId
+  meta_agua         Float
+  meta_calorias     Float
+  meta_proteinas    Float
+  meta_carboidratos Float
+  data_criacao      DateTime
+  usuarioId         String
+  usuario           User     @relation(fields: [usuarioId], references: [id])
+}
+
