@@ -6,6 +6,7 @@ import { sendEmailCodigo } from '../../backend_email/src/email.js';
 import fetch from 'node-fetch';
 
 let codigo = 0;
+let idUsuario = 0;
 
 const prisma = new PrismaClient();
 const app = express();
@@ -33,14 +34,13 @@ app.post('/serviceEmail', async (req, res) => {
   }
 });
 
-
 // Registrar usuário
 app.post('/register', async (req, res) => {
   try {
     const { email, password, codigoRecebido } = req.body;
 
     if (Number(codigoRecebido) !== codigo) {
-      return res.status(400).json({ message: 'Código de verificação inválido.' });
+      return res.status(400).error({ message: 'Código de verificação inválido.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -52,7 +52,8 @@ app.post('/register', async (req, res) => {
       },
     });
 
-    res.status(201).json({ id: user.id, email: user.email });
+    idUsuario = user.id; // Armazena o ID do usuário registrado
+    res.status(200).json({ id: user.id, email: user.email });
   } catch (error) {
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
@@ -81,19 +82,50 @@ app.post('/login', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
-
+    
     const senhaConfere = await bcrypt.compare(password, user.password);
 
     if (!senhaConfere) {
       return res.status(401).json({ message: 'Senha incorreta.' });
     }
 
+    idUsuario = user.id; 
     res.status(200).json({ message: 'Login realizado com sucesso!', userId: user.id });
   } catch (error) {
     console.error('Erro ao fazer login:', error);
     res.status(500).json({ message: 'Erro interno no servidor.' });
   }
 });
+
+// Buscar usuário por email
+app.get('/searchUser', async (req, res) => {
+  const { email } = req.query.email;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+  
+    res.status(200).json(user);
+
+  } catch (error) {
+    console.error('Erro ao buscar usuário:', error);
+    res.status(500).json({ message: 'Erro interno do servidor.' });
+  }
+});
+
+
+
+
+
+
 
 
 
@@ -114,29 +146,9 @@ app.get('/showUsers', async (req, res) => {
   }
 });
 
-// Buscar usuário por email
-app.get('/searchUser', async (req, res) => {
-  const { email } = req.query;
 
-  try {
-    const user = await prisma.user.findUnique({
-      where: { email },
-      select: {
-        id: true,
-        password: true,
-      },
-    });
 
-    if (!user) {
-      return res.status(404).json({ message: 'Usuário não encontrado.' });
-    }
 
-    res.status(200).json(user);
-  } catch (error) {
-    console.error('Erro ao buscar usuário:', error);
-    res.status(500).json({ message: 'Erro interno do servidor.' });
-  }
-});
 
 // Proxy para Open Food Facts
 app.get('/api/openfoodfacts', async (req, res) => {

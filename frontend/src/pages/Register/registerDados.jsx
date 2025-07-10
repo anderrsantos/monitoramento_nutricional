@@ -22,7 +22,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     const peso = event.target.peso.value
     const altura = event.target.altura.value
     const sexo = event.target.sexo.value
-    const meta = event.target.meta.value
+    const objetivo = event.target.objetivo.value
     const nivelAtividade = event.target.nivel_atividade.value
 
     try {
@@ -36,7 +36,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
         peso,
         altura,
         sexo,
-        meta,
+        objetivo,
         nivelAtividade
       })
 
@@ -114,8 +114,8 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="meta" className="form-label">Qual é a sua meta?</label>
-              <select id="meta" name="meta" className="form-select" required>
+              <label htmlFor="objetivo" className="form-label">Qual é a sua objetivo?</label>
+              <select id="objetivo" name="objetivo" className="form-select" required>
                 <option disabled value="">Selecione</option>
                 <option value="perder_gordura">Perder gordura</option>
                 <option value="manter_peso">Manter o peso</option>

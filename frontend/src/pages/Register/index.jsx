@@ -12,7 +12,6 @@ function Register({ irParaRegisterConfirm, voltar }) {
   }
 
   const enviarCodigoEmail = (email) => {
-    console.log('Enviando código para o email:', email)
     api.post('/serviceEmail', {email:email}) // Pode ajustar nome se houver
       .then((response) => {
         console.log('Código enviado para o email:', response.data)
@@ -22,6 +21,22 @@ function Register({ irParaRegisterConfirm, voltar }) {
         console.error('Erro ao enviar o código:', error)
         setAviso('Erro ao enviar o código. Por favor, tente novamente.')
       })
+  }
+200
+  const verificarEmail = (email) => {
+    api.get('/searchUser',{email:email})
+      .then((response) => {
+        if (response.status === 200 && response.data.length > 0) {
+          setAviso('Este email já está cadastrado. Por favor, use outro email.')
+          return false // Retorna false se o email já estiver cadastrado
+        }
+
+      })
+      .catch((error) => {
+        alert('Erro ao verificar o email. Por favor, tente novamente mais tarde.')
+        setAviso('')
+      })
+    return true // Retorna true se o email não estiver cadastrado, false caso contrário
   }
 
   const handleSubmit = async (event) => {
@@ -38,8 +53,10 @@ function Register({ irParaRegisterConfirm, voltar }) {
     setAviso('')
     console.log('Email:', email, 'Password:', password)
     
-    enviarCodigoEmail(email) 
-    irParaRegisterConfirm({ email, password })
+    if (verificarEmail(email)) {
+          enviarCodigoEmail(email) 
+          irParaRegisterConfirm({ email, password })
+    }
   }
 
   return (

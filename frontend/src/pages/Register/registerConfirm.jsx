@@ -39,10 +39,18 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
         password: usuario.password,
         codigo: codigoRecebido
       })
-      irParaCadastroDados(response.data)
+
+      if (response.status === 200) {
+            irParaCadastroDados(response.data)
+      }
     } catch (res) {
       console.error('Erro ao fazer registro:', res)
-      alert('Erro ao fazer registro. Verifique o código e tente novamente.')
+      if(res.response?.status === 400) {
+          setAviso(res.response?.data?.message || 'Erro ao confirmar o registro. Por favor, tente novamente.')
+      }
+      else {
+          setAviso('Erro ao confirmar o registro. Por favor, tente novamente mais tarde.')
+      }
     }
   }
 
@@ -106,6 +114,7 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
                 {aviso}
               </div>
             )}
+
           </form>
         </div>
       </main>

@@ -1,3 +1,4 @@
+require('dotenv').config(); // se usar .env
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
@@ -11,9 +12,6 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendEmailCodigo = async (email, codigo) => {
-  console.log('Sending email to:', email);
-  console.log('Using code:', codigo);
-
   try {
     const info = await transporter.sendMail({
       from: `NutriTracker <${process.env.USERNAME_MAIL}>`,
@@ -28,5 +26,10 @@ const sendEmailCodigo = async (email, codigo) => {
     console.error('Error sending email:', error);
   }
 };
+
+// Chame a função de teste só se este arquivo for executado diretamente
+// if (require.main === module) {
+//   sendEmailCodigo('adrianabreupaiva@gmail.com', 403456);
+// }
 
 module.exports = { sendEmailCodigo };

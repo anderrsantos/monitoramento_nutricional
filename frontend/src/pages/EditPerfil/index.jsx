@@ -10,8 +10,8 @@ function EditPerfil({ usuario, voltar }) {
     sobrenome: usuario.nome?.split(' ').slice(1).join(' ') || '',
     peso: usuario.peso || '',
     altura: usuario.altura ? usuario.altura * 100 : '',
-    meta: usuario.meta || '',
-    nivel_atividade: usuario.nivelAtividade || ''
+    objetivo: usuario.objetivo || '',
+    nivelAtividade: usuario.nivelAtividade || ''
   })
 
   const handleChange = (e) => {
@@ -29,8 +29,8 @@ function EditPerfil({ usuario, voltar }) {
       nome: `${formData.nome} ${formData.sobrenome}`,
       peso: parseFloat(formData.peso),
       altura: parseFloat(formData.altura) / 100,
-      meta: formData.meta,
-      nivelAtividade: formData.nivel_atividade
+      objetivo: formData.objetivo,
+      nivelAtividade: formData.nivelAtividade
     }
 
     api.put(`/perfil`, dadosParaEnviar)
@@ -76,8 +76,8 @@ function EditPerfil({ usuario, voltar }) {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="meta" className="form-label">Meta</label>
-              <select id="meta" name="meta" className="form-select" value={formData.meta} onChange={handleChange} required>
+              <label htmlFor="objetivo" className="form-label">objetivo</label>
+              <select id="objetivo" name="objetivo" className="form-select" value={formData.objetivo} onChange={handleChange} required>
                 <option disabled value="">Selecione</option>
                 <option value="perder_gordura">Perder gordura</option>
                 <option value="manter_peso">Manter o peso</option>
@@ -86,8 +86,8 @@ function EditPerfil({ usuario, voltar }) {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="nivel_atividade" className="form-label">Nível de atividade física</label>
-              <select id="nivel_atividade" name="nivel_atividade" className="form-select" value={formData.nivel_atividade} onChange={handleChange} required>
+              <label htmlFor="nivelAtividade" className="form-label">Nível de atividade física</label>
+              <select id="nivelAtividade" name="nivelAtividade" className="form-select" value={formData.nivelAtividade} onChange={handleChange} required>
                 <option disabled value="">Selecione</option>
                 <option value="sedentario">Sedentário</option>
                 <option value="levemente_ativo">Levemente ativo</option>
