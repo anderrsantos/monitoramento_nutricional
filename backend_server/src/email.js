@@ -1,0 +1,30 @@
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+dotenv.config();
+
+const transporter = nodemailer.createTransport({
+  host: process.env.HOST_MAIL,
+  port: Number(process.env.PORT_MAIL),
+  secure: Number(process.env.PORT_MAIL) === 465,
+  auth: {
+    user: process.env.USERNAME_MAIL,
+    pass: process.env.PASSWORD_MAIL,
+  }
+});
+
+export const sendEmailCodigo = async (email, codigo) => {
+  console.log(email)
+  try {
+    const info = await transporter.sendMail({
+      from: `NutriTracker <${process.env.USERNAME_MAIL}>`,
+      to: email,
+      subject: 'Envio do código de permissão.',
+      html: `<p>Olá,</p><p>Seu código de permissão é: <strong>${codigo}</strong></p><p>Atenciosamente,<br>NutriTracker</p>`,
+      text: `Olá,\n\nSeu código de permissão é: ${codigo}\n\nAtenciosamente,\nNutriTracker`
+    });
+    console.log('Message sent: %s', info.messageId);
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw error; // para propagar erro para o caller
+  }
+};

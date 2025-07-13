@@ -1,37 +1,44 @@
-import './style.css'
-import '../../index.css'
-import React, { useState } from 'react'
-import logo from '../../assets/logo.png'
-import api from '../../services/api.js'
+import '../../index.css';
+import React, { useState, useEffect, useRef } from 'react';
+import logo from '../../assets/logo.png';
+import api from '../../services/api.js';
 
-function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
-  const [aviso, setAviso] = useState('')
-
-  const voltarLocal = () => {
-    voltar()
-  }
+function CodigoSenha({ usuario, irParaRecuperarSenha, voltarHome }) {
+  const [aviso, setAviso] = useState('');
+  const hasRun = useRef(false);  // controla execução única do eventEmail
 
   const voltarHomeLocal = () => {
-    voltarHome()
-  }
+    voltarHome();
+  };
 
-  const eventEmail = (event) => {
-    event.preventDefault()
+  function eventEmail(event) {
+    if (event) event.preventDefault();
 
-    api.post('/serviceEmail', { email: usuario.email}) // Certifique-se de ter `nome`
+    api.post('/serviceEmail', { email: usuario.email }) 
       .then((response) => {
-        console.log('Código enviado para o email:', response.data)
-        setAviso('Código reenviado com sucesso.')
+        console.log('Código enviado para o email:', response.data);
       })
       .catch((error) => {
-        console.error('Erro ao enviar o código:', error)
-        setAviso('Erro ao enviar o código. Por favor, tente novamente.')
-      })
+        console.error('Erro ao enviar o código:', error);
+        setAviso('Erro ao enviar o código. Por favor, tente novamente.');
+      });
   }
+
+  useEffect(() => {
+    if (usuario?.email && !hasRun.current) {
+      eventEmail();
+      hasRun.current = true;  // marca que já rodou
+    }
+  }, [usuario]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const codigoRecebido = event.target.codigo.value;
+    const codigoRecebido = event.target.codigo.value.trim();
+
+    if (!codigoRecebido) {
+      setAviso('Por favor, insira o código.');
+      return;
+    }
 
     try {
       const response = await api.get('/getVerificarCodigo', {
@@ -42,13 +49,12 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
       });
 
       if (response.status === 200 && response.data.message === 'Código confirmado com sucesso.') {
-        irParaCadastroDados(usuario);
+        irParaRecuperarSenha(usuario);
       } else {
         setAviso('Código incorreto. Verifique o código enviado por e-mail.');
       }
     } catch (res) {
       console.error('Erro ao fazer registro:', res);
-
       if (res.response?.status === 400) {
         setAviso(res.response?.data?.message || 'Erro ao confirmar o registro. Por favor, tente novamente.');
       } else {
@@ -56,7 +62,6 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
       }
     }
   };
-
 
   return (
     <>
@@ -83,12 +88,13 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
           ></button>
 
           <h5 className="text-center fw-semibold mb-4 mt-2">
-            Informe o <span className="text-success">código</span> enviado para o e-mail<br />
+            Informe o <span className="text-success">código</span> enviado para o e-mail.<br />
             <strong>{usuario?.email || 'email@exemplo.com'}</strong>
           </h5>
 
           <form className="needs-validation" noValidate onSubmit={handleSubmit}>
             <div className="mb-4">
+              <label htmlFor="codigo" className="form-label">Código</label> 
               <input
                 type="text"
                 id="codigo"
@@ -107,7 +113,10 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
               <button
                 type="button"
                 className="btn btn-link text-decoration-none"
-                onClick={eventEmail}
+                onClick={(e) => {
+                  eventEmail(e);
+                  setAviso('Código reenviado com sucesso.');
+                }}
               >
                 Reenviar código
               </button>
@@ -118,13 +127,11 @@ function RegisterConfirm({ usuario, irParaCadastroDados, voltar, voltarHome }) {
                 {aviso}
               </div>
             )}
-
           </form>
         </div>
       </main>
     </>
-  )
+  );
 }
 
-export default RegisterConfirm
-
+export default CodigoSenha;

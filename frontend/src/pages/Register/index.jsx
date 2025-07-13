@@ -2,6 +2,7 @@ import './style.css'
 import '../../index.css'
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
+import api from '../../services/api.js'
 
 function Register({ irParaRegisterConfirm, voltar }) {
   const [aviso, setAviso] = useState('')
@@ -10,21 +11,92 @@ function Register({ irParaRegisterConfirm, voltar }) {
     voltar()
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    const email = event.target.email.value
-    const password = event.target.senha.value
-    const confirmPassword = event.target.confirmar.value
-
-    if (password !== confirmPassword) {
-      setAviso('As senhas não coincidem. Por favor, tente novamente.')
-      return
-    } else {
-      setAviso('')
-      console.log('Email:', email, 'Password:', password)
-      irParaRegisterConfirm({ email, password })
-    }
+  const enviarCodigoEmail = (email) => {
+    api.post('/serviceEmail', {email:email}) // Pode ajustar nome se houver
+      .then((response) => {
+        console.log('Código enviado para o email:', response.data)
+        setAviso('Código enviado com sucesso.')
+      })
+      .catch((error) => {
+        console.error('Erro ao enviar o código:', error)
+        setAviso('Erro ao enviar o código. Por favor, tente novamente.')
+      })
   }
+
+  const verificarEmail = async (email) => {
+    try {
+      const response = await api.get('/searchUser', {
+        params: { email } // << Use `params` para GET com Axios
+      });
+
+      // A API retorna o usuário ou status 404
+      if (response.status === 200 && response.data?.id) {
+        setAviso('Este email já está cadastrado. Por favor, use outro email.');
+        return false;
+      }
+    } catch (error) {
+      if (error.response?.status === 404) {
+        return true; // OK, e-mail não existe
+      }
+      console.error('Erro ao verificar o email:', error);
+      alert('Erro ao verificar o email. Por favor, tente novamente mais tarde.');
+      return false;
+    }
+
+    return true; // Caso padrão: pode seguir
+  }
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const email = event.target.email.value.trim();
+    const password = event.target.senha.value;
+    const confirmPassword = event.target.confirmar.value;
+
+    setAviso('');
+
+    // Verificação básica dos campos
+    if (!email || !password || !confirmPassword) {
+      setAviso('Todos os campos são obrigatórios.');
+      return;
+    }
+
+    // Verificação de senha forte: letras maiúsculas, minúsculas e números
+    const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!senhaForteRegex.test(password)) {
+      setAviso('A senha deve conter letras maiúsculas, minúsculas e números.');
+      return;
+    }
+    console.log('passoword:', password)
+    console.log('ConformPassoword:', confirmPassword)
+
+    // Senhas coincidem
+    if (password !== confirmPassword) {
+      setAviso('As senhas não coincidem. Por favor, tente novamente.');
+      return;
+    }
+
+
+    // Validação de comprimento mínimo
+    if (password.length < 8) {
+      setAviso('A senha precisa ter pelo menos 8 caracteres.');
+      return;
+    }
+
+
+    console.log('Email:', email, 'Password:', password);
+
+    const podeContinuar = await verificarEmail(email);
+    if (podeContinuar) {
+      await enviarCodigoEmail(email);
+      irParaRegisterConfirm({ email, password });
+    } else {
+      setAviso('Email já em uso. Por favor, tente novamente.');
+    }
+  };
+
+
 
   return (
     <>
@@ -104,7 +176,6 @@ function Register({ irParaRegisterConfirm, voltar }) {
             />
           </div>
 
-
           {/* Botão */}
           <button
             type="submit"
@@ -119,15 +190,14 @@ function Register({ irParaRegisterConfirm, voltar }) {
             <a href="#" className="text-decoration-none small" onClick={(e) => { e.preventDefault(); voltarLocal(); }}>
               Conecte-se
             </a>
+          </div>
 
           {/* Aviso de erro */}
           {aviso && (
-            <div className="text-danger small">
+            <div className="text-center mt-3 text-danger small fw-semibold">
               {aviso}
             </div>
           )}
-
-          </div>
         </form>
       </main>
     </>

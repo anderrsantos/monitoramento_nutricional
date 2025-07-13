@@ -1,6 +1,6 @@
 import './style.css'
 import '../../index.css'
-import React from 'react'
+import React, { useEffect } from 'react'
 import logo from '../../assets/logo.png'
 import api from '../../services/api.js' 
 
@@ -13,40 +13,66 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     voltarHome()
   }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  // Função reutilizável
+  const registrarUsuario = async () => {
+    try {
+      await api.post('/register', {
+        email: usuario.email,
+        password: usuario.password
+      });
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      alert('Erro ao registrar. Por favor, tente novamente mais tarde.');
+    }
+  };
 
-    const nome = event.target.nome.value
-    const sobrenome = event.target.sobrenome.value
-    const dataNascimento = event.target.data_nascimento.value
-    const peso = event.target.peso.value
-    const altura = event.target.altura.value
-    const sexo = event.target.sexo.value
-    const meta = event.target.meta.value
-    const nivelAtividade = event.target.nivel_atividade.value
+  // Chama automaticamente uma vez ao montar o componente
+  useEffect(() => {
+    registrarUsuario();
+  }, []);
+
+  
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const nome = event.target.nome.value;
+    const sobrenome = event.target.sobrenome.value;
+    const dataNascimento = event.target.data_nascimento.value;
+    const peso = event.target.peso.value;
+    const altura = event.target.altura.value;
+    const sexo = event.target.sexo.value;
+    const objetivo = event.target.objetivo.value;
+    const nivelAtividade = event.target.nivel_atividade.value;
+    const email = usuario.email;
+
+    console.log('Registro:', usuario);
 
     try {
-      const response = await api.post('/perfil', {
-        email: usuario.email,
-        password: usuario.password,
-        codigo: usuario.codigo,
+      const response = await api.post('/setPerfil', {
+        email,
         nome,
         sobrenome,
         dataNascimento,
         peso,
         altura,
         sexo,
-        meta,
+        objetivo,
         nivelAtividade
-      })
+      });
 
-      // Sucesso: envia os dados atualizados para a tela Conteudo
-      irParaConteudo(response.data)
+      if (response.status === 200) {
+        console.log(response.data)
+        irParaConteudo(response.data);
+      } else {
+        alert(response.data?.message || 'Erro inesperado ao registrar perfil.');
+      }
     } catch (error) {
-      console.error('Erro ao salvar dados:', error)
-      alert('Erro ao salvar dados. Por favor, tente novamente.')
+      console.error('Erro ao salvar dados:', error);
+      alert('Erro ao salvar dados. Por favor, tente novamente.');
     }
-  }
+  };
+
 
   return (
     <>
@@ -70,7 +96,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
       <main className="d-flex align-items-center justify-content-center min-vh-100 pt-5">
         <div className="card shadow p-4 bg-white w-100 position-relative" style={{ maxWidth: '600px' }}>
           {/* Botão Fechar */}
-          <button type="button" className="btn-close position-absolute top-0 end-0 m-3" onClick={voltarLocal} />
+          <button type="button" className="btn-close position-absolute top-0 end-0 m-3" onClick={voltarHomeLocal} />
 
           <h4 className="text-center fw-semibold mb-4 mt-2">
             Complete seus <span className="text-success">dados</span> pessoais
@@ -114,8 +140,8 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="meta" className="form-label">Qual é a sua meta?</label>
-              <select id="meta" name="meta" className="form-select" required>
+              <label htmlFor="objetivo" className="form-label">Qual é a sua objetivo?</label>
+              <select id="objetivo" name="objetivo" className="form-select" required>
                 <option disabled value="">Selecione</option>
                 <option value="perder_gordura">Perder gordura</option>
                 <option value="manter_peso">Manter o peso</option>

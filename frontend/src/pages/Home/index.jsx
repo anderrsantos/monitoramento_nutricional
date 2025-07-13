@@ -4,7 +4,7 @@ import logo from '../../assets/logo.png'
 import frutasImg from '../../assets/frutas.jpg'
 import api from '../../services/api.js'
 
-function Home({ irParaCadastro, irParaConteudo }) {
+function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmailRecupecao }) {
   const [menuAberto, setMenuAberto] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -12,22 +12,51 @@ function Home({ irParaCadastro, irParaConteudo }) {
 
   const toggleMenu = () => setMenuAberto(prev => !prev)
   const fecharMenu = () => setMenuAberto(false)
-
   const criarConta = () => {
     irParaCadastro()
     fecharMenu()
   }
+  const irParaEmailRecupecaoLocal = () =>{
+    irParaEmailRecupecao()
+  }
+
+  const checkPerfil = async (userData) => {
+    try {
+      const response = await api.get('/searchUserPerfil', {
+        params: { userId: userData.userId }
+      });
+      console.log(response);
+
+      if (response.status === 200) {
+        alert('Possui perfil');
+        irParaConteudo(userData);
+      }
+    } catch (error) {
+      console.error('Erro ao verificar perfil:', error);
+
+      // Se o erro tiver response e o status não for 200, assume que não possui perfil
+      if (error.response && error.response.status !== 200) {
+        alert('Não possui perfil');
+        irParaCadastroDados(userData);
+      } else {
+        alert('Erro inesperado ao verificar perfil');
+      }
+    }
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     setErrorMessage('')
 
     try {
-      console.log('Tentando fazer login com:', { email, password })
-      const response = await api.post('/login', { email, password })
-      console.log('Login bem-sucedido:', response.data)
-      
-      irParaConteudo(response.data)
+      const response = await api.post('/login', { email, password }) 
+
+      if (response.status === 200) {
+        console.log('Login bem-sucedido:', response.data.email)
+        //checkPerfil(response.data) // Envia o ID do usuário para verificação do perfil
+        irParaConteudo(response.data);
+      }
     } catch (error) {
       const message = error.response?.data?.message || 'Erro ao fazer login. Verifique suas credenciais.'
       setErrorMessage(message)
@@ -129,7 +158,7 @@ function Home({ irParaCadastro, irParaConteudo }) {
             </div>
 
             <div className="text-end mb-3">
-              <a href="#" className="text-decoration-none small text-muted">Esqueceu a sua senha?</a>
+              <a href="#" className="text-decoration-none small text-muted" onClick={irParaEmailRecupecaoLocal}>Esqueceu a sua senha?</a>
             </div>
 
             <button type="submit" className="btn btn-success w-100 py-2 fw-semibold">

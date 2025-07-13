@@ -119,6 +119,46 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password'
 };
 
+exports.Prisma.PerfilScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  sobrenome: 'sobrenome',
+  dataNascimento: 'dataNascimento',
+  peso: 'peso',
+  altura: 'altura',
+  sexo: 'sexo',
+  objetivo: 'objetivo',
+  nivelAtividade: 'nivelAtividade',
+  usuarioId: 'usuarioId'
+};
+
+exports.Prisma.MetaScalarFieldEnum = {
+  id: 'id',
+  calorias: 'calorias',
+  proteinas: 'proteinas',
+  carboidratos: 'carboidratos',
+  agua: 'agua',
+  gorduras: 'gorduras',
+  usuarioId: 'usuarioId'
+};
+
+exports.Prisma.ConsumoAguaScalarFieldEnum = {
+  id: 'id',
+  quantidade: 'quantidade',
+  data: 'data',
+  usuarioId: 'usuarioId'
+};
+
+exports.Prisma.RefeicaoScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  carboidrato: 'carboidrato',
+  calorias: 'calorias',
+  proteina: 'proteina',
+  data: 'data',
+  usuarioId: 'usuarioId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -131,7 +171,11 @@ exports.Prisma.QueryMode = {
 
 
 exports.Prisma.ModelName = {
-  User: 'User'
+  User: 'User',
+  Perfil: 'Perfil',
+  Meta: 'Meta',
+  ConsumoAgua: 'ConsumoAgua',
+  Refeicao: 'Refeicao'
 };
 
 /**
