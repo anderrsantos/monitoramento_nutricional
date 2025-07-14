@@ -23,7 +23,8 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const refeicoesDiaOrdenadas = [...refeicoesDia].sort((a, b) => new Date(a.horario) - new Date(b.horario));
 
 
-  const [getSugestaoComida, setSugestaoComida] = useState(false)
+  const [getSugestaoComida, setSugestaoComida] = useState(null)
+  const [getPlotarComida, setPlotarComida]= useState(null)
 
   // Controlador de agua =================================================================================
   const [aguaInputMl, setAguaInputMl] = useState(null) // serve para plotar dados no grafico
@@ -203,7 +204,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
     console.log('usuario  agua calorias: ', usuario)
     try {
       // Buscar água consumida nas últimas 24h (1 dia)
-console.log("entrou em calorias 1");
+      console.log("entrou em calorias 1");
       const responseAgua = await api.get('/getConsumoAguaPorDia', {params: { userId: usuario.userId, dias: 1}});   
       const quantidade = Object.values(responseAgua.data.consumoPorDia)[0] || 0;
       console.log("entrou em calorias 2: ", quantidade);
@@ -384,6 +385,7 @@ useEffect(() => {
   if (usuario.userId && !carregou.current) {
     console.log('entrou aqui')
     verificarESincronizarSugestao();
+
     carregou.current = true;
   }
 }, [usuario.userId]);
@@ -402,6 +404,7 @@ const verificarESincronizarSugestao = async () => {
     } else if (!response.data[diaFormatado]) {
       await gerarSugestao();
     } else {
+      console.log('verificarESincronizarSugestao response.data: ',response.data )
       setSugestaoComida(response.data);
     }
   } catch (e) {
@@ -434,21 +437,45 @@ const gerarSugestao = async () => {
   const nova = await api.get('/getSugestaoAlimentacao', {
     params: { usuarioId: usuario.userId },
   });
+
+  console.log('gerarSugestao response.data: ',nova.data )
+
   setSugestaoComida(nova.data);
+
+   console.log('gerarSugestao response.data 892E: ', getSugestaoComida )
+
 };
 
 
+useEffect(() => {
+  if (getSugestaoComida) {
+    plotarSugestao();
+  }
+}, [getSugestaoComida]);
+
+const plotarSugestao = () => {
+  try {
+    const nomeDia = new Date().toLocaleDateString('pt-BR', { weekday: 'long' });
+    const diaFormatado = nomeDia.charAt(0).toUpperCase() + nomeDia.slice(1).replace('-feira', '').trim();
+
+    // Aqui corrigimos a verificação
+    if (getSugestaoComida && getSugestaoComida[diaFormatado]) {
+      const sugestaoHoje = getSugestaoComida[diaFormatado];
+
+      console.log('sugestaoHoje:', sugestaoHoje);
+      setPlotarComida({ dia: diaFormatado, dados: sugestaoHoje });
+    } else {
+      console.warn('Nenhuma sugestão para o dia atual encontrada.');
+    }
+
+  } catch (error) {
+    console.error('Erro ao plotar sugestão do dia:', error);
+  }
+};
+
+
+
 // ============================================================================================
-
-
-
-
-
-
-
-
-
-
   // NOVO: Função para buscar alimento na Open Food Facts
   async function buscarAlimento(nome) {
     setBuscandoAlimento(true)
@@ -506,14 +533,6 @@ const gerarSugestao = async () => {
 
   const aguaConsumidaL = (aguaConsumidaMl / 1000).toFixed(1)
   const metaAguaL = (metaAguaMl / 1000).toFixed(1)
-
-
-  
-
-
-
-
-
 
 
   return (
@@ -705,6 +724,77 @@ const gerarSugestao = async () => {
             </div>
           </section>
         </div>
+      {/* ====================================================================================================== */}
+      {!getPlotarComida ? (
+        <div className="mt-5 text-center text-muted">
+          <div className="spinner-border text-success" role="status">
+            <span className="visually-hidden">Carregando...</span>
+          </div>
+          <p className="mt-3">Carregando sugestão alimentar...</p>
+        </div>
+      ) : (
+        <div className="mt-5">
+          <h5 className="card-title mb-4">
+          Sugestão de refeição de <strong>{getPlotarComida.dia}</strong>
+          </h5>
+
+          <div className="row g-4">
+            {/* Café da manhã */}
+            <div className="col-12 col-md-4">
+              <div className="card h-100 shadow-sm border-primary">
+                <div className="card-body">
+                  <h5 className="card-title mb-3 text-primary">
+                    ☕ Café da manhã
+                  </h5>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Calorias: {getPlotarComida.dados.cafe.calorias} kcal</li>
+                    <li className="list-group-item">Proteínas: {getPlotarComida.dados.cafe.proteinas} g</li>
+                    <li className="list-group-item">Carboidratos: {getPlotarComida.dados.cafe.carboidratos} g</li>
+                    <li className="list-group-item">Gorduras: {getPlotarComida.dados.cafe.gorduras} g</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Almoço */}
+            <div className="col-12 col-md-4">
+              <div className="card h-100 shadow-sm border-success">
+                <div className="card-body">
+                  <h5 className="card-title mb-3 text-success">
+                    Almoço
+                  </h5>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Calorias: {getPlotarComida.dados.almoco.calorias} kcal</li>
+                    <li className="list-group-item">Proteínas: {getPlotarComida.dados.almoco.proteinas} g</li>
+                    <li className="list-group-item">Carboidratos: {getPlotarComida.dados.almoco.carboidratos} g</li>
+                    <li className="list-group-item">Gorduras: {getPlotarComida.dados.almoco.gorduras} g</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Janta */}
+            <div className="col-12 col-md-4">
+              <div className="card h-100 shadow-sm border-warning">
+                <div className="card-body">
+                  <h5 className="card-title mb-3 text-warning">
+                     Janta
+                  </h5>
+                  <ul className="list-group list-group-flush">
+                    <li className="list-group-item">Calorias: {getPlotarComida.dados.janta.calorias} kcal</li>
+                    <li className="list-group-item">Proteínas: {getPlotarComida.dados.janta.proteinas} g</li>
+                    <li className="list-group-item">Carboidratos: {getPlotarComida.dados.janta.carboidratos} g</li>
+                    <li className="list-group-item">Gorduras: {getPlotarComida.dados.janta.gorduras} g</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ====================================================================================================== */}
+
       </main>
 
     <footer className="bg-white border-top text-center py-3 mt-auto">
