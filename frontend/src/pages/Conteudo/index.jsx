@@ -253,12 +253,16 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       }));
       console.log('usuario: ',usuario)
 
-      const response = await api.post('/refeicoes', {
+      try {
+        const response = await api.post('/refeicoes', {
         usuarioId: usuario.userId,
         nome: nomeRefeicao,
         alimentos: alimentosParaSalvar
-      });
+         });
 
+      } catch (error) {
+        console.log('erro bosta:', error)
+      }
 
 
       // Atualizar calorias consumidas hoje
@@ -507,7 +511,10 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       </div>
     </footer>
 
-      {/* MODAL NOVA CONSUMO DE AGUA */}          
+      
+    </div>
+
+    {/* MODAL NOVA CONSUMO DE AGUA */}          
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Adicionar Água</Modal.Title>
@@ -644,7 +651,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
              <Button 
                variant="success" 
                className="mt-3 w-100" 
-               onClick={teste}
+               onClick={salvarRefeicao}
                disabled={!nomeRefeicao.trim()}
              >
                Salvar Refeição
@@ -656,7 +663,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
           <Button variant="secondary" onClick={() => setShowRefeicaoModal(false)}>Fechar</Button>
         </Modal.Footer>
       </Modal>
-    </div>
     </>
   )
 }

@@ -596,7 +596,7 @@ app.post('/refeicoes', async (req, res) => {
 });
 
 // Buscar refeições do usuário
-app.get('/getrefeicoes', async (req, res) => {
+app.get('/refeicoes/:usuarioId', async (req, res) => {
   try {
     const { usuarioId } = req.params;
     
