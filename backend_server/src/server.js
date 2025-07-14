@@ -27,9 +27,9 @@ app.use(express.json());
 
 
 app.post('/sugestaoAlimentacao', async (req, res) => {
-  const { dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
-
+  const { usuarioId, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
   try {
+    console.log("wdckawjnckjwncjavjnv")
     const texto = `Uma pessoa do sexo ${sexo} começou a fazer dieta. Ela nasceu em ${dataNascimento}, pesa ${peso} kg,
     tem ${altura} cm de altura, objetivo de ${objetivo} e seu nível de atividade física é ${nivelAtividade}. E o seu consumo para essa semana é:
     água: ${dados.agua} ml
@@ -39,21 +39,46 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
     gordura: ${dados.gordura}
 
     Projete uma dieta para uma semana de forma que ela consiga atingir o objetivo.
-    A resposta deve estar **apenas** no seguinte formato JSON:
-    {
-      "segunda": {
-        "cafe": {...},
-        "almoco": {...},
-        "janta": {...}
-      },
-      "terça": {
-        "cafe": {...},
-        "almoco": {...},
-        "janta": {...}
-      },
-      ...
-    }`;
 
+    A resposta deve estar **apenas** no seguinte formato JSON (sem texto explicativo):
+
+    {
+      "Segunda": {
+        "cafe": {
+          "alimentos": [
+            { "nome": "Iogurte", "quantidade": "200ml" },
+            { "nome": "Pão integral", "quantidade": "2 fatias" },
+            { "nome": "Banana", "quantidade": "1 unidade" }
+          ],
+          "calorias": 350,
+          "proteina": 20,
+          "carboidrato": 40,
+          "gordura": 10
+        },
+        "almoco": {
+          "alimentos": [
+            { "nome": "Arroz", "quantidade": "100g" },
+            { "nome": "Feijão", "quantidade": "100g" },
+            { "nome": "Frango grelhado", "quantidade": "150g" },
+            { "nome": "Salada", "quantidade": "1 prato" }
+          ],
+          "calorias": 600,
+          "proteina": 40,
+          "carboidrato": 50,
+          "gordura": 15
+        },
+        "janta": {
+          "alimentos": [
+            { "nome": "Sopa de legumes", "quantidade": "300ml" },
+            { "nome": "Torrada integral", "quantidade": "2 unidades" }
+          ],
+          "calorias": 300,
+          "proteina": 15,
+          "carboidrato": 30,
+          "gordura": 5
+        }
+      }
+    }`;
     const respostaGemini = await sendTextToGemini(texto);
 
     let sugestao;
@@ -61,16 +86,154 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
       const limpa = respostaGemini.replaceAll("```json", "").replaceAll("```", "").trim();
       sugestao = JSON.parse(limpa);
     } catch {
-      console.warn('Resposta não veio em JSON válido. Retornando como texto.');
-      sugestao = { texto: respostaGemini };
+      return res.status(500).json({ message: 'Resposta da IA inválida.' });
     }
 
-    res.status(200).json({ sugestao });
+    const diasSemana = ['Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
+    const hoje = new Date();
+    hoje.setHours(0, 0, 0, 0);
+
+    const resultados = [];
+    const keys = Object.keys(sugestao);
+    keys.sort((a, b) => diasSemana.indexOf(a) - diasSemana.indexOf(b));
+
+    for (const diaNome of keys) {
+      const refeicoesObj = sugestao[diaNome];
+
+      const refeicoes = Object.entries(refeicoesObj).map(([tipo, detalhes]) => {
+        return {
+          tipo,
+          calorias: detalhes.calorias,
+          proteinas: detalhes.proteina || 0,
+          carboidratos: detalhes.carboidrato || 0,
+          gorduras: detalhes.gordura || 0,
+          alimentos: {
+            create: detalhes.alimentos.map(alimento => ({
+              nome: alimento.nome,
+              quantidade: parseFloat(alimento.quantidade) || 0
+            }))
+          }
+        };
+      });
+
+      const sugestaoExistente = await prisma.sugestaoAlimentacao.findFirst({
+        where: {
+          usuarioId,
+          diaSemana: diaNome,
+          createdAt: { gte: hoje }
+        },
+        include: {
+          sugestaoRefeicoes: { include: { alimentos: true } }
+        }
+      });
+
+      if (!sugestaoExistente) {
+        const nova = await prisma.sugestaoAlimentacao.create({
+          data: {
+            usuarioId,
+            diaSemana: diaNome,
+            sugestaoRefeicoes: {
+              create: refeicoes.map(ref => ({
+                tipo: ref.tipo,
+                calorias: ref.calorias,
+                proteinas: ref.proteinas,
+                carboidratos: ref.carboidratos,
+                gorduras: ref.gorduras,
+                alimentos: ref.alimentos
+              }))
+            },
+          },
+          include: {
+            sugestaoRefeicoes: { include: { alimentos: true } },
+          },
+        });
+        resultados.push(nova);
+      }
+    }
+
+    //console.log('set: ', resultados);
+    res.status(201).json({ resultados });
   } catch (error) {
     console.error('Erro ao obter sugestão do Gemini:', error);
-    res.status(500).json({ message: 'Erro ao obter sugestão do Gemini.' });
+    res.status(500).json({ message: 'Erro ao processar sugestão de alimentação.' });
   }
 });
+
+app.get('/getSugestaoAlimentacao', async (req, res) => {
+  const { usuarioId } = req.query;
+
+  try {
+    const hoje = new Date();
+
+    // Define início da semana (domingo) e fim da semana (sábado)
+    const inicioSemana = new Date(hoje);
+    inicioSemana.setDate(hoje.getDate() - hoje.getDay());
+    inicioSemana.setHours(0, 0, 0, 0);
+
+    const fimSemana = new Date(inicioSemana);
+    fimSemana.setDate(inicioSemana.getDate() + 6);
+    fimSemana.setHours(23, 59, 59, 999);
+
+    // Busca apenas sugestões da semana atual
+    const sugestoes = await prisma.sugestaoAlimentacao.findMany({
+      where: {
+        usuarioId,
+        createdAt: {
+          gte: inicioSemana,
+          lte: fimSemana,
+        },
+      },
+      include: {
+        sugestaoRefeicoes: {
+          include: {
+            alimentos: true,
+          },
+        },
+      },
+    });
+
+    if (sugestoes.length === 0) {
+      return res.status(200).json({ message: 'Nenhuma sugestão de alimentação encontrada.' });
+    }
+
+    const agrupadoPorDia = {};
+    for (const sugestao of sugestoes) {
+      const dia = sugestao.diaSemana;
+
+      agrupadoPorDia[dia] = agrupadoPorDia[dia] || {};
+
+      for (const refeicao of sugestao.sugestaoRefeicoes) {
+        agrupadoPorDia[dia][refeicao.tipo] = {
+          calorias: refeicao.calorias,
+          proteinas: refeicao.proteinas,
+          carboidratos: refeicao.carboidratos,
+          gorduras: refeicao.gorduras,
+          alimentos: refeicao.alimentos.map(a => ({
+            nome: a.nome,
+            quantidade: a.quantidade,
+          })),
+        };
+      }
+    }
+
+    // Ordenação cronológica dos dias da semana
+    const ordemDias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const agrupadoOrdenado = {};
+    ordemDias.forEach(dia => {
+      if (agrupadoPorDia[dia]) {
+        agrupadoOrdenado[dia] = agrupadoPorDia[dia];
+      }
+    });
+
+    //console.log('get:', agrupadoOrdenado);
+    res.status(200).json(agrupadoOrdenado);
+  } catch (error) {
+    console.error('Erro ao buscar sugestão de alimentação:', error);
+    res.status(500).json({ message: 'Erro ao buscar sugestão de alimentação.' });
+  }
+});
+
+
 
 // Enviar código por e-mail
 app.post('/serviceEmail', async (req, res) => {
@@ -596,7 +759,7 @@ app.post('/refeicoes', async (req, res) => {
 });
 
 // Buscar refeições do usuário
-app.get('/refeicoes/:usuarioId', async (req, res) => {
+app.get('/getRefeicoes', async (req, res) => {
   try {
     const { usuarioId } = req.params;
     
@@ -616,13 +779,14 @@ app.get('/refeicoes/:usuarioId', async (req, res) => {
 });
 
 // Buscar calorias consumidas hoje
-app.get('/calorias-hoje/:usuarioId', async (req, res) => {
+app.get('/getCaloriasHoje', async (req, res) => {
   try {
     const { usuarioId } = req.params;
+    console.log('entrou no caloriqaqs hoke')
     const hoje = new Date();
     const inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
     const fimDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
-
+    console.log('calorias do dia ')
     const refeicoesHoje = await prisma.refeicao.findMany({
       where: {
         usuarioId,

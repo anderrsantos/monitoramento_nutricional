@@ -173,6 +173,30 @@ exports.Prisma.AlimentoRefeicaoScalarFieldEnum = {
   refeicaoId: 'refeicaoId'
 };
 
+exports.Prisma.SugestaoAlimentacaoScalarFieldEnum = {
+  id: 'id',
+  diaSemana: 'diaSemana',
+  createdAt: 'createdAt',
+  usuarioId: 'usuarioId'
+};
+
+exports.Prisma.SugestaoRefeicaoScalarFieldEnum = {
+  id: 'id',
+  tipo: 'tipo',
+  calorias: 'calorias',
+  proteinas: 'proteinas',
+  carboidratos: 'carboidratos',
+  gorduras: 'gorduras',
+  sugestaoAlimentacaoId: 'sugestaoAlimentacaoId'
+};
+
+exports.Prisma.SugestaoAlimentoScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  quantidade: 'quantidade',
+  sugestaoRefeicaoId: 'sugestaoRefeicaoId'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -190,7 +214,10 @@ exports.Prisma.ModelName = {
   Meta: 'Meta',
   ConsumoAgua: 'ConsumoAgua',
   Refeicao: 'Refeicao',
-  AlimentoRefeicao: 'AlimentoRefeicao'
+  AlimentoRefeicao: 'AlimentoRefeicao',
+  SugestaoAlimentacao: 'SugestaoAlimentacao',
+  SugestaoRefeicao: 'SugestaoRefeicao',
+  SugestaoAlimento: 'SugestaoAlimento'
 };
 
 /**

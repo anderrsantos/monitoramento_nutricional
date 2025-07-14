@@ -43,6 +43,21 @@ export type Refeicao = $Result.DefaultSelection<Prisma.$RefeicaoPayload>
  * 
  */
 export type AlimentoRefeicao = $Result.DefaultSelection<Prisma.$AlimentoRefeicaoPayload>
+/**
+ * Model SugestaoAlimentacao
+ * 
+ */
+export type SugestaoAlimentacao = $Result.DefaultSelection<Prisma.$SugestaoAlimentacaoPayload>
+/**
+ * Model SugestaoRefeicao
+ * 
+ */
+export type SugestaoRefeicao = $Result.DefaultSelection<Prisma.$SugestaoRefeicaoPayload>
+/**
+ * Model SugestaoAlimento
+ * 
+ */
+export type SugestaoAlimento = $Result.DefaultSelection<Prisma.$SugestaoAlimentoPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -195,6 +210,36 @@ export class PrismaClient<
     * ```
     */
   get alimentoRefeicao(): Prisma.AlimentoRefeicaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sugestaoAlimentacao`: Exposes CRUD operations for the **SugestaoAlimentacao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SugestaoAlimentacaos
+    * const sugestaoAlimentacaos = await prisma.sugestaoAlimentacao.findMany()
+    * ```
+    */
+  get sugestaoAlimentacao(): Prisma.SugestaoAlimentacaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sugestaoRefeicao`: Exposes CRUD operations for the **SugestaoRefeicao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SugestaoRefeicaos
+    * const sugestaoRefeicaos = await prisma.sugestaoRefeicao.findMany()
+    * ```
+    */
+  get sugestaoRefeicao(): Prisma.SugestaoRefeicaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sugestaoAlimento`: Exposes CRUD operations for the **SugestaoAlimento** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SugestaoAlimentos
+    * const sugestaoAlimentos = await prisma.sugestaoAlimento.findMany()
+    * ```
+    */
+  get sugestaoAlimento(): Prisma.SugestaoAlimentoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -640,7 +685,10 @@ export namespace Prisma {
     Meta: 'Meta',
     ConsumoAgua: 'ConsumoAgua',
     Refeicao: 'Refeicao',
-    AlimentoRefeicao: 'AlimentoRefeicao'
+    AlimentoRefeicao: 'AlimentoRefeicao',
+    SugestaoAlimentacao: 'SugestaoAlimentacao',
+    SugestaoRefeicao: 'SugestaoRefeicao',
+    SugestaoAlimento: 'SugestaoAlimento'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -659,7 +707,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "perfil" | "meta" | "consumoAgua" | "refeicao" | "alimentoRefeicao"
+      modelProps: "user" | "perfil" | "meta" | "consumoAgua" | "refeicao" | "alimentoRefeicao" | "sugestaoAlimentacao" | "sugestaoRefeicao" | "sugestaoAlimento"
       txIsolationLevel: never
     }
     model: {
@@ -1107,6 +1155,228 @@ export namespace Prisma {
           }
         }
       }
+      SugestaoAlimentacao: {
+        payload: Prisma.$SugestaoAlimentacaoPayload<ExtArgs>
+        fields: Prisma.SugestaoAlimentacaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SugestaoAlimentacaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SugestaoAlimentacaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>
+          }
+          findFirst: {
+            args: Prisma.SugestaoAlimentacaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SugestaoAlimentacaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>
+          }
+          findMany: {
+            args: Prisma.SugestaoAlimentacaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>[]
+          }
+          create: {
+            args: Prisma.SugestaoAlimentacaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>
+          }
+          createMany: {
+            args: Prisma.SugestaoAlimentacaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SugestaoAlimentacaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>
+          }
+          update: {
+            args: Prisma.SugestaoAlimentacaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.SugestaoAlimentacaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SugestaoAlimentacaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SugestaoAlimentacaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentacaoPayload>
+          }
+          aggregate: {
+            args: Prisma.SugestaoAlimentacaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSugestaoAlimentacao>
+          }
+          groupBy: {
+            args: Prisma.SugestaoAlimentacaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SugestaoAlimentacaoGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.SugestaoAlimentacaoFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.SugestaoAlimentacaoAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.SugestaoAlimentacaoCountArgs<ExtArgs>
+            result: $Utils.Optional<SugestaoAlimentacaoCountAggregateOutputType> | number
+          }
+        }
+      }
+      SugestaoRefeicao: {
+        payload: Prisma.$SugestaoRefeicaoPayload<ExtArgs>
+        fields: Prisma.SugestaoRefeicaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SugestaoRefeicaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SugestaoRefeicaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>
+          }
+          findFirst: {
+            args: Prisma.SugestaoRefeicaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SugestaoRefeicaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>
+          }
+          findMany: {
+            args: Prisma.SugestaoRefeicaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>[]
+          }
+          create: {
+            args: Prisma.SugestaoRefeicaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>
+          }
+          createMany: {
+            args: Prisma.SugestaoRefeicaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SugestaoRefeicaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>
+          }
+          update: {
+            args: Prisma.SugestaoRefeicaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.SugestaoRefeicaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SugestaoRefeicaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SugestaoRefeicaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoRefeicaoPayload>
+          }
+          aggregate: {
+            args: Prisma.SugestaoRefeicaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSugestaoRefeicao>
+          }
+          groupBy: {
+            args: Prisma.SugestaoRefeicaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SugestaoRefeicaoGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.SugestaoRefeicaoFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.SugestaoRefeicaoAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.SugestaoRefeicaoCountArgs<ExtArgs>
+            result: $Utils.Optional<SugestaoRefeicaoCountAggregateOutputType> | number
+          }
+        }
+      }
+      SugestaoAlimento: {
+        payload: Prisma.$SugestaoAlimentoPayload<ExtArgs>
+        fields: Prisma.SugestaoAlimentoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SugestaoAlimentoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SugestaoAlimentoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>
+          }
+          findFirst: {
+            args: Prisma.SugestaoAlimentoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SugestaoAlimentoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>
+          }
+          findMany: {
+            args: Prisma.SugestaoAlimentoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>[]
+          }
+          create: {
+            args: Prisma.SugestaoAlimentoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>
+          }
+          createMany: {
+            args: Prisma.SugestaoAlimentoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.SugestaoAlimentoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>
+          }
+          update: {
+            args: Prisma.SugestaoAlimentoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>
+          }
+          deleteMany: {
+            args: Prisma.SugestaoAlimentoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SugestaoAlimentoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.SugestaoAlimentoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SugestaoAlimentoPayload>
+          }
+          aggregate: {
+            args: Prisma.SugestaoAlimentoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSugestaoAlimento>
+          }
+          groupBy: {
+            args: Prisma.SugestaoAlimentoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SugestaoAlimentoGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.SugestaoAlimentoFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.SugestaoAlimentoAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.SugestaoAlimentoCountArgs<ExtArgs>
+            result: $Utils.Optional<SugestaoAlimentoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1184,6 +1454,9 @@ export namespace Prisma {
     consumoAgua?: ConsumoAguaOmit
     refeicao?: RefeicaoOmit
     alimentoRefeicao?: AlimentoRefeicaoOmit
+    sugestaoAlimentacao?: SugestaoAlimentacaoOmit
+    sugestaoRefeicao?: SugestaoRefeicaoOmit
+    sugestaoAlimento?: SugestaoAlimentoOmit
   }
 
   /* Types for Logging */
@@ -1280,11 +1553,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     consumoAgua: number
     refeicoes: number
+    sugestoesAlimentacao: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     consumoAgua?: boolean | UserCountOutputTypeCountConsumoAguaArgs
     refeicoes?: boolean | UserCountOutputTypeCountRefeicoesArgs
+    sugestoesAlimentacao?: boolean | UserCountOutputTypeCountSugestoesAlimentacaoArgs
   }
 
   // Custom InputTypes
@@ -1310,6 +1585,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountRefeicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RefeicaoWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSugestoesAlimentacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SugestaoAlimentacaoWhereInput
   }
 
 
@@ -1341,6 +1623,68 @@ export namespace Prisma {
    */
   export type RefeicaoCountOutputTypeCountAlimentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AlimentoRefeicaoWhereInput
+  }
+
+
+  /**
+   * Count Type SugestaoAlimentacaoCountOutputType
+   */
+
+  export type SugestaoAlimentacaoCountOutputType = {
+    sugestaoRefeicoes: number
+  }
+
+  export type SugestaoAlimentacaoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sugestaoRefeicoes?: boolean | SugestaoAlimentacaoCountOutputTypeCountSugestaoRefeicoesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SugestaoAlimentacaoCountOutputType without action
+   */
+  export type SugestaoAlimentacaoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacaoCountOutputType
+     */
+    select?: SugestaoAlimentacaoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SugestaoAlimentacaoCountOutputType without action
+   */
+  export type SugestaoAlimentacaoCountOutputTypeCountSugestaoRefeicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SugestaoRefeicaoWhereInput
+  }
+
+
+  /**
+   * Count Type SugestaoRefeicaoCountOutputType
+   */
+
+  export type SugestaoRefeicaoCountOutputType = {
+    alimentos: number
+  }
+
+  export type SugestaoRefeicaoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    alimentos?: boolean | SugestaoRefeicaoCountOutputTypeCountAlimentosArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SugestaoRefeicaoCountOutputType without action
+   */
+  export type SugestaoRefeicaoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicaoCountOutputType
+     */
+    select?: SugestaoRefeicaoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SugestaoRefeicaoCountOutputType without action
+   */
+  export type SugestaoRefeicaoCountOutputTypeCountAlimentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SugestaoAlimentoWhereInput
   }
 
 
@@ -1500,6 +1844,7 @@ export namespace Prisma {
     meta?: boolean | User$metaArgs<ExtArgs>
     consumoAgua?: boolean | User$consumoAguaArgs<ExtArgs>
     refeicoes?: boolean | User$refeicoesArgs<ExtArgs>
+    sugestoesAlimentacao?: boolean | User$sugestoesAlimentacaoArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1517,6 +1862,7 @@ export namespace Prisma {
     meta?: boolean | User$metaArgs<ExtArgs>
     consumoAgua?: boolean | User$consumoAguaArgs<ExtArgs>
     refeicoes?: boolean | User$refeicoesArgs<ExtArgs>
+    sugestoesAlimentacao?: boolean | User$sugestoesAlimentacaoArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -1527,6 +1873,7 @@ export namespace Prisma {
       meta: Prisma.$MetaPayload<ExtArgs> | null
       consumoAgua: Prisma.$ConsumoAguaPayload<ExtArgs>[]
       refeicoes: Prisma.$RefeicaoPayload<ExtArgs>[]
+      sugestoesAlimentacao: Prisma.$SugestaoAlimentacaoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -1899,6 +2246,7 @@ export namespace Prisma {
     meta<T extends User$metaArgs<ExtArgs> = {}>(args?: Subset<T, User$metaArgs<ExtArgs>>): Prisma__MetaClient<$Result.GetResult<Prisma.$MetaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     consumoAgua<T extends User$consumoAguaArgs<ExtArgs> = {}>(args?: Subset<T, User$consumoAguaArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsumoAguaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     refeicoes<T extends User$refeicoesArgs<ExtArgs> = {}>(args?: Subset<T, User$refeicoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RefeicaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sugestoesAlimentacao<T extends User$sugestoesAlimentacaoArgs<ExtArgs> = {}>(args?: Subset<T, User$sugestoesAlimentacaoArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2384,6 +2732,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: RefeicaoScalarFieldEnum | RefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * User.sugestoesAlimentacao
+   */
+  export type User$sugestoesAlimentacaoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    where?: SugestaoAlimentacaoWhereInput
+    orderBy?: SugestaoAlimentacaoOrderByWithRelationInput | SugestaoAlimentacaoOrderByWithRelationInput[]
+    cursor?: SugestaoAlimentacaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SugestaoAlimentacaoScalarFieldEnum | SugestaoAlimentacaoScalarFieldEnum[]
   }
 
   /**
@@ -7703,6 +8075,3083 @@ export namespace Prisma {
 
 
   /**
+   * Model SugestaoAlimentacao
+   */
+
+  export type AggregateSugestaoAlimentacao = {
+    _count: SugestaoAlimentacaoCountAggregateOutputType | null
+    _min: SugestaoAlimentacaoMinAggregateOutputType | null
+    _max: SugestaoAlimentacaoMaxAggregateOutputType | null
+  }
+
+  export type SugestaoAlimentacaoMinAggregateOutputType = {
+    id: string | null
+    diaSemana: string | null
+    createdAt: Date | null
+    usuarioId: string | null
+  }
+
+  export type SugestaoAlimentacaoMaxAggregateOutputType = {
+    id: string | null
+    diaSemana: string | null
+    createdAt: Date | null
+    usuarioId: string | null
+  }
+
+  export type SugestaoAlimentacaoCountAggregateOutputType = {
+    id: number
+    diaSemana: number
+    createdAt: number
+    usuarioId: number
+    _all: number
+  }
+
+
+  export type SugestaoAlimentacaoMinAggregateInputType = {
+    id?: true
+    diaSemana?: true
+    createdAt?: true
+    usuarioId?: true
+  }
+
+  export type SugestaoAlimentacaoMaxAggregateInputType = {
+    id?: true
+    diaSemana?: true
+    createdAt?: true
+    usuarioId?: true
+  }
+
+  export type SugestaoAlimentacaoCountAggregateInputType = {
+    id?: true
+    diaSemana?: true
+    createdAt?: true
+    usuarioId?: true
+    _all?: true
+  }
+
+  export type SugestaoAlimentacaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SugestaoAlimentacao to aggregate.
+     */
+    where?: SugestaoAlimentacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentacaos to fetch.
+     */
+    orderBy?: SugestaoAlimentacaoOrderByWithRelationInput | SugestaoAlimentacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SugestaoAlimentacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentacaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SugestaoAlimentacaos
+    **/
+    _count?: true | SugestaoAlimentacaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SugestaoAlimentacaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SugestaoAlimentacaoMaxAggregateInputType
+  }
+
+  export type GetSugestaoAlimentacaoAggregateType<T extends SugestaoAlimentacaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateSugestaoAlimentacao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSugestaoAlimentacao[P]>
+      : GetScalarType<T[P], AggregateSugestaoAlimentacao[P]>
+  }
+
+
+
+
+  export type SugestaoAlimentacaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SugestaoAlimentacaoWhereInput
+    orderBy?: SugestaoAlimentacaoOrderByWithAggregationInput | SugestaoAlimentacaoOrderByWithAggregationInput[]
+    by: SugestaoAlimentacaoScalarFieldEnum[] | SugestaoAlimentacaoScalarFieldEnum
+    having?: SugestaoAlimentacaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SugestaoAlimentacaoCountAggregateInputType | true
+    _min?: SugestaoAlimentacaoMinAggregateInputType
+    _max?: SugestaoAlimentacaoMaxAggregateInputType
+  }
+
+  export type SugestaoAlimentacaoGroupByOutputType = {
+    id: string
+    diaSemana: string
+    createdAt: Date
+    usuarioId: string
+    _count: SugestaoAlimentacaoCountAggregateOutputType | null
+    _min: SugestaoAlimentacaoMinAggregateOutputType | null
+    _max: SugestaoAlimentacaoMaxAggregateOutputType | null
+  }
+
+  type GetSugestaoAlimentacaoGroupByPayload<T extends SugestaoAlimentacaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SugestaoAlimentacaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SugestaoAlimentacaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SugestaoAlimentacaoGroupByOutputType[P]>
+            : GetScalarType<T[P], SugestaoAlimentacaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SugestaoAlimentacaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    diaSemana?: boolean
+    createdAt?: boolean
+    usuarioId?: boolean
+    usuario?: boolean | UserDefaultArgs<ExtArgs>
+    sugestaoRefeicoes?: boolean | SugestaoAlimentacao$sugestaoRefeicoesArgs<ExtArgs>
+    _count?: boolean | SugestaoAlimentacaoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sugestaoAlimentacao"]>
+
+
+
+  export type SugestaoAlimentacaoSelectScalar = {
+    id?: boolean
+    diaSemana?: boolean
+    createdAt?: boolean
+    usuarioId?: boolean
+  }
+
+  export type SugestaoAlimentacaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "diaSemana" | "createdAt" | "usuarioId", ExtArgs["result"]["sugestaoAlimentacao"]>
+  export type SugestaoAlimentacaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UserDefaultArgs<ExtArgs>
+    sugestaoRefeicoes?: boolean | SugestaoAlimentacao$sugestaoRefeicoesArgs<ExtArgs>
+    _count?: boolean | SugestaoAlimentacaoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $SugestaoAlimentacaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SugestaoAlimentacao"
+    objects: {
+      usuario: Prisma.$UserPayload<ExtArgs>
+      sugestaoRefeicoes: Prisma.$SugestaoRefeicaoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      diaSemana: string
+      createdAt: Date
+      usuarioId: string
+    }, ExtArgs["result"]["sugestaoAlimentacao"]>
+    composites: {}
+  }
+
+  type SugestaoAlimentacaoGetPayload<S extends boolean | null | undefined | SugestaoAlimentacaoDefaultArgs> = $Result.GetResult<Prisma.$SugestaoAlimentacaoPayload, S>
+
+  type SugestaoAlimentacaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SugestaoAlimentacaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SugestaoAlimentacaoCountAggregateInputType | true
+    }
+
+  export interface SugestaoAlimentacaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SugestaoAlimentacao'], meta: { name: 'SugestaoAlimentacao' } }
+    /**
+     * Find zero or one SugestaoAlimentacao that matches the filter.
+     * @param {SugestaoAlimentacaoFindUniqueArgs} args - Arguments to find a SugestaoAlimentacao
+     * @example
+     * // Get one SugestaoAlimentacao
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SugestaoAlimentacaoFindUniqueArgs>(args: SelectSubset<T, SugestaoAlimentacaoFindUniqueArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SugestaoAlimentacao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SugestaoAlimentacaoFindUniqueOrThrowArgs} args - Arguments to find a SugestaoAlimentacao
+     * @example
+     * // Get one SugestaoAlimentacao
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SugestaoAlimentacaoFindUniqueOrThrowArgs>(args: SelectSubset<T, SugestaoAlimentacaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SugestaoAlimentacao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoFindFirstArgs} args - Arguments to find a SugestaoAlimentacao
+     * @example
+     * // Get one SugestaoAlimentacao
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SugestaoAlimentacaoFindFirstArgs>(args?: SelectSubset<T, SugestaoAlimentacaoFindFirstArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SugestaoAlimentacao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoFindFirstOrThrowArgs} args - Arguments to find a SugestaoAlimentacao
+     * @example
+     * // Get one SugestaoAlimentacao
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SugestaoAlimentacaoFindFirstOrThrowArgs>(args?: SelectSubset<T, SugestaoAlimentacaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SugestaoAlimentacaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SugestaoAlimentacaos
+     * const sugestaoAlimentacaos = await prisma.sugestaoAlimentacao.findMany()
+     * 
+     * // Get first 10 SugestaoAlimentacaos
+     * const sugestaoAlimentacaos = await prisma.sugestaoAlimentacao.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sugestaoAlimentacaoWithIdOnly = await prisma.sugestaoAlimentacao.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SugestaoAlimentacaoFindManyArgs>(args?: SelectSubset<T, SugestaoAlimentacaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SugestaoAlimentacao.
+     * @param {SugestaoAlimentacaoCreateArgs} args - Arguments to create a SugestaoAlimentacao.
+     * @example
+     * // Create one SugestaoAlimentacao
+     * const SugestaoAlimentacao = await prisma.sugestaoAlimentacao.create({
+     *   data: {
+     *     // ... data to create a SugestaoAlimentacao
+     *   }
+     * })
+     * 
+     */
+    create<T extends SugestaoAlimentacaoCreateArgs>(args: SelectSubset<T, SugestaoAlimentacaoCreateArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SugestaoAlimentacaos.
+     * @param {SugestaoAlimentacaoCreateManyArgs} args - Arguments to create many SugestaoAlimentacaos.
+     * @example
+     * // Create many SugestaoAlimentacaos
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SugestaoAlimentacaoCreateManyArgs>(args?: SelectSubset<T, SugestaoAlimentacaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SugestaoAlimentacao.
+     * @param {SugestaoAlimentacaoDeleteArgs} args - Arguments to delete one SugestaoAlimentacao.
+     * @example
+     * // Delete one SugestaoAlimentacao
+     * const SugestaoAlimentacao = await prisma.sugestaoAlimentacao.delete({
+     *   where: {
+     *     // ... filter to delete one SugestaoAlimentacao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SugestaoAlimentacaoDeleteArgs>(args: SelectSubset<T, SugestaoAlimentacaoDeleteArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SugestaoAlimentacao.
+     * @param {SugestaoAlimentacaoUpdateArgs} args - Arguments to update one SugestaoAlimentacao.
+     * @example
+     * // Update one SugestaoAlimentacao
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SugestaoAlimentacaoUpdateArgs>(args: SelectSubset<T, SugestaoAlimentacaoUpdateArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SugestaoAlimentacaos.
+     * @param {SugestaoAlimentacaoDeleteManyArgs} args - Arguments to filter SugestaoAlimentacaos to delete.
+     * @example
+     * // Delete a few SugestaoAlimentacaos
+     * const { count } = await prisma.sugestaoAlimentacao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SugestaoAlimentacaoDeleteManyArgs>(args?: SelectSubset<T, SugestaoAlimentacaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SugestaoAlimentacaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SugestaoAlimentacaos
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SugestaoAlimentacaoUpdateManyArgs>(args: SelectSubset<T, SugestaoAlimentacaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SugestaoAlimentacao.
+     * @param {SugestaoAlimentacaoUpsertArgs} args - Arguments to update or create a SugestaoAlimentacao.
+     * @example
+     * // Update or create a SugestaoAlimentacao
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.upsert({
+     *   create: {
+     *     // ... data to create a SugestaoAlimentacao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SugestaoAlimentacao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SugestaoAlimentacaoUpsertArgs>(args: SelectSubset<T, SugestaoAlimentacaoUpsertArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SugestaoAlimentacaos that matches the filter.
+     * @param {SugestaoAlimentacaoFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: SugestaoAlimentacaoFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a SugestaoAlimentacao.
+     * @param {SugestaoAlimentacaoAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const sugestaoAlimentacao = await prisma.sugestaoAlimentacao.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: SugestaoAlimentacaoAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of SugestaoAlimentacaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoCountArgs} args - Arguments to filter SugestaoAlimentacaos to count.
+     * @example
+     * // Count the number of SugestaoAlimentacaos
+     * const count = await prisma.sugestaoAlimentacao.count({
+     *   where: {
+     *     // ... the filter for the SugestaoAlimentacaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends SugestaoAlimentacaoCountArgs>(
+      args?: Subset<T, SugestaoAlimentacaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SugestaoAlimentacaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SugestaoAlimentacao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SugestaoAlimentacaoAggregateArgs>(args: Subset<T, SugestaoAlimentacaoAggregateArgs>): Prisma.PrismaPromise<GetSugestaoAlimentacaoAggregateType<T>>
+
+    /**
+     * Group by SugestaoAlimentacao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentacaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SugestaoAlimentacaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SugestaoAlimentacaoGroupByArgs['orderBy'] }
+        : { orderBy?: SugestaoAlimentacaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SugestaoAlimentacaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSugestaoAlimentacaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SugestaoAlimentacao model
+   */
+  readonly fields: SugestaoAlimentacaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SugestaoAlimentacao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SugestaoAlimentacaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    usuario<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sugestaoRefeicoes<T extends SugestaoAlimentacao$sugestaoRefeicoesArgs<ExtArgs> = {}>(args?: Subset<T, SugestaoAlimentacao$sugestaoRefeicoesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SugestaoAlimentacao model
+   */
+  interface SugestaoAlimentacaoFieldRefs {
+    readonly id: FieldRef<"SugestaoAlimentacao", 'String'>
+    readonly diaSemana: FieldRef<"SugestaoAlimentacao", 'String'>
+    readonly createdAt: FieldRef<"SugestaoAlimentacao", 'DateTime'>
+    readonly usuarioId: FieldRef<"SugestaoAlimentacao", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SugestaoAlimentacao findUnique
+   */
+  export type SugestaoAlimentacaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimentacao to fetch.
+     */
+    where: SugestaoAlimentacaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimentacao findUniqueOrThrow
+   */
+  export type SugestaoAlimentacaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimentacao to fetch.
+     */
+    where: SugestaoAlimentacaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimentacao findFirst
+   */
+  export type SugestaoAlimentacaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimentacao to fetch.
+     */
+    where?: SugestaoAlimentacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentacaos to fetch.
+     */
+    orderBy?: SugestaoAlimentacaoOrderByWithRelationInput | SugestaoAlimentacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SugestaoAlimentacaos.
+     */
+    cursor?: SugestaoAlimentacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentacaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SugestaoAlimentacaos.
+     */
+    distinct?: SugestaoAlimentacaoScalarFieldEnum | SugestaoAlimentacaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimentacao findFirstOrThrow
+   */
+  export type SugestaoAlimentacaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimentacao to fetch.
+     */
+    where?: SugestaoAlimentacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentacaos to fetch.
+     */
+    orderBy?: SugestaoAlimentacaoOrderByWithRelationInput | SugestaoAlimentacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SugestaoAlimentacaos.
+     */
+    cursor?: SugestaoAlimentacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentacaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SugestaoAlimentacaos.
+     */
+    distinct?: SugestaoAlimentacaoScalarFieldEnum | SugestaoAlimentacaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimentacao findMany
+   */
+  export type SugestaoAlimentacaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimentacaos to fetch.
+     */
+    where?: SugestaoAlimentacaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentacaos to fetch.
+     */
+    orderBy?: SugestaoAlimentacaoOrderByWithRelationInput | SugestaoAlimentacaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SugestaoAlimentacaos.
+     */
+    cursor?: SugestaoAlimentacaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentacaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentacaos.
+     */
+    skip?: number
+    distinct?: SugestaoAlimentacaoScalarFieldEnum | SugestaoAlimentacaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimentacao create
+   */
+  export type SugestaoAlimentacaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SugestaoAlimentacao.
+     */
+    data: XOR<SugestaoAlimentacaoCreateInput, SugestaoAlimentacaoUncheckedCreateInput>
+  }
+
+  /**
+   * SugestaoAlimentacao createMany
+   */
+  export type SugestaoAlimentacaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SugestaoAlimentacaos.
+     */
+    data: SugestaoAlimentacaoCreateManyInput | SugestaoAlimentacaoCreateManyInput[]
+  }
+
+  /**
+   * SugestaoAlimentacao update
+   */
+  export type SugestaoAlimentacaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SugestaoAlimentacao.
+     */
+    data: XOR<SugestaoAlimentacaoUpdateInput, SugestaoAlimentacaoUncheckedUpdateInput>
+    /**
+     * Choose, which SugestaoAlimentacao to update.
+     */
+    where: SugestaoAlimentacaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimentacao updateMany
+   */
+  export type SugestaoAlimentacaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SugestaoAlimentacaos.
+     */
+    data: XOR<SugestaoAlimentacaoUpdateManyMutationInput, SugestaoAlimentacaoUncheckedUpdateManyInput>
+    /**
+     * Filter which SugestaoAlimentacaos to update
+     */
+    where?: SugestaoAlimentacaoWhereInput
+    /**
+     * Limit how many SugestaoAlimentacaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SugestaoAlimentacao upsert
+   */
+  export type SugestaoAlimentacaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SugestaoAlimentacao to update in case it exists.
+     */
+    where: SugestaoAlimentacaoWhereUniqueInput
+    /**
+     * In case the SugestaoAlimentacao found by the `where` argument doesn't exist, create a new SugestaoAlimentacao with this data.
+     */
+    create: XOR<SugestaoAlimentacaoCreateInput, SugestaoAlimentacaoUncheckedCreateInput>
+    /**
+     * In case the SugestaoAlimentacao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SugestaoAlimentacaoUpdateInput, SugestaoAlimentacaoUncheckedUpdateInput>
+  }
+
+  /**
+   * SugestaoAlimentacao delete
+   */
+  export type SugestaoAlimentacaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+    /**
+     * Filter which SugestaoAlimentacao to delete.
+     */
+    where: SugestaoAlimentacaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimentacao deleteMany
+   */
+  export type SugestaoAlimentacaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SugestaoAlimentacaos to delete
+     */
+    where?: SugestaoAlimentacaoWhereInput
+    /**
+     * Limit how many SugestaoAlimentacaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SugestaoAlimentacao findRaw
+   */
+  export type SugestaoAlimentacaoFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SugestaoAlimentacao aggregateRaw
+   */
+  export type SugestaoAlimentacaoAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SugestaoAlimentacao.sugestaoRefeicoes
+   */
+  export type SugestaoAlimentacao$sugestaoRefeicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    where?: SugestaoRefeicaoWhereInput
+    orderBy?: SugestaoRefeicaoOrderByWithRelationInput | SugestaoRefeicaoOrderByWithRelationInput[]
+    cursor?: SugestaoRefeicaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SugestaoRefeicaoScalarFieldEnum | SugestaoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimentacao without action
+   */
+  export type SugestaoAlimentacaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimentacao
+     */
+    select?: SugestaoAlimentacaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimentacao
+     */
+    omit?: SugestaoAlimentacaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentacaoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SugestaoRefeicao
+   */
+
+  export type AggregateSugestaoRefeicao = {
+    _count: SugestaoRefeicaoCountAggregateOutputType | null
+    _avg: SugestaoRefeicaoAvgAggregateOutputType | null
+    _sum: SugestaoRefeicaoSumAggregateOutputType | null
+    _min: SugestaoRefeicaoMinAggregateOutputType | null
+    _max: SugestaoRefeicaoMaxAggregateOutputType | null
+  }
+
+  export type SugestaoRefeicaoAvgAggregateOutputType = {
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+  }
+
+  export type SugestaoRefeicaoSumAggregateOutputType = {
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+  }
+
+  export type SugestaoRefeicaoMinAggregateOutputType = {
+    id: string | null
+    tipo: string | null
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+    sugestaoAlimentacaoId: string | null
+  }
+
+  export type SugestaoRefeicaoMaxAggregateOutputType = {
+    id: string | null
+    tipo: string | null
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+    sugestaoAlimentacaoId: string | null
+  }
+
+  export type SugestaoRefeicaoCountAggregateOutputType = {
+    id: number
+    tipo: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacaoId: number
+    _all: number
+  }
+
+
+  export type SugestaoRefeicaoAvgAggregateInputType = {
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+  }
+
+  export type SugestaoRefeicaoSumAggregateInputType = {
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+  }
+
+  export type SugestaoRefeicaoMinAggregateInputType = {
+    id?: true
+    tipo?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+    sugestaoAlimentacaoId?: true
+  }
+
+  export type SugestaoRefeicaoMaxAggregateInputType = {
+    id?: true
+    tipo?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+    sugestaoAlimentacaoId?: true
+  }
+
+  export type SugestaoRefeicaoCountAggregateInputType = {
+    id?: true
+    tipo?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+    sugestaoAlimentacaoId?: true
+    _all?: true
+  }
+
+  export type SugestaoRefeicaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SugestaoRefeicao to aggregate.
+     */
+    where?: SugestaoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoRefeicaos to fetch.
+     */
+    orderBy?: SugestaoRefeicaoOrderByWithRelationInput | SugestaoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SugestaoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoRefeicaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SugestaoRefeicaos
+    **/
+    _count?: true | SugestaoRefeicaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SugestaoRefeicaoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SugestaoRefeicaoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SugestaoRefeicaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SugestaoRefeicaoMaxAggregateInputType
+  }
+
+  export type GetSugestaoRefeicaoAggregateType<T extends SugestaoRefeicaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateSugestaoRefeicao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSugestaoRefeicao[P]>
+      : GetScalarType<T[P], AggregateSugestaoRefeicao[P]>
+  }
+
+
+
+
+  export type SugestaoRefeicaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SugestaoRefeicaoWhereInput
+    orderBy?: SugestaoRefeicaoOrderByWithAggregationInput | SugestaoRefeicaoOrderByWithAggregationInput[]
+    by: SugestaoRefeicaoScalarFieldEnum[] | SugestaoRefeicaoScalarFieldEnum
+    having?: SugestaoRefeicaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SugestaoRefeicaoCountAggregateInputType | true
+    _avg?: SugestaoRefeicaoAvgAggregateInputType
+    _sum?: SugestaoRefeicaoSumAggregateInputType
+    _min?: SugestaoRefeicaoMinAggregateInputType
+    _max?: SugestaoRefeicaoMaxAggregateInputType
+  }
+
+  export type SugestaoRefeicaoGroupByOutputType = {
+    id: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacaoId: string
+    _count: SugestaoRefeicaoCountAggregateOutputType | null
+    _avg: SugestaoRefeicaoAvgAggregateOutputType | null
+    _sum: SugestaoRefeicaoSumAggregateOutputType | null
+    _min: SugestaoRefeicaoMinAggregateOutputType | null
+    _max: SugestaoRefeicaoMaxAggregateOutputType | null
+  }
+
+  type GetSugestaoRefeicaoGroupByPayload<T extends SugestaoRefeicaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SugestaoRefeicaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SugestaoRefeicaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SugestaoRefeicaoGroupByOutputType[P]>
+            : GetScalarType<T[P], SugestaoRefeicaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SugestaoRefeicaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tipo?: boolean
+    calorias?: boolean
+    proteinas?: boolean
+    carboidratos?: boolean
+    gorduras?: boolean
+    sugestaoAlimentacaoId?: boolean
+    sugestaoAlimentacao?: boolean | SugestaoAlimentacaoDefaultArgs<ExtArgs>
+    alimentos?: boolean | SugestaoRefeicao$alimentosArgs<ExtArgs>
+    _count?: boolean | SugestaoRefeicaoCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sugestaoRefeicao"]>
+
+
+
+  export type SugestaoRefeicaoSelectScalar = {
+    id?: boolean
+    tipo?: boolean
+    calorias?: boolean
+    proteinas?: boolean
+    carboidratos?: boolean
+    gorduras?: boolean
+    sugestaoAlimentacaoId?: boolean
+  }
+
+  export type SugestaoRefeicaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tipo" | "calorias" | "proteinas" | "carboidratos" | "gorduras" | "sugestaoAlimentacaoId", ExtArgs["result"]["sugestaoRefeicao"]>
+  export type SugestaoRefeicaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sugestaoAlimentacao?: boolean | SugestaoAlimentacaoDefaultArgs<ExtArgs>
+    alimentos?: boolean | SugestaoRefeicao$alimentosArgs<ExtArgs>
+    _count?: boolean | SugestaoRefeicaoCountOutputTypeDefaultArgs<ExtArgs>
+  }
+
+  export type $SugestaoRefeicaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SugestaoRefeicao"
+    objects: {
+      sugestaoAlimentacao: Prisma.$SugestaoAlimentacaoPayload<ExtArgs>
+      alimentos: Prisma.$SugestaoAlimentoPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tipo: string
+      calorias: number
+      proteinas: number
+      carboidratos: number
+      gorduras: number
+      sugestaoAlimentacaoId: string
+    }, ExtArgs["result"]["sugestaoRefeicao"]>
+    composites: {}
+  }
+
+  type SugestaoRefeicaoGetPayload<S extends boolean | null | undefined | SugestaoRefeicaoDefaultArgs> = $Result.GetResult<Prisma.$SugestaoRefeicaoPayload, S>
+
+  type SugestaoRefeicaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SugestaoRefeicaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SugestaoRefeicaoCountAggregateInputType | true
+    }
+
+  export interface SugestaoRefeicaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SugestaoRefeicao'], meta: { name: 'SugestaoRefeicao' } }
+    /**
+     * Find zero or one SugestaoRefeicao that matches the filter.
+     * @param {SugestaoRefeicaoFindUniqueArgs} args - Arguments to find a SugestaoRefeicao
+     * @example
+     * // Get one SugestaoRefeicao
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SugestaoRefeicaoFindUniqueArgs>(args: SelectSubset<T, SugestaoRefeicaoFindUniqueArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SugestaoRefeicao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SugestaoRefeicaoFindUniqueOrThrowArgs} args - Arguments to find a SugestaoRefeicao
+     * @example
+     * // Get one SugestaoRefeicao
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SugestaoRefeicaoFindUniqueOrThrowArgs>(args: SelectSubset<T, SugestaoRefeicaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SugestaoRefeicao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoFindFirstArgs} args - Arguments to find a SugestaoRefeicao
+     * @example
+     * // Get one SugestaoRefeicao
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SugestaoRefeicaoFindFirstArgs>(args?: SelectSubset<T, SugestaoRefeicaoFindFirstArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SugestaoRefeicao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoFindFirstOrThrowArgs} args - Arguments to find a SugestaoRefeicao
+     * @example
+     * // Get one SugestaoRefeicao
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SugestaoRefeicaoFindFirstOrThrowArgs>(args?: SelectSubset<T, SugestaoRefeicaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SugestaoRefeicaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SugestaoRefeicaos
+     * const sugestaoRefeicaos = await prisma.sugestaoRefeicao.findMany()
+     * 
+     * // Get first 10 SugestaoRefeicaos
+     * const sugestaoRefeicaos = await prisma.sugestaoRefeicao.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sugestaoRefeicaoWithIdOnly = await prisma.sugestaoRefeicao.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SugestaoRefeicaoFindManyArgs>(args?: SelectSubset<T, SugestaoRefeicaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SugestaoRefeicao.
+     * @param {SugestaoRefeicaoCreateArgs} args - Arguments to create a SugestaoRefeicao.
+     * @example
+     * // Create one SugestaoRefeicao
+     * const SugestaoRefeicao = await prisma.sugestaoRefeicao.create({
+     *   data: {
+     *     // ... data to create a SugestaoRefeicao
+     *   }
+     * })
+     * 
+     */
+    create<T extends SugestaoRefeicaoCreateArgs>(args: SelectSubset<T, SugestaoRefeicaoCreateArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SugestaoRefeicaos.
+     * @param {SugestaoRefeicaoCreateManyArgs} args - Arguments to create many SugestaoRefeicaos.
+     * @example
+     * // Create many SugestaoRefeicaos
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SugestaoRefeicaoCreateManyArgs>(args?: SelectSubset<T, SugestaoRefeicaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SugestaoRefeicao.
+     * @param {SugestaoRefeicaoDeleteArgs} args - Arguments to delete one SugestaoRefeicao.
+     * @example
+     * // Delete one SugestaoRefeicao
+     * const SugestaoRefeicao = await prisma.sugestaoRefeicao.delete({
+     *   where: {
+     *     // ... filter to delete one SugestaoRefeicao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SugestaoRefeicaoDeleteArgs>(args: SelectSubset<T, SugestaoRefeicaoDeleteArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SugestaoRefeicao.
+     * @param {SugestaoRefeicaoUpdateArgs} args - Arguments to update one SugestaoRefeicao.
+     * @example
+     * // Update one SugestaoRefeicao
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SugestaoRefeicaoUpdateArgs>(args: SelectSubset<T, SugestaoRefeicaoUpdateArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SugestaoRefeicaos.
+     * @param {SugestaoRefeicaoDeleteManyArgs} args - Arguments to filter SugestaoRefeicaos to delete.
+     * @example
+     * // Delete a few SugestaoRefeicaos
+     * const { count } = await prisma.sugestaoRefeicao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SugestaoRefeicaoDeleteManyArgs>(args?: SelectSubset<T, SugestaoRefeicaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SugestaoRefeicaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SugestaoRefeicaos
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SugestaoRefeicaoUpdateManyArgs>(args: SelectSubset<T, SugestaoRefeicaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SugestaoRefeicao.
+     * @param {SugestaoRefeicaoUpsertArgs} args - Arguments to update or create a SugestaoRefeicao.
+     * @example
+     * // Update or create a SugestaoRefeicao
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.upsert({
+     *   create: {
+     *     // ... data to create a SugestaoRefeicao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SugestaoRefeicao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SugestaoRefeicaoUpsertArgs>(args: SelectSubset<T, SugestaoRefeicaoUpsertArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SugestaoRefeicaos that matches the filter.
+     * @param {SugestaoRefeicaoFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: SugestaoRefeicaoFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a SugestaoRefeicao.
+     * @param {SugestaoRefeicaoAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const sugestaoRefeicao = await prisma.sugestaoRefeicao.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: SugestaoRefeicaoAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of SugestaoRefeicaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoCountArgs} args - Arguments to filter SugestaoRefeicaos to count.
+     * @example
+     * // Count the number of SugestaoRefeicaos
+     * const count = await prisma.sugestaoRefeicao.count({
+     *   where: {
+     *     // ... the filter for the SugestaoRefeicaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends SugestaoRefeicaoCountArgs>(
+      args?: Subset<T, SugestaoRefeicaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SugestaoRefeicaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SugestaoRefeicao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SugestaoRefeicaoAggregateArgs>(args: Subset<T, SugestaoRefeicaoAggregateArgs>): Prisma.PrismaPromise<GetSugestaoRefeicaoAggregateType<T>>
+
+    /**
+     * Group by SugestaoRefeicao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoRefeicaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SugestaoRefeicaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SugestaoRefeicaoGroupByArgs['orderBy'] }
+        : { orderBy?: SugestaoRefeicaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SugestaoRefeicaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSugestaoRefeicaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SugestaoRefeicao model
+   */
+  readonly fields: SugestaoRefeicaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SugestaoRefeicao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SugestaoRefeicaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sugestaoAlimentacao<T extends SugestaoAlimentacaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SugestaoAlimentacaoDefaultArgs<ExtArgs>>): Prisma__SugestaoAlimentacaoClient<$Result.GetResult<Prisma.$SugestaoAlimentacaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    alimentos<T extends SugestaoRefeicao$alimentosArgs<ExtArgs> = {}>(args?: Subset<T, SugestaoRefeicao$alimentosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SugestaoRefeicao model
+   */
+  interface SugestaoRefeicaoFieldRefs {
+    readonly id: FieldRef<"SugestaoRefeicao", 'String'>
+    readonly tipo: FieldRef<"SugestaoRefeicao", 'String'>
+    readonly calorias: FieldRef<"SugestaoRefeicao", 'Float'>
+    readonly proteinas: FieldRef<"SugestaoRefeicao", 'Float'>
+    readonly carboidratos: FieldRef<"SugestaoRefeicao", 'Float'>
+    readonly gorduras: FieldRef<"SugestaoRefeicao", 'Float'>
+    readonly sugestaoAlimentacaoId: FieldRef<"SugestaoRefeicao", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SugestaoRefeicao findUnique
+   */
+  export type SugestaoRefeicaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoRefeicao to fetch.
+     */
+    where: SugestaoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoRefeicao findUniqueOrThrow
+   */
+  export type SugestaoRefeicaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoRefeicao to fetch.
+     */
+    where: SugestaoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoRefeicao findFirst
+   */
+  export type SugestaoRefeicaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoRefeicao to fetch.
+     */
+    where?: SugestaoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoRefeicaos to fetch.
+     */
+    orderBy?: SugestaoRefeicaoOrderByWithRelationInput | SugestaoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SugestaoRefeicaos.
+     */
+    cursor?: SugestaoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoRefeicaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SugestaoRefeicaos.
+     */
+    distinct?: SugestaoRefeicaoScalarFieldEnum | SugestaoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoRefeicao findFirstOrThrow
+   */
+  export type SugestaoRefeicaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoRefeicao to fetch.
+     */
+    where?: SugestaoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoRefeicaos to fetch.
+     */
+    orderBy?: SugestaoRefeicaoOrderByWithRelationInput | SugestaoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SugestaoRefeicaos.
+     */
+    cursor?: SugestaoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoRefeicaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SugestaoRefeicaos.
+     */
+    distinct?: SugestaoRefeicaoScalarFieldEnum | SugestaoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoRefeicao findMany
+   */
+  export type SugestaoRefeicaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoRefeicaos to fetch.
+     */
+    where?: SugestaoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoRefeicaos to fetch.
+     */
+    orderBy?: SugestaoRefeicaoOrderByWithRelationInput | SugestaoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SugestaoRefeicaos.
+     */
+    cursor?: SugestaoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoRefeicaos.
+     */
+    skip?: number
+    distinct?: SugestaoRefeicaoScalarFieldEnum | SugestaoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoRefeicao create
+   */
+  export type SugestaoRefeicaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SugestaoRefeicao.
+     */
+    data: XOR<SugestaoRefeicaoCreateInput, SugestaoRefeicaoUncheckedCreateInput>
+  }
+
+  /**
+   * SugestaoRefeicao createMany
+   */
+  export type SugestaoRefeicaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SugestaoRefeicaos.
+     */
+    data: SugestaoRefeicaoCreateManyInput | SugestaoRefeicaoCreateManyInput[]
+  }
+
+  /**
+   * SugestaoRefeicao update
+   */
+  export type SugestaoRefeicaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SugestaoRefeicao.
+     */
+    data: XOR<SugestaoRefeicaoUpdateInput, SugestaoRefeicaoUncheckedUpdateInput>
+    /**
+     * Choose, which SugestaoRefeicao to update.
+     */
+    where: SugestaoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoRefeicao updateMany
+   */
+  export type SugestaoRefeicaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SugestaoRefeicaos.
+     */
+    data: XOR<SugestaoRefeicaoUpdateManyMutationInput, SugestaoRefeicaoUncheckedUpdateManyInput>
+    /**
+     * Filter which SugestaoRefeicaos to update
+     */
+    where?: SugestaoRefeicaoWhereInput
+    /**
+     * Limit how many SugestaoRefeicaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SugestaoRefeicao upsert
+   */
+  export type SugestaoRefeicaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SugestaoRefeicao to update in case it exists.
+     */
+    where: SugestaoRefeicaoWhereUniqueInput
+    /**
+     * In case the SugestaoRefeicao found by the `where` argument doesn't exist, create a new SugestaoRefeicao with this data.
+     */
+    create: XOR<SugestaoRefeicaoCreateInput, SugestaoRefeicaoUncheckedCreateInput>
+    /**
+     * In case the SugestaoRefeicao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SugestaoRefeicaoUpdateInput, SugestaoRefeicaoUncheckedUpdateInput>
+  }
+
+  /**
+   * SugestaoRefeicao delete
+   */
+  export type SugestaoRefeicaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter which SugestaoRefeicao to delete.
+     */
+    where: SugestaoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoRefeicao deleteMany
+   */
+  export type SugestaoRefeicaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SugestaoRefeicaos to delete
+     */
+    where?: SugestaoRefeicaoWhereInput
+    /**
+     * Limit how many SugestaoRefeicaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SugestaoRefeicao findRaw
+   */
+  export type SugestaoRefeicaoFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SugestaoRefeicao aggregateRaw
+   */
+  export type SugestaoRefeicaoAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SugestaoRefeicao.alimentos
+   */
+  export type SugestaoRefeicao$alimentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    where?: SugestaoAlimentoWhereInput
+    orderBy?: SugestaoAlimentoOrderByWithRelationInput | SugestaoAlimentoOrderByWithRelationInput[]
+    cursor?: SugestaoAlimentoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SugestaoAlimentoScalarFieldEnum | SugestaoAlimentoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoRefeicao without action
+   */
+  export type SugestaoRefeicaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoRefeicao
+     */
+    select?: SugestaoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoRefeicao
+     */
+    omit?: SugestaoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoRefeicaoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SugestaoAlimento
+   */
+
+  export type AggregateSugestaoAlimento = {
+    _count: SugestaoAlimentoCountAggregateOutputType | null
+    _avg: SugestaoAlimentoAvgAggregateOutputType | null
+    _sum: SugestaoAlimentoSumAggregateOutputType | null
+    _min: SugestaoAlimentoMinAggregateOutputType | null
+    _max: SugestaoAlimentoMaxAggregateOutputType | null
+  }
+
+  export type SugestaoAlimentoAvgAggregateOutputType = {
+    quantidade: number | null
+  }
+
+  export type SugestaoAlimentoSumAggregateOutputType = {
+    quantidade: number | null
+  }
+
+  export type SugestaoAlimentoMinAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    quantidade: number | null
+    sugestaoRefeicaoId: string | null
+  }
+
+  export type SugestaoAlimentoMaxAggregateOutputType = {
+    id: string | null
+    nome: string | null
+    quantidade: number | null
+    sugestaoRefeicaoId: string | null
+  }
+
+  export type SugestaoAlimentoCountAggregateOutputType = {
+    id: number
+    nome: number
+    quantidade: number
+    sugestaoRefeicaoId: number
+    _all: number
+  }
+
+
+  export type SugestaoAlimentoAvgAggregateInputType = {
+    quantidade?: true
+  }
+
+  export type SugestaoAlimentoSumAggregateInputType = {
+    quantidade?: true
+  }
+
+  export type SugestaoAlimentoMinAggregateInputType = {
+    id?: true
+    nome?: true
+    quantidade?: true
+    sugestaoRefeicaoId?: true
+  }
+
+  export type SugestaoAlimentoMaxAggregateInputType = {
+    id?: true
+    nome?: true
+    quantidade?: true
+    sugestaoRefeicaoId?: true
+  }
+
+  export type SugestaoAlimentoCountAggregateInputType = {
+    id?: true
+    nome?: true
+    quantidade?: true
+    sugestaoRefeicaoId?: true
+    _all?: true
+  }
+
+  export type SugestaoAlimentoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SugestaoAlimento to aggregate.
+     */
+    where?: SugestaoAlimentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentos to fetch.
+     */
+    orderBy?: SugestaoAlimentoOrderByWithRelationInput | SugestaoAlimentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SugestaoAlimentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SugestaoAlimentos
+    **/
+    _count?: true | SugestaoAlimentoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SugestaoAlimentoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SugestaoAlimentoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SugestaoAlimentoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SugestaoAlimentoMaxAggregateInputType
+  }
+
+  export type GetSugestaoAlimentoAggregateType<T extends SugestaoAlimentoAggregateArgs> = {
+        [P in keyof T & keyof AggregateSugestaoAlimento]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSugestaoAlimento[P]>
+      : GetScalarType<T[P], AggregateSugestaoAlimento[P]>
+  }
+
+
+
+
+  export type SugestaoAlimentoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SugestaoAlimentoWhereInput
+    orderBy?: SugestaoAlimentoOrderByWithAggregationInput | SugestaoAlimentoOrderByWithAggregationInput[]
+    by: SugestaoAlimentoScalarFieldEnum[] | SugestaoAlimentoScalarFieldEnum
+    having?: SugestaoAlimentoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SugestaoAlimentoCountAggregateInputType | true
+    _avg?: SugestaoAlimentoAvgAggregateInputType
+    _sum?: SugestaoAlimentoSumAggregateInputType
+    _min?: SugestaoAlimentoMinAggregateInputType
+    _max?: SugestaoAlimentoMaxAggregateInputType
+  }
+
+  export type SugestaoAlimentoGroupByOutputType = {
+    id: string
+    nome: string
+    quantidade: number
+    sugestaoRefeicaoId: string
+    _count: SugestaoAlimentoCountAggregateOutputType | null
+    _avg: SugestaoAlimentoAvgAggregateOutputType | null
+    _sum: SugestaoAlimentoSumAggregateOutputType | null
+    _min: SugestaoAlimentoMinAggregateOutputType | null
+    _max: SugestaoAlimentoMaxAggregateOutputType | null
+  }
+
+  type GetSugestaoAlimentoGroupByPayload<T extends SugestaoAlimentoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SugestaoAlimentoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SugestaoAlimentoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SugestaoAlimentoGroupByOutputType[P]>
+            : GetScalarType<T[P], SugestaoAlimentoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SugestaoAlimentoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nome?: boolean
+    quantidade?: boolean
+    sugestaoRefeicaoId?: boolean
+    sugestaoRefeicao?: boolean | SugestaoRefeicaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sugestaoAlimento"]>
+
+
+
+  export type SugestaoAlimentoSelectScalar = {
+    id?: boolean
+    nome?: boolean
+    quantidade?: boolean
+    sugestaoRefeicaoId?: boolean
+  }
+
+  export type SugestaoAlimentoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "quantidade" | "sugestaoRefeicaoId", ExtArgs["result"]["sugestaoAlimento"]>
+  export type SugestaoAlimentoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sugestaoRefeicao?: boolean | SugestaoRefeicaoDefaultArgs<ExtArgs>
+  }
+
+  export type $SugestaoAlimentoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SugestaoAlimento"
+    objects: {
+      sugestaoRefeicao: Prisma.$SugestaoRefeicaoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      nome: string
+      quantidade: number
+      sugestaoRefeicaoId: string
+    }, ExtArgs["result"]["sugestaoAlimento"]>
+    composites: {}
+  }
+
+  type SugestaoAlimentoGetPayload<S extends boolean | null | undefined | SugestaoAlimentoDefaultArgs> = $Result.GetResult<Prisma.$SugestaoAlimentoPayload, S>
+
+  type SugestaoAlimentoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SugestaoAlimentoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SugestaoAlimentoCountAggregateInputType | true
+    }
+
+  export interface SugestaoAlimentoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SugestaoAlimento'], meta: { name: 'SugestaoAlimento' } }
+    /**
+     * Find zero or one SugestaoAlimento that matches the filter.
+     * @param {SugestaoAlimentoFindUniqueArgs} args - Arguments to find a SugestaoAlimento
+     * @example
+     * // Get one SugestaoAlimento
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SugestaoAlimentoFindUniqueArgs>(args: SelectSubset<T, SugestaoAlimentoFindUniqueArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SugestaoAlimento that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SugestaoAlimentoFindUniqueOrThrowArgs} args - Arguments to find a SugestaoAlimento
+     * @example
+     * // Get one SugestaoAlimento
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SugestaoAlimentoFindUniqueOrThrowArgs>(args: SelectSubset<T, SugestaoAlimentoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SugestaoAlimento that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoFindFirstArgs} args - Arguments to find a SugestaoAlimento
+     * @example
+     * // Get one SugestaoAlimento
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SugestaoAlimentoFindFirstArgs>(args?: SelectSubset<T, SugestaoAlimentoFindFirstArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SugestaoAlimento that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoFindFirstOrThrowArgs} args - Arguments to find a SugestaoAlimento
+     * @example
+     * // Get one SugestaoAlimento
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SugestaoAlimentoFindFirstOrThrowArgs>(args?: SelectSubset<T, SugestaoAlimentoFindFirstOrThrowArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SugestaoAlimentos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SugestaoAlimentos
+     * const sugestaoAlimentos = await prisma.sugestaoAlimento.findMany()
+     * 
+     * // Get first 10 SugestaoAlimentos
+     * const sugestaoAlimentos = await prisma.sugestaoAlimento.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sugestaoAlimentoWithIdOnly = await prisma.sugestaoAlimento.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SugestaoAlimentoFindManyArgs>(args?: SelectSubset<T, SugestaoAlimentoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SugestaoAlimento.
+     * @param {SugestaoAlimentoCreateArgs} args - Arguments to create a SugestaoAlimento.
+     * @example
+     * // Create one SugestaoAlimento
+     * const SugestaoAlimento = await prisma.sugestaoAlimento.create({
+     *   data: {
+     *     // ... data to create a SugestaoAlimento
+     *   }
+     * })
+     * 
+     */
+    create<T extends SugestaoAlimentoCreateArgs>(args: SelectSubset<T, SugestaoAlimentoCreateArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SugestaoAlimentos.
+     * @param {SugestaoAlimentoCreateManyArgs} args - Arguments to create many SugestaoAlimentos.
+     * @example
+     * // Create many SugestaoAlimentos
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SugestaoAlimentoCreateManyArgs>(args?: SelectSubset<T, SugestaoAlimentoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a SugestaoAlimento.
+     * @param {SugestaoAlimentoDeleteArgs} args - Arguments to delete one SugestaoAlimento.
+     * @example
+     * // Delete one SugestaoAlimento
+     * const SugestaoAlimento = await prisma.sugestaoAlimento.delete({
+     *   where: {
+     *     // ... filter to delete one SugestaoAlimento
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SugestaoAlimentoDeleteArgs>(args: SelectSubset<T, SugestaoAlimentoDeleteArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SugestaoAlimento.
+     * @param {SugestaoAlimentoUpdateArgs} args - Arguments to update one SugestaoAlimento.
+     * @example
+     * // Update one SugestaoAlimento
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SugestaoAlimentoUpdateArgs>(args: SelectSubset<T, SugestaoAlimentoUpdateArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SugestaoAlimentos.
+     * @param {SugestaoAlimentoDeleteManyArgs} args - Arguments to filter SugestaoAlimentos to delete.
+     * @example
+     * // Delete a few SugestaoAlimentos
+     * const { count } = await prisma.sugestaoAlimento.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SugestaoAlimentoDeleteManyArgs>(args?: SelectSubset<T, SugestaoAlimentoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SugestaoAlimentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SugestaoAlimentos
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SugestaoAlimentoUpdateManyArgs>(args: SelectSubset<T, SugestaoAlimentoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one SugestaoAlimento.
+     * @param {SugestaoAlimentoUpsertArgs} args - Arguments to update or create a SugestaoAlimento.
+     * @example
+     * // Update or create a SugestaoAlimento
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.upsert({
+     *   create: {
+     *     // ... data to create a SugestaoAlimento
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SugestaoAlimento we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SugestaoAlimentoUpsertArgs>(args: SelectSubset<T, SugestaoAlimentoUpsertArgs<ExtArgs>>): Prisma__SugestaoAlimentoClient<$Result.GetResult<Prisma.$SugestaoAlimentoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SugestaoAlimentos that matches the filter.
+     * @param {SugestaoAlimentoFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: SugestaoAlimentoFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a SugestaoAlimento.
+     * @param {SugestaoAlimentoAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const sugestaoAlimento = await prisma.sugestaoAlimento.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: SugestaoAlimentoAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of SugestaoAlimentos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoCountArgs} args - Arguments to filter SugestaoAlimentos to count.
+     * @example
+     * // Count the number of SugestaoAlimentos
+     * const count = await prisma.sugestaoAlimento.count({
+     *   where: {
+     *     // ... the filter for the SugestaoAlimentos we want to count
+     *   }
+     * })
+    **/
+    count<T extends SugestaoAlimentoCountArgs>(
+      args?: Subset<T, SugestaoAlimentoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SugestaoAlimentoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SugestaoAlimento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SugestaoAlimentoAggregateArgs>(args: Subset<T, SugestaoAlimentoAggregateArgs>): Prisma.PrismaPromise<GetSugestaoAlimentoAggregateType<T>>
+
+    /**
+     * Group by SugestaoAlimento.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SugestaoAlimentoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SugestaoAlimentoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SugestaoAlimentoGroupByArgs['orderBy'] }
+        : { orderBy?: SugestaoAlimentoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SugestaoAlimentoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSugestaoAlimentoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SugestaoAlimento model
+   */
+  readonly fields: SugestaoAlimentoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SugestaoAlimento.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SugestaoAlimentoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    sugestaoRefeicao<T extends SugestaoRefeicaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SugestaoRefeicaoDefaultArgs<ExtArgs>>): Prisma__SugestaoRefeicaoClient<$Result.GetResult<Prisma.$SugestaoRefeicaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SugestaoAlimento model
+   */
+  interface SugestaoAlimentoFieldRefs {
+    readonly id: FieldRef<"SugestaoAlimento", 'String'>
+    readonly nome: FieldRef<"SugestaoAlimento", 'String'>
+    readonly quantidade: FieldRef<"SugestaoAlimento", 'Float'>
+    readonly sugestaoRefeicaoId: FieldRef<"SugestaoAlimento", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SugestaoAlimento findUnique
+   */
+  export type SugestaoAlimentoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimento to fetch.
+     */
+    where: SugestaoAlimentoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimento findUniqueOrThrow
+   */
+  export type SugestaoAlimentoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimento to fetch.
+     */
+    where: SugestaoAlimentoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimento findFirst
+   */
+  export type SugestaoAlimentoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimento to fetch.
+     */
+    where?: SugestaoAlimentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentos to fetch.
+     */
+    orderBy?: SugestaoAlimentoOrderByWithRelationInput | SugestaoAlimentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SugestaoAlimentos.
+     */
+    cursor?: SugestaoAlimentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SugestaoAlimentos.
+     */
+    distinct?: SugestaoAlimentoScalarFieldEnum | SugestaoAlimentoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimento findFirstOrThrow
+   */
+  export type SugestaoAlimentoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimento to fetch.
+     */
+    where?: SugestaoAlimentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentos to fetch.
+     */
+    orderBy?: SugestaoAlimentoOrderByWithRelationInput | SugestaoAlimentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SugestaoAlimentos.
+     */
+    cursor?: SugestaoAlimentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SugestaoAlimentos.
+     */
+    distinct?: SugestaoAlimentoScalarFieldEnum | SugestaoAlimentoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimento findMany
+   */
+  export type SugestaoAlimentoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * Filter, which SugestaoAlimentos to fetch.
+     */
+    where?: SugestaoAlimentoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SugestaoAlimentos to fetch.
+     */
+    orderBy?: SugestaoAlimentoOrderByWithRelationInput | SugestaoAlimentoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SugestaoAlimentos.
+     */
+    cursor?: SugestaoAlimentoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SugestaoAlimentos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SugestaoAlimentos.
+     */
+    skip?: number
+    distinct?: SugestaoAlimentoScalarFieldEnum | SugestaoAlimentoScalarFieldEnum[]
+  }
+
+  /**
+   * SugestaoAlimento create
+   */
+  export type SugestaoAlimentoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SugestaoAlimento.
+     */
+    data: XOR<SugestaoAlimentoCreateInput, SugestaoAlimentoUncheckedCreateInput>
+  }
+
+  /**
+   * SugestaoAlimento createMany
+   */
+  export type SugestaoAlimentoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SugestaoAlimentos.
+     */
+    data: SugestaoAlimentoCreateManyInput | SugestaoAlimentoCreateManyInput[]
+  }
+
+  /**
+   * SugestaoAlimento update
+   */
+  export type SugestaoAlimentoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SugestaoAlimento.
+     */
+    data: XOR<SugestaoAlimentoUpdateInput, SugestaoAlimentoUncheckedUpdateInput>
+    /**
+     * Choose, which SugestaoAlimento to update.
+     */
+    where: SugestaoAlimentoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimento updateMany
+   */
+  export type SugestaoAlimentoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SugestaoAlimentos.
+     */
+    data: XOR<SugestaoAlimentoUpdateManyMutationInput, SugestaoAlimentoUncheckedUpdateManyInput>
+    /**
+     * Filter which SugestaoAlimentos to update
+     */
+    where?: SugestaoAlimentoWhereInput
+    /**
+     * Limit how many SugestaoAlimentos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SugestaoAlimento upsert
+   */
+  export type SugestaoAlimentoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SugestaoAlimento to update in case it exists.
+     */
+    where: SugestaoAlimentoWhereUniqueInput
+    /**
+     * In case the SugestaoAlimento found by the `where` argument doesn't exist, create a new SugestaoAlimento with this data.
+     */
+    create: XOR<SugestaoAlimentoCreateInput, SugestaoAlimentoUncheckedCreateInput>
+    /**
+     * In case the SugestaoAlimento was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SugestaoAlimentoUpdateInput, SugestaoAlimentoUncheckedUpdateInput>
+  }
+
+  /**
+   * SugestaoAlimento delete
+   */
+  export type SugestaoAlimentoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+    /**
+     * Filter which SugestaoAlimento to delete.
+     */
+    where: SugestaoAlimentoWhereUniqueInput
+  }
+
+  /**
+   * SugestaoAlimento deleteMany
+   */
+  export type SugestaoAlimentoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SugestaoAlimentos to delete
+     */
+    where?: SugestaoAlimentoWhereInput
+    /**
+     * Limit how many SugestaoAlimentos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SugestaoAlimento findRaw
+   */
+  export type SugestaoAlimentoFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SugestaoAlimento aggregateRaw
+   */
+  export type SugestaoAlimentoAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * SugestaoAlimento without action
+   */
+  export type SugestaoAlimentoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SugestaoAlimento
+     */
+    select?: SugestaoAlimentoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SugestaoAlimento
+     */
+    omit?: SugestaoAlimentoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SugestaoAlimentoInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -7782,6 +11231,39 @@ export namespace Prisma {
   };
 
   export type AlimentoRefeicaoScalarFieldEnum = (typeof AlimentoRefeicaoScalarFieldEnum)[keyof typeof AlimentoRefeicaoScalarFieldEnum]
+
+
+  export const SugestaoAlimentacaoScalarFieldEnum: {
+    id: 'id',
+    diaSemana: 'diaSemana',
+    createdAt: 'createdAt',
+    usuarioId: 'usuarioId'
+  };
+
+  export type SugestaoAlimentacaoScalarFieldEnum = (typeof SugestaoAlimentacaoScalarFieldEnum)[keyof typeof SugestaoAlimentacaoScalarFieldEnum]
+
+
+  export const SugestaoRefeicaoScalarFieldEnum: {
+    id: 'id',
+    tipo: 'tipo',
+    calorias: 'calorias',
+    proteinas: 'proteinas',
+    carboidratos: 'carboidratos',
+    gorduras: 'gorduras',
+    sugestaoAlimentacaoId: 'sugestaoAlimentacaoId'
+  };
+
+  export type SugestaoRefeicaoScalarFieldEnum = (typeof SugestaoRefeicaoScalarFieldEnum)[keyof typeof SugestaoRefeicaoScalarFieldEnum]
+
+
+  export const SugestaoAlimentoScalarFieldEnum: {
+    id: 'id',
+    nome: 'nome',
+    quantidade: 'quantidade',
+    sugestaoRefeicaoId: 'sugestaoRefeicaoId'
+  };
+
+  export type SugestaoAlimentoScalarFieldEnum = (typeof SugestaoAlimentoScalarFieldEnum)[keyof typeof SugestaoAlimentoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -7875,6 +11357,7 @@ export namespace Prisma {
     meta?: XOR<MetaNullableScalarRelationFilter, MetaWhereInput> | null
     consumoAgua?: ConsumoAguaListRelationFilter
     refeicoes?: RefeicaoListRelationFilter
+    sugestoesAlimentacao?: SugestaoAlimentacaoListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -7885,6 +11368,7 @@ export namespace Prisma {
     meta?: MetaOrderByWithRelationInput
     consumoAgua?: ConsumoAguaOrderByRelationAggregateInput
     refeicoes?: RefeicaoOrderByRelationAggregateInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -7898,6 +11382,7 @@ export namespace Prisma {
     meta?: XOR<MetaNullableScalarRelationFilter, MetaWhereInput> | null
     consumoAgua?: ConsumoAguaListRelationFilter
     refeicoes?: RefeicaoListRelationFilter
+    sugestoesAlimentacao?: SugestaoAlimentacaoListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -8276,6 +11761,181 @@ export namespace Prisma {
     refeicaoId?: StringWithAggregatesFilter<"AlimentoRefeicao"> | string
   }
 
+  export type SugestaoAlimentacaoWhereInput = {
+    AND?: SugestaoAlimentacaoWhereInput | SugestaoAlimentacaoWhereInput[]
+    OR?: SugestaoAlimentacaoWhereInput[]
+    NOT?: SugestaoAlimentacaoWhereInput | SugestaoAlimentacaoWhereInput[]
+    id?: StringFilter<"SugestaoAlimentacao"> | string
+    diaSemana?: StringFilter<"SugestaoAlimentacao"> | string
+    createdAt?: DateTimeFilter<"SugestaoAlimentacao"> | Date | string
+    usuarioId?: StringFilter<"SugestaoAlimentacao"> | string
+    usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sugestaoRefeicoes?: SugestaoRefeicaoListRelationFilter
+  }
+
+  export type SugestaoAlimentacaoOrderByWithRelationInput = {
+    id?: SortOrder
+    diaSemana?: SortOrder
+    createdAt?: SortOrder
+    usuarioId?: SortOrder
+    usuario?: UserOrderByWithRelationInput
+    sugestaoRefeicoes?: SugestaoRefeicaoOrderByRelationAggregateInput
+  }
+
+  export type SugestaoAlimentacaoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SugestaoAlimentacaoWhereInput | SugestaoAlimentacaoWhereInput[]
+    OR?: SugestaoAlimentacaoWhereInput[]
+    NOT?: SugestaoAlimentacaoWhereInput | SugestaoAlimentacaoWhereInput[]
+    diaSemana?: StringFilter<"SugestaoAlimentacao"> | string
+    createdAt?: DateTimeFilter<"SugestaoAlimentacao"> | Date | string
+    usuarioId?: StringFilter<"SugestaoAlimentacao"> | string
+    usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
+    sugestaoRefeicoes?: SugestaoRefeicaoListRelationFilter
+  }, "id">
+
+  export type SugestaoAlimentacaoOrderByWithAggregationInput = {
+    id?: SortOrder
+    diaSemana?: SortOrder
+    createdAt?: SortOrder
+    usuarioId?: SortOrder
+    _count?: SugestaoAlimentacaoCountOrderByAggregateInput
+    _max?: SugestaoAlimentacaoMaxOrderByAggregateInput
+    _min?: SugestaoAlimentacaoMinOrderByAggregateInput
+  }
+
+  export type SugestaoAlimentacaoScalarWhereWithAggregatesInput = {
+    AND?: SugestaoAlimentacaoScalarWhereWithAggregatesInput | SugestaoAlimentacaoScalarWhereWithAggregatesInput[]
+    OR?: SugestaoAlimentacaoScalarWhereWithAggregatesInput[]
+    NOT?: SugestaoAlimentacaoScalarWhereWithAggregatesInput | SugestaoAlimentacaoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SugestaoAlimentacao"> | string
+    diaSemana?: StringWithAggregatesFilter<"SugestaoAlimentacao"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SugestaoAlimentacao"> | Date | string
+    usuarioId?: StringWithAggregatesFilter<"SugestaoAlimentacao"> | string
+  }
+
+  export type SugestaoRefeicaoWhereInput = {
+    AND?: SugestaoRefeicaoWhereInput | SugestaoRefeicaoWhereInput[]
+    OR?: SugestaoRefeicaoWhereInput[]
+    NOT?: SugestaoRefeicaoWhereInput | SugestaoRefeicaoWhereInput[]
+    id?: StringFilter<"SugestaoRefeicao"> | string
+    tipo?: StringFilter<"SugestaoRefeicao"> | string
+    calorias?: FloatFilter<"SugestaoRefeicao"> | number
+    proteinas?: FloatFilter<"SugestaoRefeicao"> | number
+    carboidratos?: FloatFilter<"SugestaoRefeicao"> | number
+    gorduras?: FloatFilter<"SugestaoRefeicao"> | number
+    sugestaoAlimentacaoId?: StringFilter<"SugestaoRefeicao"> | string
+    sugestaoAlimentacao?: XOR<SugestaoAlimentacaoScalarRelationFilter, SugestaoAlimentacaoWhereInput>
+    alimentos?: SugestaoAlimentoListRelationFilter
+  }
+
+  export type SugestaoRefeicaoOrderByWithRelationInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    sugestaoAlimentacaoId?: SortOrder
+    sugestaoAlimentacao?: SugestaoAlimentacaoOrderByWithRelationInput
+    alimentos?: SugestaoAlimentoOrderByRelationAggregateInput
+  }
+
+  export type SugestaoRefeicaoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SugestaoRefeicaoWhereInput | SugestaoRefeicaoWhereInput[]
+    OR?: SugestaoRefeicaoWhereInput[]
+    NOT?: SugestaoRefeicaoWhereInput | SugestaoRefeicaoWhereInput[]
+    tipo?: StringFilter<"SugestaoRefeicao"> | string
+    calorias?: FloatFilter<"SugestaoRefeicao"> | number
+    proteinas?: FloatFilter<"SugestaoRefeicao"> | number
+    carboidratos?: FloatFilter<"SugestaoRefeicao"> | number
+    gorduras?: FloatFilter<"SugestaoRefeicao"> | number
+    sugestaoAlimentacaoId?: StringFilter<"SugestaoRefeicao"> | string
+    sugestaoAlimentacao?: XOR<SugestaoAlimentacaoScalarRelationFilter, SugestaoAlimentacaoWhereInput>
+    alimentos?: SugestaoAlimentoListRelationFilter
+  }, "id">
+
+  export type SugestaoRefeicaoOrderByWithAggregationInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    sugestaoAlimentacaoId?: SortOrder
+    _count?: SugestaoRefeicaoCountOrderByAggregateInput
+    _avg?: SugestaoRefeicaoAvgOrderByAggregateInput
+    _max?: SugestaoRefeicaoMaxOrderByAggregateInput
+    _min?: SugestaoRefeicaoMinOrderByAggregateInput
+    _sum?: SugestaoRefeicaoSumOrderByAggregateInput
+  }
+
+  export type SugestaoRefeicaoScalarWhereWithAggregatesInput = {
+    AND?: SugestaoRefeicaoScalarWhereWithAggregatesInput | SugestaoRefeicaoScalarWhereWithAggregatesInput[]
+    OR?: SugestaoRefeicaoScalarWhereWithAggregatesInput[]
+    NOT?: SugestaoRefeicaoScalarWhereWithAggregatesInput | SugestaoRefeicaoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SugestaoRefeicao"> | string
+    tipo?: StringWithAggregatesFilter<"SugestaoRefeicao"> | string
+    calorias?: FloatWithAggregatesFilter<"SugestaoRefeicao"> | number
+    proteinas?: FloatWithAggregatesFilter<"SugestaoRefeicao"> | number
+    carboidratos?: FloatWithAggregatesFilter<"SugestaoRefeicao"> | number
+    gorduras?: FloatWithAggregatesFilter<"SugestaoRefeicao"> | number
+    sugestaoAlimentacaoId?: StringWithAggregatesFilter<"SugestaoRefeicao"> | string
+  }
+
+  export type SugestaoAlimentoWhereInput = {
+    AND?: SugestaoAlimentoWhereInput | SugestaoAlimentoWhereInput[]
+    OR?: SugestaoAlimentoWhereInput[]
+    NOT?: SugestaoAlimentoWhereInput | SugestaoAlimentoWhereInput[]
+    id?: StringFilter<"SugestaoAlimento"> | string
+    nome?: StringFilter<"SugestaoAlimento"> | string
+    quantidade?: FloatFilter<"SugestaoAlimento"> | number
+    sugestaoRefeicaoId?: StringFilter<"SugestaoAlimento"> | string
+    sugestaoRefeicao?: XOR<SugestaoRefeicaoScalarRelationFilter, SugestaoRefeicaoWhereInput>
+  }
+
+  export type SugestaoAlimentoOrderByWithRelationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    quantidade?: SortOrder
+    sugestaoRefeicaoId?: SortOrder
+    sugestaoRefeicao?: SugestaoRefeicaoOrderByWithRelationInput
+  }
+
+  export type SugestaoAlimentoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SugestaoAlimentoWhereInput | SugestaoAlimentoWhereInput[]
+    OR?: SugestaoAlimentoWhereInput[]
+    NOT?: SugestaoAlimentoWhereInput | SugestaoAlimentoWhereInput[]
+    nome?: StringFilter<"SugestaoAlimento"> | string
+    quantidade?: FloatFilter<"SugestaoAlimento"> | number
+    sugestaoRefeicaoId?: StringFilter<"SugestaoAlimento"> | string
+    sugestaoRefeicao?: XOR<SugestaoRefeicaoScalarRelationFilter, SugestaoRefeicaoWhereInput>
+  }, "id">
+
+  export type SugestaoAlimentoOrderByWithAggregationInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    quantidade?: SortOrder
+    sugestaoRefeicaoId?: SortOrder
+    _count?: SugestaoAlimentoCountOrderByAggregateInput
+    _avg?: SugestaoAlimentoAvgOrderByAggregateInput
+    _max?: SugestaoAlimentoMaxOrderByAggregateInput
+    _min?: SugestaoAlimentoMinOrderByAggregateInput
+    _sum?: SugestaoAlimentoSumOrderByAggregateInput
+  }
+
+  export type SugestaoAlimentoScalarWhereWithAggregatesInput = {
+    AND?: SugestaoAlimentoScalarWhereWithAggregatesInput | SugestaoAlimentoScalarWhereWithAggregatesInput[]
+    OR?: SugestaoAlimentoScalarWhereWithAggregatesInput[]
+    NOT?: SugestaoAlimentoScalarWhereWithAggregatesInput | SugestaoAlimentoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
+    nome?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
+    quantidade?: FloatWithAggregatesFilter<"SugestaoAlimento"> | number
+    sugestaoRefeicaoId?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -8284,6 +11944,7 @@ export namespace Prisma {
     meta?: MetaCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaCreateNestedManyWithoutUsuarioInput
     refeicoes?: RefeicaoCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -8294,6 +11955,7 @@ export namespace Prisma {
     meta?: MetaUncheckedCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaUncheckedCreateNestedManyWithoutUsuarioInput
     refeicoes?: RefeicaoUncheckedCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUpdateInput = {
@@ -8303,6 +11965,7 @@ export namespace Prisma {
     meta?: MetaUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUpdateManyWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -8312,6 +11975,7 @@ export namespace Prisma {
     meta?: MetaUncheckedUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUncheckedUpdateManyWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUncheckedUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -8687,6 +12351,167 @@ export namespace Prisma {
     refeicaoId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type SugestaoAlimentacaoCreateInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    usuario: UserCreateNestedOneWithoutSugestoesAlimentacaoInput
+    sugestaoRefeicoes?: SugestaoRefeicaoCreateNestedManyWithoutSugestaoAlimentacaoInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedCreateInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    usuarioId: string
+    sugestaoRefeicoes?: SugestaoRefeicaoUncheckedCreateNestedManyWithoutSugestaoAlimentacaoInput
+  }
+
+  export type SugestaoAlimentacaoUpdateInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UserUpdateOneRequiredWithoutSugestoesAlimentacaoNestedInput
+    sugestaoRefeicoes?: SugestaoRefeicaoUpdateManyWithoutSugestaoAlimentacaoNestedInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedUpdateInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    sugestaoRefeicoes?: SugestaoRefeicaoUncheckedUpdateManyWithoutSugestaoAlimentacaoNestedInput
+  }
+
+  export type SugestaoAlimentacaoCreateManyInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    usuarioId: string
+  }
+
+  export type SugestaoAlimentacaoUpdateManyMutationInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SugestaoAlimentacaoUncheckedUpdateManyInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SugestaoRefeicaoCreateInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacao: SugestaoAlimentacaoCreateNestedOneWithoutSugestaoRefeicoesInput
+    alimentos?: SugestaoAlimentoCreateNestedManyWithoutSugestaoRefeicaoInput
+  }
+
+  export type SugestaoRefeicaoUncheckedCreateInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacaoId: string
+    alimentos?: SugestaoAlimentoUncheckedCreateNestedManyWithoutSugestaoRefeicaoInput
+  }
+
+  export type SugestaoRefeicaoUpdateInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    sugestaoAlimentacao?: SugestaoAlimentacaoUpdateOneRequiredWithoutSugestaoRefeicoesNestedInput
+    alimentos?: SugestaoAlimentoUpdateManyWithoutSugestaoRefeicaoNestedInput
+  }
+
+  export type SugestaoRefeicaoUncheckedUpdateInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    sugestaoAlimentacaoId?: StringFieldUpdateOperationsInput | string
+    alimentos?: SugestaoAlimentoUncheckedUpdateManyWithoutSugestaoRefeicaoNestedInput
+  }
+
+  export type SugestaoRefeicaoCreateManyInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacaoId: string
+  }
+
+  export type SugestaoRefeicaoUpdateManyMutationInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type SugestaoRefeicaoUncheckedUpdateManyInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    sugestaoAlimentacaoId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SugestaoAlimentoCreateInput = {
+    id?: string
+    nome: string
+    quantidade: number
+    sugestaoRefeicao: SugestaoRefeicaoCreateNestedOneWithoutAlimentosInput
+  }
+
+  export type SugestaoAlimentoUncheckedCreateInput = {
+    id?: string
+    nome: string
+    quantidade: number
+    sugestaoRefeicaoId: string
+  }
+
+  export type SugestaoAlimentoUpdateInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    sugestaoRefeicao?: SugestaoRefeicaoUpdateOneRequiredWithoutAlimentosNestedInput
+  }
+
+  export type SugestaoAlimentoUncheckedUpdateInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    sugestaoRefeicaoId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SugestaoAlimentoCreateManyInput = {
+    id?: string
+    nome: string
+    quantidade: number
+    sugestaoRefeicaoId: string
+  }
+
+  export type SugestaoAlimentoUpdateManyMutationInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type SugestaoAlimentoUncheckedUpdateManyInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    sugestaoRefeicaoId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -8724,11 +12549,21 @@ export namespace Prisma {
     none?: RefeicaoWhereInput
   }
 
+  export type SugestaoAlimentacaoListRelationFilter = {
+    every?: SugestaoAlimentacaoWhereInput
+    some?: SugestaoAlimentacaoWhereInput
+    none?: SugestaoAlimentacaoWhereInput
+  }
+
   export type ConsumoAguaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type RefeicaoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SugestaoAlimentacaoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -9101,6 +12936,130 @@ export namespace Prisma {
     isSet?: boolean
   }
 
+  export type SugestaoRefeicaoListRelationFilter = {
+    every?: SugestaoRefeicaoWhereInput
+    some?: SugestaoRefeicaoWhereInput
+    none?: SugestaoRefeicaoWhereInput
+  }
+
+  export type SugestaoRefeicaoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SugestaoAlimentacaoCountOrderByAggregateInput = {
+    id?: SortOrder
+    diaSemana?: SortOrder
+    createdAt?: SortOrder
+    usuarioId?: SortOrder
+  }
+
+  export type SugestaoAlimentacaoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    diaSemana?: SortOrder
+    createdAt?: SortOrder
+    usuarioId?: SortOrder
+  }
+
+  export type SugestaoAlimentacaoMinOrderByAggregateInput = {
+    id?: SortOrder
+    diaSemana?: SortOrder
+    createdAt?: SortOrder
+    usuarioId?: SortOrder
+  }
+
+  export type SugestaoAlimentacaoScalarRelationFilter = {
+    is?: SugestaoAlimentacaoWhereInput
+    isNot?: SugestaoAlimentacaoWhereInput
+  }
+
+  export type SugestaoAlimentoListRelationFilter = {
+    every?: SugestaoAlimentoWhereInput
+    some?: SugestaoAlimentoWhereInput
+    none?: SugestaoAlimentoWhereInput
+  }
+
+  export type SugestaoAlimentoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SugestaoRefeicaoCountOrderByAggregateInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    sugestaoAlimentacaoId?: SortOrder
+  }
+
+  export type SugestaoRefeicaoAvgOrderByAggregateInput = {
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+  }
+
+  export type SugestaoRefeicaoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    sugestaoAlimentacaoId?: SortOrder
+  }
+
+  export type SugestaoRefeicaoMinOrderByAggregateInput = {
+    id?: SortOrder
+    tipo?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    sugestaoAlimentacaoId?: SortOrder
+  }
+
+  export type SugestaoRefeicaoSumOrderByAggregateInput = {
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+  }
+
+  export type SugestaoRefeicaoScalarRelationFilter = {
+    is?: SugestaoRefeicaoWhereInput
+    isNot?: SugestaoRefeicaoWhereInput
+  }
+
+  export type SugestaoAlimentoCountOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    quantidade?: SortOrder
+    sugestaoRefeicaoId?: SortOrder
+  }
+
+  export type SugestaoAlimentoAvgOrderByAggregateInput = {
+    quantidade?: SortOrder
+  }
+
+  export type SugestaoAlimentoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    quantidade?: SortOrder
+    sugestaoRefeicaoId?: SortOrder
+  }
+
+  export type SugestaoAlimentoMinOrderByAggregateInput = {
+    id?: SortOrder
+    nome?: SortOrder
+    quantidade?: SortOrder
+    sugestaoRefeicaoId?: SortOrder
+  }
+
+  export type SugestaoAlimentoSumOrderByAggregateInput = {
+    quantidade?: SortOrder
+  }
+
   export type PerfilCreateNestedOneWithoutUsuarioInput = {
     create?: XOR<PerfilCreateWithoutUsuarioInput, PerfilUncheckedCreateWithoutUsuarioInput>
     connectOrCreate?: PerfilCreateOrConnectWithoutUsuarioInput
@@ -9127,6 +13086,13 @@ export namespace Prisma {
     connect?: RefeicaoWhereUniqueInput | RefeicaoWhereUniqueInput[]
   }
 
+  export type SugestaoAlimentacaoCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<SugestaoAlimentacaoCreateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput> | SugestaoAlimentacaoCreateWithoutUsuarioInput[] | SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput | SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput[]
+    createMany?: SugestaoAlimentacaoCreateManyUsuarioInputEnvelope
+    connect?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+  }
+
   export type PerfilUncheckedCreateNestedOneWithoutUsuarioInput = {
     create?: XOR<PerfilCreateWithoutUsuarioInput, PerfilUncheckedCreateWithoutUsuarioInput>
     connectOrCreate?: PerfilCreateOrConnectWithoutUsuarioInput
@@ -9151,6 +13117,13 @@ export namespace Prisma {
     connectOrCreate?: RefeicaoCreateOrConnectWithoutUsuarioInput | RefeicaoCreateOrConnectWithoutUsuarioInput[]
     createMany?: RefeicaoCreateManyUsuarioInputEnvelope
     connect?: RefeicaoWhereUniqueInput | RefeicaoWhereUniqueInput[]
+  }
+
+  export type SugestaoAlimentacaoUncheckedCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<SugestaoAlimentacaoCreateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput> | SugestaoAlimentacaoCreateWithoutUsuarioInput[] | SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput | SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput[]
+    createMany?: SugestaoAlimentacaoCreateManyUsuarioInputEnvelope
+    connect?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -9205,6 +13178,20 @@ export namespace Prisma {
     deleteMany?: RefeicaoScalarWhereInput | RefeicaoScalarWhereInput[]
   }
 
+  export type SugestaoAlimentacaoUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<SugestaoAlimentacaoCreateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput> | SugestaoAlimentacaoCreateWithoutUsuarioInput[] | SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput | SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput[]
+    upsert?: SugestaoAlimentacaoUpsertWithWhereUniqueWithoutUsuarioInput | SugestaoAlimentacaoUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: SugestaoAlimentacaoCreateManyUsuarioInputEnvelope
+    set?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    disconnect?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    delete?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    connect?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    update?: SugestaoAlimentacaoUpdateWithWhereUniqueWithoutUsuarioInput | SugestaoAlimentacaoUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: SugestaoAlimentacaoUpdateManyWithWhereWithoutUsuarioInput | SugestaoAlimentacaoUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: SugestaoAlimentacaoScalarWhereInput | SugestaoAlimentacaoScalarWhereInput[]
+  }
+
   export type PerfilUncheckedUpdateOneWithoutUsuarioNestedInput = {
     create?: XOR<PerfilCreateWithoutUsuarioInput, PerfilUncheckedCreateWithoutUsuarioInput>
     connectOrCreate?: PerfilCreateOrConnectWithoutUsuarioInput
@@ -9251,6 +13238,20 @@ export namespace Prisma {
     update?: RefeicaoUpdateWithWhereUniqueWithoutUsuarioInput | RefeicaoUpdateWithWhereUniqueWithoutUsuarioInput[]
     updateMany?: RefeicaoUpdateManyWithWhereWithoutUsuarioInput | RefeicaoUpdateManyWithWhereWithoutUsuarioInput[]
     deleteMany?: RefeicaoScalarWhereInput | RefeicaoScalarWhereInput[]
+  }
+
+  export type SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<SugestaoAlimentacaoCreateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput> | SugestaoAlimentacaoCreateWithoutUsuarioInput[] | SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput | SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput[]
+    upsert?: SugestaoAlimentacaoUpsertWithWhereUniqueWithoutUsuarioInput | SugestaoAlimentacaoUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: SugestaoAlimentacaoCreateManyUsuarioInputEnvelope
+    set?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    disconnect?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    delete?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    connect?: SugestaoAlimentacaoWhereUniqueInput | SugestaoAlimentacaoWhereUniqueInput[]
+    update?: SugestaoAlimentacaoUpdateWithWhereUniqueWithoutUsuarioInput | SugestaoAlimentacaoUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: SugestaoAlimentacaoUpdateManyWithWhereWithoutUsuarioInput | SugestaoAlimentacaoUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: SugestaoAlimentacaoScalarWhereInput | SugestaoAlimentacaoScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutPerfilInput = {
@@ -9380,6 +13381,132 @@ export namespace Prisma {
     upsert?: RefeicaoUpsertWithoutAlimentosInput
     connect?: RefeicaoWhereUniqueInput
     update?: XOR<XOR<RefeicaoUpdateToOneWithWhereWithoutAlimentosInput, RefeicaoUpdateWithoutAlimentosInput>, RefeicaoUncheckedUpdateWithoutAlimentosInput>
+  }
+
+  export type UserCreateNestedOneWithoutSugestoesAlimentacaoInput = {
+    create?: XOR<UserCreateWithoutSugestoesAlimentacaoInput, UserUncheckedCreateWithoutSugestoesAlimentacaoInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSugestoesAlimentacaoInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SugestaoRefeicaoCreateNestedManyWithoutSugestaoAlimentacaoInput = {
+    create?: XOR<SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput> | SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput[] | SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput[]
+    connectOrCreate?: SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput[]
+    createMany?: SugestaoRefeicaoCreateManySugestaoAlimentacaoInputEnvelope
+    connect?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+  }
+
+  export type SugestaoRefeicaoUncheckedCreateNestedManyWithoutSugestaoAlimentacaoInput = {
+    create?: XOR<SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput> | SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput[] | SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput[]
+    connectOrCreate?: SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput[]
+    createMany?: SugestaoRefeicaoCreateManySugestaoAlimentacaoInputEnvelope
+    connect?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneRequiredWithoutSugestoesAlimentacaoNestedInput = {
+    create?: XOR<UserCreateWithoutSugestoesAlimentacaoInput, UserUncheckedCreateWithoutSugestoesAlimentacaoInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSugestoesAlimentacaoInput
+    upsert?: UserUpsertWithoutSugestoesAlimentacaoInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSugestoesAlimentacaoInput, UserUpdateWithoutSugestoesAlimentacaoInput>, UserUncheckedUpdateWithoutSugestoesAlimentacaoInput>
+  }
+
+  export type SugestaoRefeicaoUpdateManyWithoutSugestaoAlimentacaoNestedInput = {
+    create?: XOR<SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput> | SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput[] | SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput[]
+    connectOrCreate?: SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput[]
+    upsert?: SugestaoRefeicaoUpsertWithWhereUniqueWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoUpsertWithWhereUniqueWithoutSugestaoAlimentacaoInput[]
+    createMany?: SugestaoRefeicaoCreateManySugestaoAlimentacaoInputEnvelope
+    set?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    disconnect?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    delete?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    connect?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    update?: SugestaoRefeicaoUpdateWithWhereUniqueWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoUpdateWithWhereUniqueWithoutSugestaoAlimentacaoInput[]
+    updateMany?: SugestaoRefeicaoUpdateManyWithWhereWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoUpdateManyWithWhereWithoutSugestaoAlimentacaoInput[]
+    deleteMany?: SugestaoRefeicaoScalarWhereInput | SugestaoRefeicaoScalarWhereInput[]
+  }
+
+  export type SugestaoRefeicaoUncheckedUpdateManyWithoutSugestaoAlimentacaoNestedInput = {
+    create?: XOR<SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput> | SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput[] | SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput[]
+    connectOrCreate?: SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput[]
+    upsert?: SugestaoRefeicaoUpsertWithWhereUniqueWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoUpsertWithWhereUniqueWithoutSugestaoAlimentacaoInput[]
+    createMany?: SugestaoRefeicaoCreateManySugestaoAlimentacaoInputEnvelope
+    set?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    disconnect?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    delete?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    connect?: SugestaoRefeicaoWhereUniqueInput | SugestaoRefeicaoWhereUniqueInput[]
+    update?: SugestaoRefeicaoUpdateWithWhereUniqueWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoUpdateWithWhereUniqueWithoutSugestaoAlimentacaoInput[]
+    updateMany?: SugestaoRefeicaoUpdateManyWithWhereWithoutSugestaoAlimentacaoInput | SugestaoRefeicaoUpdateManyWithWhereWithoutSugestaoAlimentacaoInput[]
+    deleteMany?: SugestaoRefeicaoScalarWhereInput | SugestaoRefeicaoScalarWhereInput[]
+  }
+
+  export type SugestaoAlimentacaoCreateNestedOneWithoutSugestaoRefeicoesInput = {
+    create?: XOR<SugestaoAlimentacaoCreateWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUncheckedCreateWithoutSugestaoRefeicoesInput>
+    connectOrCreate?: SugestaoAlimentacaoCreateOrConnectWithoutSugestaoRefeicoesInput
+    connect?: SugestaoAlimentacaoWhereUniqueInput
+  }
+
+  export type SugestaoAlimentoCreateNestedManyWithoutSugestaoRefeicaoInput = {
+    create?: XOR<SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput> | SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput[] | SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput[]
+    connectOrCreate?: SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput | SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput[]
+    createMany?: SugestaoAlimentoCreateManySugestaoRefeicaoInputEnvelope
+    connect?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+  }
+
+  export type SugestaoAlimentoUncheckedCreateNestedManyWithoutSugestaoRefeicaoInput = {
+    create?: XOR<SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput> | SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput[] | SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput[]
+    connectOrCreate?: SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput | SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput[]
+    createMany?: SugestaoAlimentoCreateManySugestaoRefeicaoInputEnvelope
+    connect?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+  }
+
+  export type SugestaoAlimentacaoUpdateOneRequiredWithoutSugestaoRefeicoesNestedInput = {
+    create?: XOR<SugestaoAlimentacaoCreateWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUncheckedCreateWithoutSugestaoRefeicoesInput>
+    connectOrCreate?: SugestaoAlimentacaoCreateOrConnectWithoutSugestaoRefeicoesInput
+    upsert?: SugestaoAlimentacaoUpsertWithoutSugestaoRefeicoesInput
+    connect?: SugestaoAlimentacaoWhereUniqueInput
+    update?: XOR<XOR<SugestaoAlimentacaoUpdateToOneWithWhereWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUpdateWithoutSugestaoRefeicoesInput>, SugestaoAlimentacaoUncheckedUpdateWithoutSugestaoRefeicoesInput>
+  }
+
+  export type SugestaoAlimentoUpdateManyWithoutSugestaoRefeicaoNestedInput = {
+    create?: XOR<SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput> | SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput[] | SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput[]
+    connectOrCreate?: SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput | SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput[]
+    upsert?: SugestaoAlimentoUpsertWithWhereUniqueWithoutSugestaoRefeicaoInput | SugestaoAlimentoUpsertWithWhereUniqueWithoutSugestaoRefeicaoInput[]
+    createMany?: SugestaoAlimentoCreateManySugestaoRefeicaoInputEnvelope
+    set?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    disconnect?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    delete?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    connect?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    update?: SugestaoAlimentoUpdateWithWhereUniqueWithoutSugestaoRefeicaoInput | SugestaoAlimentoUpdateWithWhereUniqueWithoutSugestaoRefeicaoInput[]
+    updateMany?: SugestaoAlimentoUpdateManyWithWhereWithoutSugestaoRefeicaoInput | SugestaoAlimentoUpdateManyWithWhereWithoutSugestaoRefeicaoInput[]
+    deleteMany?: SugestaoAlimentoScalarWhereInput | SugestaoAlimentoScalarWhereInput[]
+  }
+
+  export type SugestaoAlimentoUncheckedUpdateManyWithoutSugestaoRefeicaoNestedInput = {
+    create?: XOR<SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput> | SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput[] | SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput[]
+    connectOrCreate?: SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput | SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput[]
+    upsert?: SugestaoAlimentoUpsertWithWhereUniqueWithoutSugestaoRefeicaoInput | SugestaoAlimentoUpsertWithWhereUniqueWithoutSugestaoRefeicaoInput[]
+    createMany?: SugestaoAlimentoCreateManySugestaoRefeicaoInputEnvelope
+    set?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    disconnect?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    delete?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    connect?: SugestaoAlimentoWhereUniqueInput | SugestaoAlimentoWhereUniqueInput[]
+    update?: SugestaoAlimentoUpdateWithWhereUniqueWithoutSugestaoRefeicaoInput | SugestaoAlimentoUpdateWithWhereUniqueWithoutSugestaoRefeicaoInput[]
+    updateMany?: SugestaoAlimentoUpdateManyWithWhereWithoutSugestaoRefeicaoInput | SugestaoAlimentoUpdateManyWithWhereWithoutSugestaoRefeicaoInput[]
+    deleteMany?: SugestaoAlimentoScalarWhereInput | SugestaoAlimentoScalarWhereInput[]
+  }
+
+  export type SugestaoRefeicaoCreateNestedOneWithoutAlimentosInput = {
+    create?: XOR<SugestaoRefeicaoCreateWithoutAlimentosInput, SugestaoRefeicaoUncheckedCreateWithoutAlimentosInput>
+    connectOrCreate?: SugestaoRefeicaoCreateOrConnectWithoutAlimentosInput
+    connect?: SugestaoRefeicaoWhereUniqueInput
+  }
+
+  export type SugestaoRefeicaoUpdateOneRequiredWithoutAlimentosNestedInput = {
+    create?: XOR<SugestaoRefeicaoCreateWithoutAlimentosInput, SugestaoRefeicaoUncheckedCreateWithoutAlimentosInput>
+    connectOrCreate?: SugestaoRefeicaoCreateOrConnectWithoutAlimentosInput
+    upsert?: SugestaoRefeicaoUpsertWithoutAlimentosInput
+    connect?: SugestaoRefeicaoWhereUniqueInput
+    update?: XOR<XOR<SugestaoRefeicaoUpdateToOneWithWhereWithoutAlimentosInput, SugestaoRefeicaoUpdateWithoutAlimentosInput>, SugestaoRefeicaoUncheckedUpdateWithoutAlimentosInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -9627,6 +13754,29 @@ export namespace Prisma {
     data: RefeicaoCreateManyUsuarioInput | RefeicaoCreateManyUsuarioInput[]
   }
 
+  export type SugestaoAlimentacaoCreateWithoutUsuarioInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    sugestaoRefeicoes?: SugestaoRefeicaoCreateNestedManyWithoutSugestaoAlimentacaoInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    sugestaoRefeicoes?: SugestaoRefeicaoUncheckedCreateNestedManyWithoutSugestaoAlimentacaoInput
+  }
+
+  export type SugestaoAlimentacaoCreateOrConnectWithoutUsuarioInput = {
+    where: SugestaoAlimentacaoWhereUniqueInput
+    create: XOR<SugestaoAlimentacaoCreateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type SugestaoAlimentacaoCreateManyUsuarioInputEnvelope = {
+    data: SugestaoAlimentacaoCreateManyUsuarioInput | SugestaoAlimentacaoCreateManyUsuarioInput[]
+  }
+
   export type PerfilUpsertWithoutUsuarioInput = {
     update: XOR<PerfilUpdateWithoutUsuarioInput, PerfilUncheckedUpdateWithoutUsuarioInput>
     create: XOR<PerfilCreateWithoutUsuarioInput, PerfilUncheckedCreateWithoutUsuarioInput>
@@ -9745,6 +13895,32 @@ export namespace Prisma {
     usuarioId?: StringFilter<"Refeicao"> | string
   }
 
+  export type SugestaoAlimentacaoUpsertWithWhereUniqueWithoutUsuarioInput = {
+    where: SugestaoAlimentacaoWhereUniqueInput
+    update: XOR<SugestaoAlimentacaoUpdateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedUpdateWithoutUsuarioInput>
+    create: XOR<SugestaoAlimentacaoCreateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type SugestaoAlimentacaoUpdateWithWhereUniqueWithoutUsuarioInput = {
+    where: SugestaoAlimentacaoWhereUniqueInput
+    data: XOR<SugestaoAlimentacaoUpdateWithoutUsuarioInput, SugestaoAlimentacaoUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type SugestaoAlimentacaoUpdateManyWithWhereWithoutUsuarioInput = {
+    where: SugestaoAlimentacaoScalarWhereInput
+    data: XOR<SugestaoAlimentacaoUpdateManyMutationInput, SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioInput>
+  }
+
+  export type SugestaoAlimentacaoScalarWhereInput = {
+    AND?: SugestaoAlimentacaoScalarWhereInput | SugestaoAlimentacaoScalarWhereInput[]
+    OR?: SugestaoAlimentacaoScalarWhereInput[]
+    NOT?: SugestaoAlimentacaoScalarWhereInput | SugestaoAlimentacaoScalarWhereInput[]
+    id?: StringFilter<"SugestaoAlimentacao"> | string
+    diaSemana?: StringFilter<"SugestaoAlimentacao"> | string
+    createdAt?: DateTimeFilter<"SugestaoAlimentacao"> | Date | string
+    usuarioId?: StringFilter<"SugestaoAlimentacao"> | string
+  }
+
   export type UserCreateWithoutPerfilInput = {
     id?: string
     email: string
@@ -9752,6 +13928,7 @@ export namespace Prisma {
     meta?: MetaCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaCreateNestedManyWithoutUsuarioInput
     refeicoes?: RefeicaoCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUncheckedCreateWithoutPerfilInput = {
@@ -9761,6 +13938,7 @@ export namespace Prisma {
     meta?: MetaUncheckedCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaUncheckedCreateNestedManyWithoutUsuarioInput
     refeicoes?: RefeicaoUncheckedCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserCreateOrConnectWithoutPerfilInput = {
@@ -9785,6 +13963,7 @@ export namespace Prisma {
     meta?: MetaUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUpdateManyWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPerfilInput = {
@@ -9793,6 +13972,7 @@ export namespace Prisma {
     meta?: MetaUncheckedUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUncheckedUpdateManyWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUncheckedUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserCreateWithoutMetaInput = {
@@ -9802,6 +13982,7 @@ export namespace Prisma {
     perfil?: PerfilCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaCreateNestedManyWithoutUsuarioInput
     refeicoes?: RefeicaoCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUncheckedCreateWithoutMetaInput = {
@@ -9811,6 +13992,7 @@ export namespace Prisma {
     perfil?: PerfilUncheckedCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaUncheckedCreateNestedManyWithoutUsuarioInput
     refeicoes?: RefeicaoUncheckedCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserCreateOrConnectWithoutMetaInput = {
@@ -9835,6 +14017,7 @@ export namespace Prisma {
     perfil?: PerfilUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUpdateManyWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMetaInput = {
@@ -9843,6 +14026,7 @@ export namespace Prisma {
     perfil?: PerfilUncheckedUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUncheckedUpdateManyWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUncheckedUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserCreateWithoutConsumoAguaInput = {
@@ -9852,6 +14036,7 @@ export namespace Prisma {
     perfil?: PerfilCreateNestedOneWithoutUsuarioInput
     meta?: MetaCreateNestedOneWithoutUsuarioInput
     refeicoes?: RefeicaoCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUncheckedCreateWithoutConsumoAguaInput = {
@@ -9861,6 +14046,7 @@ export namespace Prisma {
     perfil?: PerfilUncheckedCreateNestedOneWithoutUsuarioInput
     meta?: MetaUncheckedCreateNestedOneWithoutUsuarioInput
     refeicoes?: RefeicaoUncheckedCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserCreateOrConnectWithoutConsumoAguaInput = {
@@ -9885,6 +14071,7 @@ export namespace Prisma {
     perfil?: PerfilUpdateOneWithoutUsuarioNestedInput
     meta?: MetaUpdateOneWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConsumoAguaInput = {
@@ -9893,6 +14080,7 @@ export namespace Prisma {
     perfil?: PerfilUncheckedUpdateOneWithoutUsuarioNestedInput
     meta?: MetaUncheckedUpdateOneWithoutUsuarioNestedInput
     refeicoes?: RefeicaoUncheckedUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserCreateWithoutRefeicoesInput = {
@@ -9902,6 +14090,7 @@ export namespace Prisma {
     perfil?: PerfilCreateNestedOneWithoutUsuarioInput
     meta?: MetaCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserUncheckedCreateWithoutRefeicoesInput = {
@@ -9911,6 +14100,7 @@ export namespace Prisma {
     perfil?: PerfilUncheckedCreateNestedOneWithoutUsuarioInput
     meta?: MetaUncheckedCreateNestedOneWithoutUsuarioInput
     consumoAgua?: ConsumoAguaUncheckedCreateNestedManyWithoutUsuarioInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedCreateNestedManyWithoutUsuarioInput
   }
 
   export type UserCreateOrConnectWithoutRefeicoesInput = {
@@ -9966,6 +14156,7 @@ export namespace Prisma {
     perfil?: PerfilUpdateOneWithoutUsuarioNestedInput
     meta?: MetaUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUpdateManyWithoutUsuarioNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRefeicoesInput = {
@@ -9974,6 +14165,7 @@ export namespace Prisma {
     perfil?: PerfilUncheckedUpdateOneWithoutUsuarioNestedInput
     meta?: MetaUncheckedUpdateOneWithoutUsuarioNestedInput
     consumoAgua?: ConsumoAguaUncheckedUpdateManyWithoutUsuarioNestedInput
+    sugestoesAlimentacao?: SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
   export type AlimentoRefeicaoUpsertWithWhereUniqueWithoutRefeicaoInput = {
@@ -10065,6 +14257,261 @@ export namespace Prisma {
     usuarioId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type UserCreateWithoutSugestoesAlimentacaoInput = {
+    id?: string
+    email: string
+    password: string
+    perfil?: PerfilCreateNestedOneWithoutUsuarioInput
+    meta?: MetaCreateNestedOneWithoutUsuarioInput
+    consumoAgua?: ConsumoAguaCreateNestedManyWithoutUsuarioInput
+    refeicoes?: RefeicaoCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UserUncheckedCreateWithoutSugestoesAlimentacaoInput = {
+    id?: string
+    email: string
+    password: string
+    perfil?: PerfilUncheckedCreateNestedOneWithoutUsuarioInput
+    meta?: MetaUncheckedCreateNestedOneWithoutUsuarioInput
+    consumoAgua?: ConsumoAguaUncheckedCreateNestedManyWithoutUsuarioInput
+    refeicoes?: RefeicaoUncheckedCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UserCreateOrConnectWithoutSugestoesAlimentacaoInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSugestoesAlimentacaoInput, UserUncheckedCreateWithoutSugestoesAlimentacaoInput>
+  }
+
+  export type SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    alimentos?: SugestaoAlimentoCreateNestedManyWithoutSugestaoRefeicaoInput
+  }
+
+  export type SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    alimentos?: SugestaoAlimentoUncheckedCreateNestedManyWithoutSugestaoRefeicaoInput
+  }
+
+  export type SugestaoRefeicaoCreateOrConnectWithoutSugestaoAlimentacaoInput = {
+    where: SugestaoRefeicaoWhereUniqueInput
+    create: XOR<SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput>
+  }
+
+  export type SugestaoRefeicaoCreateManySugestaoAlimentacaoInputEnvelope = {
+    data: SugestaoRefeicaoCreateManySugestaoAlimentacaoInput | SugestaoRefeicaoCreateManySugestaoAlimentacaoInput[]
+  }
+
+  export type UserUpsertWithoutSugestoesAlimentacaoInput = {
+    update: XOR<UserUpdateWithoutSugestoesAlimentacaoInput, UserUncheckedUpdateWithoutSugestoesAlimentacaoInput>
+    create: XOR<UserCreateWithoutSugestoesAlimentacaoInput, UserUncheckedCreateWithoutSugestoesAlimentacaoInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSugestoesAlimentacaoInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSugestoesAlimentacaoInput, UserUncheckedUpdateWithoutSugestoesAlimentacaoInput>
+  }
+
+  export type UserUpdateWithoutSugestoesAlimentacaoInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    perfil?: PerfilUpdateOneWithoutUsuarioNestedInput
+    meta?: MetaUpdateOneWithoutUsuarioNestedInput
+    consumoAgua?: ConsumoAguaUpdateManyWithoutUsuarioNestedInput
+    refeicoes?: RefeicaoUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSugestoesAlimentacaoInput = {
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    perfil?: PerfilUncheckedUpdateOneWithoutUsuarioNestedInput
+    meta?: MetaUncheckedUpdateOneWithoutUsuarioNestedInput
+    consumoAgua?: ConsumoAguaUncheckedUpdateManyWithoutUsuarioNestedInput
+    refeicoes?: RefeicaoUncheckedUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type SugestaoRefeicaoUpsertWithWhereUniqueWithoutSugestaoAlimentacaoInput = {
+    where: SugestaoRefeicaoWhereUniqueInput
+    update: XOR<SugestaoRefeicaoUpdateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedUpdateWithoutSugestaoAlimentacaoInput>
+    create: XOR<SugestaoRefeicaoCreateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedCreateWithoutSugestaoAlimentacaoInput>
+  }
+
+  export type SugestaoRefeicaoUpdateWithWhereUniqueWithoutSugestaoAlimentacaoInput = {
+    where: SugestaoRefeicaoWhereUniqueInput
+    data: XOR<SugestaoRefeicaoUpdateWithoutSugestaoAlimentacaoInput, SugestaoRefeicaoUncheckedUpdateWithoutSugestaoAlimentacaoInput>
+  }
+
+  export type SugestaoRefeicaoUpdateManyWithWhereWithoutSugestaoAlimentacaoInput = {
+    where: SugestaoRefeicaoScalarWhereInput
+    data: XOR<SugestaoRefeicaoUpdateManyMutationInput, SugestaoRefeicaoUncheckedUpdateManyWithoutSugestaoAlimentacaoInput>
+  }
+
+  export type SugestaoRefeicaoScalarWhereInput = {
+    AND?: SugestaoRefeicaoScalarWhereInput | SugestaoRefeicaoScalarWhereInput[]
+    OR?: SugestaoRefeicaoScalarWhereInput[]
+    NOT?: SugestaoRefeicaoScalarWhereInput | SugestaoRefeicaoScalarWhereInput[]
+    id?: StringFilter<"SugestaoRefeicao"> | string
+    tipo?: StringFilter<"SugestaoRefeicao"> | string
+    calorias?: FloatFilter<"SugestaoRefeicao"> | number
+    proteinas?: FloatFilter<"SugestaoRefeicao"> | number
+    carboidratos?: FloatFilter<"SugestaoRefeicao"> | number
+    gorduras?: FloatFilter<"SugestaoRefeicao"> | number
+    sugestaoAlimentacaoId?: StringFilter<"SugestaoRefeicao"> | string
+  }
+
+  export type SugestaoAlimentacaoCreateWithoutSugestaoRefeicoesInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    usuario: UserCreateNestedOneWithoutSugestoesAlimentacaoInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedCreateWithoutSugestaoRefeicoesInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
+    usuarioId: string
+  }
+
+  export type SugestaoAlimentacaoCreateOrConnectWithoutSugestaoRefeicoesInput = {
+    where: SugestaoAlimentacaoWhereUniqueInput
+    create: XOR<SugestaoAlimentacaoCreateWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUncheckedCreateWithoutSugestaoRefeicoesInput>
+  }
+
+  export type SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput = {
+    id?: string
+    nome: string
+    quantidade: number
+  }
+
+  export type SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput = {
+    id?: string
+    nome: string
+    quantidade: number
+  }
+
+  export type SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput = {
+    where: SugestaoAlimentoWhereUniqueInput
+    create: XOR<SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput>
+  }
+
+  export type SugestaoAlimentoCreateManySugestaoRefeicaoInputEnvelope = {
+    data: SugestaoAlimentoCreateManySugestaoRefeicaoInput | SugestaoAlimentoCreateManySugestaoRefeicaoInput[]
+  }
+
+  export type SugestaoAlimentacaoUpsertWithoutSugestaoRefeicoesInput = {
+    update: XOR<SugestaoAlimentacaoUpdateWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUncheckedUpdateWithoutSugestaoRefeicoesInput>
+    create: XOR<SugestaoAlimentacaoCreateWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUncheckedCreateWithoutSugestaoRefeicoesInput>
+    where?: SugestaoAlimentacaoWhereInput
+  }
+
+  export type SugestaoAlimentacaoUpdateToOneWithWhereWithoutSugestaoRefeicoesInput = {
+    where?: SugestaoAlimentacaoWhereInput
+    data: XOR<SugestaoAlimentacaoUpdateWithoutSugestaoRefeicoesInput, SugestaoAlimentacaoUncheckedUpdateWithoutSugestaoRefeicoesInput>
+  }
+
+  export type SugestaoAlimentacaoUpdateWithoutSugestaoRefeicoesInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UserUpdateOneRequiredWithoutSugestoesAlimentacaoNestedInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedUpdateWithoutSugestaoRefeicoesInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type SugestaoAlimentoUpsertWithWhereUniqueWithoutSugestaoRefeicaoInput = {
+    where: SugestaoAlimentoWhereUniqueInput
+    update: XOR<SugestaoAlimentoUpdateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedUpdateWithoutSugestaoRefeicaoInput>
+    create: XOR<SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput>
+  }
+
+  export type SugestaoAlimentoUpdateWithWhereUniqueWithoutSugestaoRefeicaoInput = {
+    where: SugestaoAlimentoWhereUniqueInput
+    data: XOR<SugestaoAlimentoUpdateWithoutSugestaoRefeicaoInput, SugestaoAlimentoUncheckedUpdateWithoutSugestaoRefeicaoInput>
+  }
+
+  export type SugestaoAlimentoUpdateManyWithWhereWithoutSugestaoRefeicaoInput = {
+    where: SugestaoAlimentoScalarWhereInput
+    data: XOR<SugestaoAlimentoUpdateManyMutationInput, SugestaoAlimentoUncheckedUpdateManyWithoutSugestaoRefeicaoInput>
+  }
+
+  export type SugestaoAlimentoScalarWhereInput = {
+    AND?: SugestaoAlimentoScalarWhereInput | SugestaoAlimentoScalarWhereInput[]
+    OR?: SugestaoAlimentoScalarWhereInput[]
+    NOT?: SugestaoAlimentoScalarWhereInput | SugestaoAlimentoScalarWhereInput[]
+    id?: StringFilter<"SugestaoAlimento"> | string
+    nome?: StringFilter<"SugestaoAlimento"> | string
+    quantidade?: FloatFilter<"SugestaoAlimento"> | number
+    sugestaoRefeicaoId?: StringFilter<"SugestaoAlimento"> | string
+  }
+
+  export type SugestaoRefeicaoCreateWithoutAlimentosInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacao: SugestaoAlimentacaoCreateNestedOneWithoutSugestaoRefeicoesInput
+  }
+
+  export type SugestaoRefeicaoUncheckedCreateWithoutAlimentosInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    sugestaoAlimentacaoId: string
+  }
+
+  export type SugestaoRefeicaoCreateOrConnectWithoutAlimentosInput = {
+    where: SugestaoRefeicaoWhereUniqueInput
+    create: XOR<SugestaoRefeicaoCreateWithoutAlimentosInput, SugestaoRefeicaoUncheckedCreateWithoutAlimentosInput>
+  }
+
+  export type SugestaoRefeicaoUpsertWithoutAlimentosInput = {
+    update: XOR<SugestaoRefeicaoUpdateWithoutAlimentosInput, SugestaoRefeicaoUncheckedUpdateWithoutAlimentosInput>
+    create: XOR<SugestaoRefeicaoCreateWithoutAlimentosInput, SugestaoRefeicaoUncheckedCreateWithoutAlimentosInput>
+    where?: SugestaoRefeicaoWhereInput
+  }
+
+  export type SugestaoRefeicaoUpdateToOneWithWhereWithoutAlimentosInput = {
+    where?: SugestaoRefeicaoWhereInput
+    data: XOR<SugestaoRefeicaoUpdateWithoutAlimentosInput, SugestaoRefeicaoUncheckedUpdateWithoutAlimentosInput>
+  }
+
+  export type SugestaoRefeicaoUpdateWithoutAlimentosInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    sugestaoAlimentacao?: SugestaoAlimentacaoUpdateOneRequiredWithoutSugestaoRefeicoesNestedInput
+  }
+
+  export type SugestaoRefeicaoUncheckedUpdateWithoutAlimentosInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    sugestaoAlimentacaoId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ConsumoAguaCreateManyUsuarioInput = {
     id?: string
     quantidade: number
@@ -10079,6 +14526,12 @@ export namespace Prisma {
     proteinas?: number
     carboidratos?: number
     gorduras?: number
+  }
+
+  export type SugestaoAlimentacaoCreateManyUsuarioInput = {
+    id?: string
+    diaSemana: string
+    createdAt?: Date | string
   }
 
   export type ConsumoAguaUpdateWithoutUsuarioInput = {
@@ -10125,6 +14578,23 @@ export namespace Prisma {
     gorduras?: FloatFieldUpdateOperationsInput | number
   }
 
+  export type SugestaoAlimentacaoUpdateWithoutUsuarioInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sugestaoRefeicoes?: SugestaoRefeicaoUpdateManyWithoutSugestaoAlimentacaoNestedInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedUpdateWithoutUsuarioInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sugestaoRefeicoes?: SugestaoRefeicaoUncheckedUpdateManyWithoutSugestaoAlimentacaoNestedInput
+  }
+
+  export type SugestaoAlimentacaoUncheckedUpdateManyWithoutUsuarioInput = {
+    diaSemana?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AlimentoRefeicaoCreateManyRefeicaoInput = {
     id?: string
     nomeAlimento: string
@@ -10164,6 +14634,62 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
     codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type SugestaoRefeicaoCreateManySugestaoAlimentacaoInput = {
+    id?: string
+    tipo: string
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+  }
+
+  export type SugestaoRefeicaoUpdateWithoutSugestaoAlimentacaoInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    alimentos?: SugestaoAlimentoUpdateManyWithoutSugestaoRefeicaoNestedInput
+  }
+
+  export type SugestaoRefeicaoUncheckedUpdateWithoutSugestaoAlimentacaoInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    alimentos?: SugestaoAlimentoUncheckedUpdateManyWithoutSugestaoRefeicaoNestedInput
+  }
+
+  export type SugestaoRefeicaoUncheckedUpdateManyWithoutSugestaoAlimentacaoInput = {
+    tipo?: StringFieldUpdateOperationsInput | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type SugestaoAlimentoCreateManySugestaoRefeicaoInput = {
+    id?: string
+    nome: string
+    quantidade: number
+  }
+
+  export type SugestaoAlimentoUpdateWithoutSugestaoRefeicaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type SugestaoAlimentoUncheckedUpdateWithoutSugestaoRefeicaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type SugestaoAlimentoUncheckedUpdateManyWithoutSugestaoRefeicaoInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
   }
 
 

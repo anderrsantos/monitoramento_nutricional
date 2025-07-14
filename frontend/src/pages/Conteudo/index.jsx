@@ -1,5 +1,5 @@
 import '../../index.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import logo from '../../assets/logo.png'
 import GraficoAnel from '../../components/GraficoAnel'
 import Button from 'react-bootstrap/Button'
@@ -18,13 +18,12 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [caloriasPorDiaSemana, setCaloriasPorDiaSemana] = useState([0,0,0,0,0,0,0]);
   const [refeicoesDia, setRefeicoesDia] = useState([]);
   const [mostrarTodasRefeicoes, setMostrarTodasRefeicoes] = useState(false);
+  const [getPerfil, setPerfil]=useState(false)
   // Ordenar as refeições do dia por horário
   const refeicoesDiaOrdenadas = [...refeicoesDia].sort((a, b) => new Date(a.horario) - new Date(b.horario));
 
-   const teste = () =>{
-    console.log('teste')
-  }
 
+  const [getSugestaoComida, setSugestaoComida] = useState(false)
 
   // Controlador de agua =================================================================================
   const [aguaInputMl, setAguaInputMl] = useState(null) // serve para plotar dados no grafico
@@ -55,10 +54,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [consumoProteinas, setConsumoProteinas] = useState(0);
   const [consumoCarboidratos, setConsumoCarboidratos] = useState(0);
   const [consumoGorduras, setConsumoGorduras] = useState(0);
-  
- 
-  
- 
  
   const irParaPerfilLocal = () => {
     irParaPerfil(usuario);
@@ -82,6 +77,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         setPesoKg(parseFloat(dadosPerfil.peso));
         setAlturaCm(parseFloat(dadosPerfil.altura));
         setNivelAtividade(dadosPerfil.nivelAtividade);
+        setPerfil(dadosPerfil)
 
 
         
@@ -193,7 +189,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const handleShowModal = () => setShowModal(true)
 
 
-
 // Manipulação dos dados para o consumo do dia  ===============================================
 
   // Carregar calorias e agua de hoje ao montar o componente
@@ -201,19 +196,24 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       if (usuario.userId) {
        atualizarCaloriasAguaHoje();
       }
-  }, [usuario]);
+  }, [usuario.userId]);
 
   // Buscar caloriase agua consumidas hoje
   async function atualizarCaloriasAguaHoje() {
-    console.log('usuario: ', usuario)
+    console.log('usuario  agua calorias: ', usuario)
     try {
       // Buscar água consumida nas últimas 24h (1 dia)
-      const responseAgua = await api.get('/getConsumoAguaPorDia', {params: { userId: usuario.userId, dias: 1}});
+console.log("entrou em calorias 1");
+      const responseAgua = await api.get('/getConsumoAguaPorDia', {params: { userId: usuario.userId, dias: 1}});   
       const quantidade = Object.values(responseAgua.data.consumoPorDia)[0] || 0;
+      console.log("entrou em calorias 2: ", quantidade);
+
       setAguaConsumidaMl(quantidade)
 
-      const responseCalorias = await api.get(`/calorias-hoje/${usuario.userId}`);
+      console.log("entrou     em caloris 3")
+      const responseCalorias = await api.get('/getCaloriasHoje', {params: { usuarioId: usuario.userId}});
       setCaloriasInput(responseCalorias.data.totalCalorias);
+     console.log("entrou em calorias 4: ",responseCalorias.data.totalCalorias );
 
       // Buscar refeições do dia para calcular macros
       const hoje = new Date();
@@ -221,7 +221,8 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       const mes = String(hoje.getMonth() + 1).padStart(2, '0');
       const dia = String(hoje.getDate()).padStart(2, '0');
       const dataHoje = `${ano}-${mes}-${dia}`;
-      const responseRefeicoes = await api.get('/getrefeicoes', { params: { usuarioId: usuario.userId } });
+
+      const responseRefeicoes = await api.get('/getRefeicoes', { params: { usuarioId: usuario.userId } });
       const refeicoes = responseRefeicoes.data;
       let prot = 0, carb = 0, gord = 0;
       refeicoes.forEach(refeicao => {
@@ -374,9 +375,70 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
 
 
-//===========================================================================================
+// ============================================================================================
+
+// Manipulação das Sugestoões de comida =======================================================
+const carregou = useRef(false);
+
+useEffect(() => {
+  if (usuario.userId && !carregou.current) {
+    console.log('entrou aqui')
+    verificarESincronizarSugestao();
+    carregou.current = true;
+  }
+}, [usuario.userId]);
+
+const verificarESincronizarSugestao = async () => {
+  try {
+    const response = await api.get('/getSugestaoAlimentacao', {
+      params: { usuarioId: usuario.userId }
+    });
+
+    const nomeDia = new Date().toLocaleDateString('pt-BR', { weekday: 'long' });
+    const diaFormatado = nomeDia.charAt(0).toUpperCase() + nomeDia.slice(1).replace('-feira', '');
+
+    if (response.data.message) {
+      await gerarSugestao();
+    } else if (!response.data[diaFormatado]) {
+      await gerarSugestao();
+    } else {
+      setSugestaoComida(response.data);
+    }
+  } catch (e) {
+    console.error('Erro ao buscar sugestao:', e);
+  }
+};
+
+const gerarSugestao = async () => {
+  const dadosMeta = {
+    agua: metaAguaMl,
+    calorias: metaCalorias,
+    proteina: metaProteinas,
+    carboidrato: metaCarboidratos,
+    gordura: metaGorduras,
+  };
+
+  const payload = {
+    usuarioId: usuario.userId,
+    dataNascimento: getPerfil.dataNascimento,
+    peso: getPerfil.peso,
+    altura: getPerfil.altura,
+    sexo: getPerfil.sexo,
+    objetivo: getPerfil.objetivo,
+    nivelAtividade: getPerfil.nivelAtividade,
+    dados: dadosMeta,
+  };
+
+  await api.post('/sugestaoAlimentacao', payload);
+
+  const nova = await api.get('/getSugestaoAlimentacao', {
+    params: { usuarioId: usuario.userId },
+  });
+  setSugestaoComida(nova.data);
+};
 
 
+// ============================================================================================
 
 
 
