@@ -16,6 +16,11 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [imc, setImc] = useState(0)
   const [showModal, setShowModal] = useState(false)
 
+   const teste = () =>{
+    console.log('teste')
+  }
+
+
   // Controlador de agua =================================================================================
   const [aguaInputMl, setAguaInputMl] = useState(null) // serve para plotar dados no grafico
   const [aguaRecebe, setAguaRecebe] = useState(null) // serve para receber dados pagina 
@@ -193,6 +198,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       setAguaConsumidaMl(quantidade)
 
       const responseCalorias = await api.get(`/calorias-hoje/${usuario.userId}`);
+      console.log(responseCalorias)
       setCaloriasInput(responseCalorias.data.totalCalorias);
 
 
@@ -212,7 +218,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         });
 
         setAguaRecebe(null);
-         await atualizarCaloriasAguaHoje(); // Atualiza os dados na tela
+        await atualizarCaloriasAguaHoje(); // Atualiza os dados na tela
       } catch (error) {
         console.error('Erro ao salvar consumo de água:', error);
       }
@@ -222,7 +228,9 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   };
 
   // Salvar refeição no backend
-  async function salvarRefeicao() {
+  const salvarRefeicao = async () =>{
+
+    console.log('chamou ascjkjkjnckjkcjnkjv')
     if (alimentosRefeicao.length === 0) {
       alert('Adicione pelo menos um alimento à refeição');
       return;
@@ -232,7 +240,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       alert('Digite um nome para a refeição');
       return;
     }
-
+    console.log('usuario: ',usuario)
     try {
       const alimentosParaSalvar = alimentosRefeicao.map(item => ({
         nomeAlimento: item.alimento.product_name || 'Nome não disponível',
@@ -243,15 +251,18 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         gorduras: parseFloat(item.alimento.nutriments?.fat) || 0,
         codigoOpenFood: item.alimento.code || null
       }));
+      console.log('usuario: ',usuario)
 
       const response = await api.post('/refeicoes', {
-        usuarioId: usuario.id,
+        usuarioId: usuario.userId,
         nome: nomeRefeicao,
         alimentos: alimentosParaSalvar
       });
 
+
+
       // Atualizar calorias consumidas hoje
-      await atualizarCaloriasHoje();
+      await atualizarCaloriasAguaHoje();
 
       // Limpar formulário
       setAlimentosRefeicao([]);
@@ -263,6 +274,29 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       console.error('Erro ao salvar refeição:', error);
       alert('Erro ao salvar refeição. Tente novamente.');
     }
+  }
+
+    // Adicionar alimento à refeição
+  const adicionarAlimentoNaRefeicao = async () =>{
+    if (!resultadoAlimento) return
+    const calorias = calcularCaloriasPorQuantidade(resultadoAlimento, quantidadeSelecionada)
+    setAlimentosRefeicao(prev => [
+      ...prev,
+      {
+        alimento: resultadoAlimento,
+        quantidade: quantidadeSelecionada,
+        calorias: calorias,
+      }
+    ])
+    setResultadoAlimento(null)
+    setQuantidadeSelecionada(100)
+    setListaResultados([])
+    setAlimentoBusca('')
+  }
+
+  // Remover alimento da refeição
+  const removerAlimentoDaRefeicao= async (idx) => {
+    setAlimentosRefeicao(prev => prev.filter((_, i) => i !== idx))
   }
 
 
@@ -331,28 +365,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
     return ((kcal * quantidade) / 100).toFixed(1)
   }
 
-  // Adicionar alimento à refeição
-  function adicionarAlimentoNaRefeicao() {
-    if (!resultadoAlimento) return
-    const calorias = calcularCaloriasPorQuantidade(resultadoAlimento, quantidadeSelecionada)
-    setAlimentosRefeicao(prev => [
-      ...prev,
-      {
-        alimento: resultadoAlimento,
-        quantidade: quantidadeSelecionada,
-        calorias: calorias,
-      }
-    ])
-    setResultadoAlimento(null)
-    setQuantidadeSelecionada(100)
-    setListaResultados([])
-    setAlimentoBusca('')
-  }
 
-  // Remover alimento da refeição
-  function removerAlimentoDaRefeicao(idx) {
-    setAlimentosRefeicao(prev => prev.filter((_, i) => i !== idx))
-  }
 
   // Calorias totais da refeição
   const totalCaloriasRefeicao = alimentosRefeicao.reduce((acc, item) => acc + (parseFloat(item.calorias) || 0), 0).toFixed(1)
@@ -626,11 +639,12 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
                  </li>
                ))}
              </ul>
+
              <div className="fw-bold">Total de calorias da refeição: {totalCaloriasRefeicao} kcal</div>
              <Button 
                variant="success" 
                className="mt-3 w-100" 
-               onClick={salvarRefeicao}
+               onClick={teste}
                disabled={!nomeRefeicao.trim()}
              >
                Salvar Refeição

@@ -539,7 +539,7 @@ app.get('/api/openfoodfacts', async (req, res) => {
 app.post('/refeicoes', async (req, res) => {
   try {
     const { usuarioId, nome, alimentos } = req.body;
-    
+    console.log('addw: ', req.body)
     if (!usuarioId || !nome || !alimentos || !Array.isArray(alimentos)) {
       return res.status(400).json({ error: 'Dados inválidos' });
     }
@@ -596,7 +596,7 @@ app.post('/refeicoes', async (req, res) => {
 });
 
 // Buscar refeições do usuário
-app.get('/refeicoes/:usuarioId', async (req, res) => {
+app.get('/getrefeicoes', async (req, res) => {
   try {
     const { usuarioId } = req.params;
     
