@@ -38,6 +38,11 @@ export type ConsumoAgua = $Result.DefaultSelection<Prisma.$ConsumoAguaPayload>
  * 
  */
 export type Refeicao = $Result.DefaultSelection<Prisma.$RefeicaoPayload>
+/**
+ * Model AlimentoRefeicao
+ * 
+ */
+export type AlimentoRefeicao = $Result.DefaultSelection<Prisma.$AlimentoRefeicaoPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -180,6 +185,16 @@ export class PrismaClient<
     * ```
     */
   get refeicao(): Prisma.RefeicaoDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.alimentoRefeicao`: Exposes CRUD operations for the **AlimentoRefeicao** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AlimentoRefeicaos
+    * const alimentoRefeicaos = await prisma.alimentoRefeicao.findMany()
+    * ```
+    */
+  get alimentoRefeicao(): Prisma.AlimentoRefeicaoDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -624,7 +639,8 @@ export namespace Prisma {
     Perfil: 'Perfil',
     Meta: 'Meta',
     ConsumoAgua: 'ConsumoAgua',
-    Refeicao: 'Refeicao'
+    Refeicao: 'Refeicao',
+    AlimentoRefeicao: 'AlimentoRefeicao'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -643,7 +659,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "perfil" | "meta" | "consumoAgua" | "refeicao"
+      modelProps: "user" | "perfil" | "meta" | "consumoAgua" | "refeicao" | "alimentoRefeicao"
       txIsolationLevel: never
     }
     model: {
@@ -1017,6 +1033,80 @@ export namespace Prisma {
           }
         }
       }
+      AlimentoRefeicao: {
+        payload: Prisma.$AlimentoRefeicaoPayload<ExtArgs>
+        fields: Prisma.AlimentoRefeicaoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AlimentoRefeicaoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AlimentoRefeicaoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>
+          }
+          findFirst: {
+            args: Prisma.AlimentoRefeicaoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AlimentoRefeicaoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>
+          }
+          findMany: {
+            args: Prisma.AlimentoRefeicaoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>[]
+          }
+          create: {
+            args: Prisma.AlimentoRefeicaoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>
+          }
+          createMany: {
+            args: Prisma.AlimentoRefeicaoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          delete: {
+            args: Prisma.AlimentoRefeicaoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>
+          }
+          update: {
+            args: Prisma.AlimentoRefeicaoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>
+          }
+          deleteMany: {
+            args: Prisma.AlimentoRefeicaoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AlimentoRefeicaoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          upsert: {
+            args: Prisma.AlimentoRefeicaoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AlimentoRefeicaoPayload>
+          }
+          aggregate: {
+            args: Prisma.AlimentoRefeicaoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAlimentoRefeicao>
+          }
+          groupBy: {
+            args: Prisma.AlimentoRefeicaoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AlimentoRefeicaoGroupByOutputType>[]
+          }
+          findRaw: {
+            args: Prisma.AlimentoRefeicaoFindRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          aggregateRaw: {
+            args: Prisma.AlimentoRefeicaoAggregateRawArgs<ExtArgs>
+            result: JsonObject
+          }
+          count: {
+            args: Prisma.AlimentoRefeicaoCountArgs<ExtArgs>
+            result: $Utils.Optional<AlimentoRefeicaoCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1093,6 +1183,7 @@ export namespace Prisma {
     meta?: MetaOmit
     consumoAgua?: ConsumoAguaOmit
     refeicao?: RefeicaoOmit
+    alimentoRefeicao?: AlimentoRefeicaoOmit
   }
 
   /* Types for Logging */
@@ -1219,6 +1310,37 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountRefeicoesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RefeicaoWhereInput
+  }
+
+
+  /**
+   * Count Type RefeicaoCountOutputType
+   */
+
+  export type RefeicaoCountOutputType = {
+    alimentos: number
+  }
+
+  export type RefeicaoCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    alimentos?: boolean | RefeicaoCountOutputTypeCountAlimentosArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * RefeicaoCountOutputType without action
+   */
+  export type RefeicaoCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RefeicaoCountOutputType
+     */
+    select?: RefeicaoCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * RefeicaoCountOutputType without action
+   */
+  export type RefeicaoCountOutputTypeCountAlimentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlimentoRefeicaoWhereInput
   }
 
 
@@ -3390,6 +3512,7 @@ export namespace Prisma {
     carboidratos: number | null
     agua: number | null
     gorduras: number | null
+    dataCriacao: Date | null
     usuarioId: string | null
   }
 
@@ -3400,6 +3523,7 @@ export namespace Prisma {
     carboidratos: number | null
     agua: number | null
     gorduras: number | null
+    dataCriacao: Date | null
     usuarioId: string | null
   }
 
@@ -3410,6 +3534,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: number
     usuarioId: number
     _all: number
   }
@@ -3438,6 +3563,7 @@ export namespace Prisma {
     carboidratos?: true
     agua?: true
     gorduras?: true
+    dataCriacao?: true
     usuarioId?: true
   }
 
@@ -3448,6 +3574,7 @@ export namespace Prisma {
     carboidratos?: true
     agua?: true
     gorduras?: true
+    dataCriacao?: true
     usuarioId?: true
   }
 
@@ -3458,6 +3585,7 @@ export namespace Prisma {
     carboidratos?: true
     agua?: true
     gorduras?: true
+    dataCriacao?: true
     usuarioId?: true
     _all?: true
   }
@@ -3555,6 +3683,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: Date
     usuarioId: string
     _count: MetaCountAggregateOutputType | null
     _avg: MetaAvgAggregateOutputType | null
@@ -3584,6 +3713,7 @@ export namespace Prisma {
     carboidratos?: boolean
     agua?: boolean
     gorduras?: boolean
+    dataCriacao?: boolean
     usuarioId?: boolean
     usuario?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["meta"]>
@@ -3597,10 +3727,11 @@ export namespace Prisma {
     carboidratos?: boolean
     agua?: boolean
     gorduras?: boolean
+    dataCriacao?: boolean
     usuarioId?: boolean
   }
 
-  export type MetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "calorias" | "proteinas" | "carboidratos" | "agua" | "gorduras" | "usuarioId", ExtArgs["result"]["meta"]>
+  export type MetaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "calorias" | "proteinas" | "carboidratos" | "agua" | "gorduras" | "dataCriacao" | "usuarioId", ExtArgs["result"]["meta"]>
   export type MetaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     usuario?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -3617,6 +3748,7 @@ export namespace Prisma {
       carboidratos: number
       agua: number
       gorduras: number
+      dataCriacao: Date
       usuarioId: string
     }, ExtArgs["result"]["meta"]>
     composites: {}
@@ -4017,6 +4149,7 @@ export namespace Prisma {
     readonly carboidratos: FieldRef<"Meta", 'Float'>
     readonly agua: FieldRef<"Meta", 'Float'>
     readonly gorduras: FieldRef<"Meta", 'Float'>
+    readonly dataCriacao: FieldRef<"Meta", 'DateTime'>
     readonly usuarioId: FieldRef<"Meta", 'String'>
   }
     
@@ -5421,88 +5554,98 @@ export namespace Prisma {
   }
 
   export type RefeicaoAvgAggregateOutputType = {
-    carboidrato: number | null
     calorias: number | null
-    proteina: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
   }
 
   export type RefeicaoSumAggregateOutputType = {
-    carboidrato: number | null
     calorias: number | null
-    proteina: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
   }
 
   export type RefeicaoMinAggregateOutputType = {
     id: string | null
     nome: string | null
-    carboidrato: number | null
+    horario: Date | null
     calorias: number | null
-    proteina: number | null
-    data: Date | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
     usuarioId: string | null
   }
 
   export type RefeicaoMaxAggregateOutputType = {
     id: string | null
     nome: string | null
-    carboidrato: number | null
+    horario: Date | null
     calorias: number | null
-    proteina: number | null
-    data: Date | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
     usuarioId: string | null
   }
 
   export type RefeicaoCountAggregateOutputType = {
     id: number
     nome: number
-    carboidrato: number
+    horario: number
     calorias: number
-    proteina: number
-    data: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
     usuarioId: number
     _all: number
   }
 
 
   export type RefeicaoAvgAggregateInputType = {
-    carboidrato?: true
     calorias?: true
-    proteina?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
   }
 
   export type RefeicaoSumAggregateInputType = {
-    carboidrato?: true
     calorias?: true
-    proteina?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
   }
 
   export type RefeicaoMinAggregateInputType = {
     id?: true
     nome?: true
-    carboidrato?: true
+    horario?: true
     calorias?: true
-    proteina?: true
-    data?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
     usuarioId?: true
   }
 
   export type RefeicaoMaxAggregateInputType = {
     id?: true
     nome?: true
-    carboidrato?: true
+    horario?: true
     calorias?: true
-    proteina?: true
-    data?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
     usuarioId?: true
   }
 
   export type RefeicaoCountAggregateInputType = {
     id?: true
     nome?: true
-    carboidrato?: true
+    horario?: true
     calorias?: true
-    proteina?: true
-    data?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
     usuarioId?: true
     _all?: true
   }
@@ -5596,10 +5739,11 @@ export namespace Prisma {
   export type RefeicaoGroupByOutputType = {
     id: string
     nome: string
-    carboidrato: number
+    horario: Date
     calorias: number
-    proteina: number
-    data: Date
+    proteinas: number
+    carboidratos: number
+    gorduras: number
     usuarioId: string
     _count: RefeicaoCountAggregateOutputType | null
     _avg: RefeicaoAvgAggregateOutputType | null
@@ -5625,12 +5769,15 @@ export namespace Prisma {
   export type RefeicaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     nome?: boolean
-    carboidrato?: boolean
+    horario?: boolean
     calorias?: boolean
-    proteina?: boolean
-    data?: boolean
+    proteinas?: boolean
+    carboidratos?: boolean
+    gorduras?: boolean
     usuarioId?: boolean
     usuario?: boolean | UserDefaultArgs<ExtArgs>
+    alimentos?: boolean | Refeicao$alimentosArgs<ExtArgs>
+    _count?: boolean | RefeicaoCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["refeicao"]>
 
 
@@ -5638,30 +5785,35 @@ export namespace Prisma {
   export type RefeicaoSelectScalar = {
     id?: boolean
     nome?: boolean
-    carboidrato?: boolean
+    horario?: boolean
     calorias?: boolean
-    proteina?: boolean
-    data?: boolean
+    proteinas?: boolean
+    carboidratos?: boolean
+    gorduras?: boolean
     usuarioId?: boolean
   }
 
-  export type RefeicaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "carboidrato" | "calorias" | "proteina" | "data" | "usuarioId", ExtArgs["result"]["refeicao"]>
+  export type RefeicaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "horario" | "calorias" | "proteinas" | "carboidratos" | "gorduras" | "usuarioId", ExtArgs["result"]["refeicao"]>
   export type RefeicaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     usuario?: boolean | UserDefaultArgs<ExtArgs>
+    alimentos?: boolean | Refeicao$alimentosArgs<ExtArgs>
+    _count?: boolean | RefeicaoCountOutputTypeDefaultArgs<ExtArgs>
   }
 
   export type $RefeicaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Refeicao"
     objects: {
       usuario: Prisma.$UserPayload<ExtArgs>
+      alimentos: Prisma.$AlimentoRefeicaoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       nome: string
-      carboidrato: number
+      horario: Date
       calorias: number
-      proteina: number
-      data: Date
+      proteinas: number
+      carboidratos: number
+      gorduras: number
       usuarioId: string
     }, ExtArgs["result"]["refeicao"]>
     composites: {}
@@ -6027,6 +6179,7 @@ export namespace Prisma {
   export interface Prisma__RefeicaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     usuario<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    alimentos<T extends Refeicao$alimentosArgs<ExtArgs> = {}>(args?: Subset<T, Refeicao$alimentosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6058,10 +6211,11 @@ export namespace Prisma {
   interface RefeicaoFieldRefs {
     readonly id: FieldRef<"Refeicao", 'String'>
     readonly nome: FieldRef<"Refeicao", 'String'>
-    readonly carboidrato: FieldRef<"Refeicao", 'Float'>
+    readonly horario: FieldRef<"Refeicao", 'DateTime'>
     readonly calorias: FieldRef<"Refeicao", 'Float'>
-    readonly proteina: FieldRef<"Refeicao", 'Float'>
-    readonly data: FieldRef<"Refeicao", 'DateTime'>
+    readonly proteinas: FieldRef<"Refeicao", 'Float'>
+    readonly carboidratos: FieldRef<"Refeicao", 'Float'>
+    readonly gorduras: FieldRef<"Refeicao", 'Float'>
     readonly usuarioId: FieldRef<"Refeicao", 'String'>
   }
     
@@ -6433,6 +6587,30 @@ export namespace Prisma {
   }
 
   /**
+   * Refeicao.alimentos
+   */
+  export type Refeicao$alimentosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    where?: AlimentoRefeicaoWhereInput
+    orderBy?: AlimentoRefeicaoOrderByWithRelationInput | AlimentoRefeicaoOrderByWithRelationInput[]
+    cursor?: AlimentoRefeicaoWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AlimentoRefeicaoScalarFieldEnum | AlimentoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
    * Refeicao without action
    */
   export type RefeicaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6448,6 +6626,1079 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RefeicaoInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AlimentoRefeicao
+   */
+
+  export type AggregateAlimentoRefeicao = {
+    _count: AlimentoRefeicaoCountAggregateOutputType | null
+    _avg: AlimentoRefeicaoAvgAggregateOutputType | null
+    _sum: AlimentoRefeicaoSumAggregateOutputType | null
+    _min: AlimentoRefeicaoMinAggregateOutputType | null
+    _max: AlimentoRefeicaoMaxAggregateOutputType | null
+  }
+
+  export type AlimentoRefeicaoAvgAggregateOutputType = {
+    quantidade: number | null
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+  }
+
+  export type AlimentoRefeicaoSumAggregateOutputType = {
+    quantidade: number | null
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+  }
+
+  export type AlimentoRefeicaoMinAggregateOutputType = {
+    id: string | null
+    nomeAlimento: string | null
+    quantidade: number | null
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+    codigoOpenFood: string | null
+    refeicaoId: string | null
+  }
+
+  export type AlimentoRefeicaoMaxAggregateOutputType = {
+    id: string | null
+    nomeAlimento: string | null
+    quantidade: number | null
+    calorias: number | null
+    proteinas: number | null
+    carboidratos: number | null
+    gorduras: number | null
+    codigoOpenFood: string | null
+    refeicaoId: string | null
+  }
+
+  export type AlimentoRefeicaoCountAggregateOutputType = {
+    id: number
+    nomeAlimento: number
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood: number
+    refeicaoId: number
+    _all: number
+  }
+
+
+  export type AlimentoRefeicaoAvgAggregateInputType = {
+    quantidade?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+  }
+
+  export type AlimentoRefeicaoSumAggregateInputType = {
+    quantidade?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+  }
+
+  export type AlimentoRefeicaoMinAggregateInputType = {
+    id?: true
+    nomeAlimento?: true
+    quantidade?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+    codigoOpenFood?: true
+    refeicaoId?: true
+  }
+
+  export type AlimentoRefeicaoMaxAggregateInputType = {
+    id?: true
+    nomeAlimento?: true
+    quantidade?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+    codigoOpenFood?: true
+    refeicaoId?: true
+  }
+
+  export type AlimentoRefeicaoCountAggregateInputType = {
+    id?: true
+    nomeAlimento?: true
+    quantidade?: true
+    calorias?: true
+    proteinas?: true
+    carboidratos?: true
+    gorduras?: true
+    codigoOpenFood?: true
+    refeicaoId?: true
+    _all?: true
+  }
+
+  export type AlimentoRefeicaoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AlimentoRefeicao to aggregate.
+     */
+    where?: AlimentoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlimentoRefeicaos to fetch.
+     */
+    orderBy?: AlimentoRefeicaoOrderByWithRelationInput | AlimentoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AlimentoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlimentoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlimentoRefeicaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AlimentoRefeicaos
+    **/
+    _count?: true | AlimentoRefeicaoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AlimentoRefeicaoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AlimentoRefeicaoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AlimentoRefeicaoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AlimentoRefeicaoMaxAggregateInputType
+  }
+
+  export type GetAlimentoRefeicaoAggregateType<T extends AlimentoRefeicaoAggregateArgs> = {
+        [P in keyof T & keyof AggregateAlimentoRefeicao]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAlimentoRefeicao[P]>
+      : GetScalarType<T[P], AggregateAlimentoRefeicao[P]>
+  }
+
+
+
+
+  export type AlimentoRefeicaoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AlimentoRefeicaoWhereInput
+    orderBy?: AlimentoRefeicaoOrderByWithAggregationInput | AlimentoRefeicaoOrderByWithAggregationInput[]
+    by: AlimentoRefeicaoScalarFieldEnum[] | AlimentoRefeicaoScalarFieldEnum
+    having?: AlimentoRefeicaoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AlimentoRefeicaoCountAggregateInputType | true
+    _avg?: AlimentoRefeicaoAvgAggregateInputType
+    _sum?: AlimentoRefeicaoSumAggregateInputType
+    _min?: AlimentoRefeicaoMinAggregateInputType
+    _max?: AlimentoRefeicaoMaxAggregateInputType
+  }
+
+  export type AlimentoRefeicaoGroupByOutputType = {
+    id: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood: string | null
+    refeicaoId: string
+    _count: AlimentoRefeicaoCountAggregateOutputType | null
+    _avg: AlimentoRefeicaoAvgAggregateOutputType | null
+    _sum: AlimentoRefeicaoSumAggregateOutputType | null
+    _min: AlimentoRefeicaoMinAggregateOutputType | null
+    _max: AlimentoRefeicaoMaxAggregateOutputType | null
+  }
+
+  type GetAlimentoRefeicaoGroupByPayload<T extends AlimentoRefeicaoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AlimentoRefeicaoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AlimentoRefeicaoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AlimentoRefeicaoGroupByOutputType[P]>
+            : GetScalarType<T[P], AlimentoRefeicaoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AlimentoRefeicaoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    nomeAlimento?: boolean
+    quantidade?: boolean
+    calorias?: boolean
+    proteinas?: boolean
+    carboidratos?: boolean
+    gorduras?: boolean
+    codigoOpenFood?: boolean
+    refeicaoId?: boolean
+    refeicao?: boolean | RefeicaoDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["alimentoRefeicao"]>
+
+
+
+  export type AlimentoRefeicaoSelectScalar = {
+    id?: boolean
+    nomeAlimento?: boolean
+    quantidade?: boolean
+    calorias?: boolean
+    proteinas?: boolean
+    carboidratos?: boolean
+    gorduras?: boolean
+    codigoOpenFood?: boolean
+    refeicaoId?: boolean
+  }
+
+  export type AlimentoRefeicaoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nomeAlimento" | "quantidade" | "calorias" | "proteinas" | "carboidratos" | "gorduras" | "codigoOpenFood" | "refeicaoId", ExtArgs["result"]["alimentoRefeicao"]>
+  export type AlimentoRefeicaoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    refeicao?: boolean | RefeicaoDefaultArgs<ExtArgs>
+  }
+
+  export type $AlimentoRefeicaoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AlimentoRefeicao"
+    objects: {
+      refeicao: Prisma.$RefeicaoPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      nomeAlimento: string
+      quantidade: number
+      calorias: number
+      proteinas: number
+      carboidratos: number
+      gorduras: number
+      codigoOpenFood: string | null
+      refeicaoId: string
+    }, ExtArgs["result"]["alimentoRefeicao"]>
+    composites: {}
+  }
+
+  type AlimentoRefeicaoGetPayload<S extends boolean | null | undefined | AlimentoRefeicaoDefaultArgs> = $Result.GetResult<Prisma.$AlimentoRefeicaoPayload, S>
+
+  type AlimentoRefeicaoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AlimentoRefeicaoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AlimentoRefeicaoCountAggregateInputType | true
+    }
+
+  export interface AlimentoRefeicaoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AlimentoRefeicao'], meta: { name: 'AlimentoRefeicao' } }
+    /**
+     * Find zero or one AlimentoRefeicao that matches the filter.
+     * @param {AlimentoRefeicaoFindUniqueArgs} args - Arguments to find a AlimentoRefeicao
+     * @example
+     * // Get one AlimentoRefeicao
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AlimentoRefeicaoFindUniqueArgs>(args: SelectSubset<T, AlimentoRefeicaoFindUniqueArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AlimentoRefeicao that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AlimentoRefeicaoFindUniqueOrThrowArgs} args - Arguments to find a AlimentoRefeicao
+     * @example
+     * // Get one AlimentoRefeicao
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AlimentoRefeicaoFindUniqueOrThrowArgs>(args: SelectSubset<T, AlimentoRefeicaoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AlimentoRefeicao that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoFindFirstArgs} args - Arguments to find a AlimentoRefeicao
+     * @example
+     * // Get one AlimentoRefeicao
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AlimentoRefeicaoFindFirstArgs>(args?: SelectSubset<T, AlimentoRefeicaoFindFirstArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AlimentoRefeicao that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoFindFirstOrThrowArgs} args - Arguments to find a AlimentoRefeicao
+     * @example
+     * // Get one AlimentoRefeicao
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AlimentoRefeicaoFindFirstOrThrowArgs>(args?: SelectSubset<T, AlimentoRefeicaoFindFirstOrThrowArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AlimentoRefeicaos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AlimentoRefeicaos
+     * const alimentoRefeicaos = await prisma.alimentoRefeicao.findMany()
+     * 
+     * // Get first 10 AlimentoRefeicaos
+     * const alimentoRefeicaos = await prisma.alimentoRefeicao.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const alimentoRefeicaoWithIdOnly = await prisma.alimentoRefeicao.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AlimentoRefeicaoFindManyArgs>(args?: SelectSubset<T, AlimentoRefeicaoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AlimentoRefeicao.
+     * @param {AlimentoRefeicaoCreateArgs} args - Arguments to create a AlimentoRefeicao.
+     * @example
+     * // Create one AlimentoRefeicao
+     * const AlimentoRefeicao = await prisma.alimentoRefeicao.create({
+     *   data: {
+     *     // ... data to create a AlimentoRefeicao
+     *   }
+     * })
+     * 
+     */
+    create<T extends AlimentoRefeicaoCreateArgs>(args: SelectSubset<T, AlimentoRefeicaoCreateArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AlimentoRefeicaos.
+     * @param {AlimentoRefeicaoCreateManyArgs} args - Arguments to create many AlimentoRefeicaos.
+     * @example
+     * // Create many AlimentoRefeicaos
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AlimentoRefeicaoCreateManyArgs>(args?: SelectSubset<T, AlimentoRefeicaoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a AlimentoRefeicao.
+     * @param {AlimentoRefeicaoDeleteArgs} args - Arguments to delete one AlimentoRefeicao.
+     * @example
+     * // Delete one AlimentoRefeicao
+     * const AlimentoRefeicao = await prisma.alimentoRefeicao.delete({
+     *   where: {
+     *     // ... filter to delete one AlimentoRefeicao
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AlimentoRefeicaoDeleteArgs>(args: SelectSubset<T, AlimentoRefeicaoDeleteArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AlimentoRefeicao.
+     * @param {AlimentoRefeicaoUpdateArgs} args - Arguments to update one AlimentoRefeicao.
+     * @example
+     * // Update one AlimentoRefeicao
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AlimentoRefeicaoUpdateArgs>(args: SelectSubset<T, AlimentoRefeicaoUpdateArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AlimentoRefeicaos.
+     * @param {AlimentoRefeicaoDeleteManyArgs} args - Arguments to filter AlimentoRefeicaos to delete.
+     * @example
+     * // Delete a few AlimentoRefeicaos
+     * const { count } = await prisma.alimentoRefeicao.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AlimentoRefeicaoDeleteManyArgs>(args?: SelectSubset<T, AlimentoRefeicaoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AlimentoRefeicaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AlimentoRefeicaos
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AlimentoRefeicaoUpdateManyArgs>(args: SelectSubset<T, AlimentoRefeicaoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one AlimentoRefeicao.
+     * @param {AlimentoRefeicaoUpsertArgs} args - Arguments to update or create a AlimentoRefeicao.
+     * @example
+     * // Update or create a AlimentoRefeicao
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.upsert({
+     *   create: {
+     *     // ... data to create a AlimentoRefeicao
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AlimentoRefeicao we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AlimentoRefeicaoUpsertArgs>(args: SelectSubset<T, AlimentoRefeicaoUpsertArgs<ExtArgs>>): Prisma__AlimentoRefeicaoClient<$Result.GetResult<Prisma.$AlimentoRefeicaoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AlimentoRefeicaos that matches the filter.
+     * @param {AlimentoRefeicaoFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.findRaw({
+     *   filter: { age: { $gt: 25 } }
+     * })
+     */
+    findRaw(args?: AlimentoRefeicaoFindRawArgs): Prisma.PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a AlimentoRefeicao.
+     * @param {AlimentoRefeicaoAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const alimentoRefeicao = await prisma.alimentoRefeicao.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+     */
+    aggregateRaw(args?: AlimentoRefeicaoAggregateRawArgs): Prisma.PrismaPromise<JsonObject>
+
+
+    /**
+     * Count the number of AlimentoRefeicaos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoCountArgs} args - Arguments to filter AlimentoRefeicaos to count.
+     * @example
+     * // Count the number of AlimentoRefeicaos
+     * const count = await prisma.alimentoRefeicao.count({
+     *   where: {
+     *     // ... the filter for the AlimentoRefeicaos we want to count
+     *   }
+     * })
+    **/
+    count<T extends AlimentoRefeicaoCountArgs>(
+      args?: Subset<T, AlimentoRefeicaoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AlimentoRefeicaoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AlimentoRefeicao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AlimentoRefeicaoAggregateArgs>(args: Subset<T, AlimentoRefeicaoAggregateArgs>): Prisma.PrismaPromise<GetAlimentoRefeicaoAggregateType<T>>
+
+    /**
+     * Group by AlimentoRefeicao.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AlimentoRefeicaoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AlimentoRefeicaoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AlimentoRefeicaoGroupByArgs['orderBy'] }
+        : { orderBy?: AlimentoRefeicaoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AlimentoRefeicaoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAlimentoRefeicaoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AlimentoRefeicao model
+   */
+  readonly fields: AlimentoRefeicaoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AlimentoRefeicao.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AlimentoRefeicaoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    refeicao<T extends RefeicaoDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RefeicaoDefaultArgs<ExtArgs>>): Prisma__RefeicaoClient<$Result.GetResult<Prisma.$RefeicaoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AlimentoRefeicao model
+   */
+  interface AlimentoRefeicaoFieldRefs {
+    readonly id: FieldRef<"AlimentoRefeicao", 'String'>
+    readonly nomeAlimento: FieldRef<"AlimentoRefeicao", 'String'>
+    readonly quantidade: FieldRef<"AlimentoRefeicao", 'Float'>
+    readonly calorias: FieldRef<"AlimentoRefeicao", 'Float'>
+    readonly proteinas: FieldRef<"AlimentoRefeicao", 'Float'>
+    readonly carboidratos: FieldRef<"AlimentoRefeicao", 'Float'>
+    readonly gorduras: FieldRef<"AlimentoRefeicao", 'Float'>
+    readonly codigoOpenFood: FieldRef<"AlimentoRefeicao", 'String'>
+    readonly refeicaoId: FieldRef<"AlimentoRefeicao", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AlimentoRefeicao findUnique
+   */
+  export type AlimentoRefeicaoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlimentoRefeicao to fetch.
+     */
+    where: AlimentoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * AlimentoRefeicao findUniqueOrThrow
+   */
+  export type AlimentoRefeicaoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlimentoRefeicao to fetch.
+     */
+    where: AlimentoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * AlimentoRefeicao findFirst
+   */
+  export type AlimentoRefeicaoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlimentoRefeicao to fetch.
+     */
+    where?: AlimentoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlimentoRefeicaos to fetch.
+     */
+    orderBy?: AlimentoRefeicaoOrderByWithRelationInput | AlimentoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AlimentoRefeicaos.
+     */
+    cursor?: AlimentoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlimentoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlimentoRefeicaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlimentoRefeicaos.
+     */
+    distinct?: AlimentoRefeicaoScalarFieldEnum | AlimentoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * AlimentoRefeicao findFirstOrThrow
+   */
+  export type AlimentoRefeicaoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlimentoRefeicao to fetch.
+     */
+    where?: AlimentoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlimentoRefeicaos to fetch.
+     */
+    orderBy?: AlimentoRefeicaoOrderByWithRelationInput | AlimentoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AlimentoRefeicaos.
+     */
+    cursor?: AlimentoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlimentoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlimentoRefeicaos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AlimentoRefeicaos.
+     */
+    distinct?: AlimentoRefeicaoScalarFieldEnum | AlimentoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * AlimentoRefeicao findMany
+   */
+  export type AlimentoRefeicaoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter, which AlimentoRefeicaos to fetch.
+     */
+    where?: AlimentoRefeicaoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AlimentoRefeicaos to fetch.
+     */
+    orderBy?: AlimentoRefeicaoOrderByWithRelationInput | AlimentoRefeicaoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AlimentoRefeicaos.
+     */
+    cursor?: AlimentoRefeicaoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AlimentoRefeicaos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AlimentoRefeicaos.
+     */
+    skip?: number
+    distinct?: AlimentoRefeicaoScalarFieldEnum | AlimentoRefeicaoScalarFieldEnum[]
+  }
+
+  /**
+   * AlimentoRefeicao create
+   */
+  export type AlimentoRefeicaoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AlimentoRefeicao.
+     */
+    data: XOR<AlimentoRefeicaoCreateInput, AlimentoRefeicaoUncheckedCreateInput>
+  }
+
+  /**
+   * AlimentoRefeicao createMany
+   */
+  export type AlimentoRefeicaoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AlimentoRefeicaos.
+     */
+    data: AlimentoRefeicaoCreateManyInput | AlimentoRefeicaoCreateManyInput[]
+  }
+
+  /**
+   * AlimentoRefeicao update
+   */
+  export type AlimentoRefeicaoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AlimentoRefeicao.
+     */
+    data: XOR<AlimentoRefeicaoUpdateInput, AlimentoRefeicaoUncheckedUpdateInput>
+    /**
+     * Choose, which AlimentoRefeicao to update.
+     */
+    where: AlimentoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * AlimentoRefeicao updateMany
+   */
+  export type AlimentoRefeicaoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AlimentoRefeicaos.
+     */
+    data: XOR<AlimentoRefeicaoUpdateManyMutationInput, AlimentoRefeicaoUncheckedUpdateManyInput>
+    /**
+     * Filter which AlimentoRefeicaos to update
+     */
+    where?: AlimentoRefeicaoWhereInput
+    /**
+     * Limit how many AlimentoRefeicaos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AlimentoRefeicao upsert
+   */
+  export type AlimentoRefeicaoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AlimentoRefeicao to update in case it exists.
+     */
+    where: AlimentoRefeicaoWhereUniqueInput
+    /**
+     * In case the AlimentoRefeicao found by the `where` argument doesn't exist, create a new AlimentoRefeicao with this data.
+     */
+    create: XOR<AlimentoRefeicaoCreateInput, AlimentoRefeicaoUncheckedCreateInput>
+    /**
+     * In case the AlimentoRefeicao was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AlimentoRefeicaoUpdateInput, AlimentoRefeicaoUncheckedUpdateInput>
+  }
+
+  /**
+   * AlimentoRefeicao delete
+   */
+  export type AlimentoRefeicaoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
+    /**
+     * Filter which AlimentoRefeicao to delete.
+     */
+    where: AlimentoRefeicaoWhereUniqueInput
+  }
+
+  /**
+   * AlimentoRefeicao deleteMany
+   */
+  export type AlimentoRefeicaoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AlimentoRefeicaos to delete
+     */
+    where?: AlimentoRefeicaoWhereInput
+    /**
+     * Limit how many AlimentoRefeicaos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AlimentoRefeicao findRaw
+   */
+  export type AlimentoRefeicaoFindRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     */
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * AlimentoRefeicao aggregateRaw
+   */
+  export type AlimentoRefeicaoAggregateRawArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     */
+    pipeline?: InputJsonValue[]
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     */
+    options?: InputJsonValue
+  }
+
+  /**
+   * AlimentoRefeicao without action
+   */
+  export type AlimentoRefeicaoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AlimentoRefeicao
+     */
+    select?: AlimentoRefeicaoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AlimentoRefeicao
+     */
+    omit?: AlimentoRefeicaoOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AlimentoRefeicaoInclude<ExtArgs> | null
   }
 
 
@@ -6487,6 +7738,7 @@ export namespace Prisma {
     carboidratos: 'carboidratos',
     agua: 'agua',
     gorduras: 'gorduras',
+    dataCriacao: 'dataCriacao',
     usuarioId: 'usuarioId'
   };
 
@@ -6506,14 +7758,30 @@ export namespace Prisma {
   export const RefeicaoScalarFieldEnum: {
     id: 'id',
     nome: 'nome',
-    carboidrato: 'carboidrato',
+    horario: 'horario',
     calorias: 'calorias',
-    proteina: 'proteina',
-    data: 'data',
+    proteinas: 'proteinas',
+    carboidratos: 'carboidratos',
+    gorduras: 'gorduras',
     usuarioId: 'usuarioId'
   };
 
   export type RefeicaoScalarFieldEnum = (typeof RefeicaoScalarFieldEnum)[keyof typeof RefeicaoScalarFieldEnum]
+
+
+  export const AlimentoRefeicaoScalarFieldEnum: {
+    id: 'id',
+    nomeAlimento: 'nomeAlimento',
+    quantidade: 'quantidade',
+    calorias: 'calorias',
+    proteinas: 'proteinas',
+    carboidratos: 'carboidratos',
+    gorduras: 'gorduras',
+    codigoOpenFood: 'codigoOpenFood',
+    refeicaoId: 'refeicaoId'
+  };
+
+  export type AlimentoRefeicaoScalarFieldEnum = (typeof AlimentoRefeicaoScalarFieldEnum)[keyof typeof AlimentoRefeicaoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -6742,6 +8010,7 @@ export namespace Prisma {
     carboidratos?: FloatFilter<"Meta"> | number
     agua?: FloatFilter<"Meta"> | number
     gorduras?: FloatFilter<"Meta"> | number
+    dataCriacao?: DateTimeFilter<"Meta"> | Date | string
     usuarioId?: StringFilter<"Meta"> | string
     usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -6753,6 +8022,7 @@ export namespace Prisma {
     carboidratos?: SortOrder
     agua?: SortOrder
     gorduras?: SortOrder
+    dataCriacao?: SortOrder
     usuarioId?: SortOrder
     usuario?: UserOrderByWithRelationInput
   }
@@ -6768,6 +8038,7 @@ export namespace Prisma {
     carboidratos?: FloatFilter<"Meta"> | number
     agua?: FloatFilter<"Meta"> | number
     gorduras?: FloatFilter<"Meta"> | number
+    dataCriacao?: DateTimeFilter<"Meta"> | Date | string
     usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "id" | "usuarioId">
 
@@ -6778,6 +8049,7 @@ export namespace Prisma {
     carboidratos?: SortOrder
     agua?: SortOrder
     gorduras?: SortOrder
+    dataCriacao?: SortOrder
     usuarioId?: SortOrder
     _count?: MetaCountOrderByAggregateInput
     _avg?: MetaAvgOrderByAggregateInput
@@ -6796,6 +8068,7 @@ export namespace Prisma {
     carboidratos?: FloatWithAggregatesFilter<"Meta"> | number
     agua?: FloatWithAggregatesFilter<"Meta"> | number
     gorduras?: FloatWithAggregatesFilter<"Meta"> | number
+    dataCriacao?: DateTimeWithAggregatesFilter<"Meta"> | Date | string
     usuarioId?: StringWithAggregatesFilter<"Meta"> | string
   }
 
@@ -6857,23 +8130,27 @@ export namespace Prisma {
     NOT?: RefeicaoWhereInput | RefeicaoWhereInput[]
     id?: StringFilter<"Refeicao"> | string
     nome?: StringFilter<"Refeicao"> | string
-    carboidrato?: FloatFilter<"Refeicao"> | number
+    horario?: DateTimeFilter<"Refeicao"> | Date | string
     calorias?: FloatFilter<"Refeicao"> | number
-    proteina?: FloatFilter<"Refeicao"> | number
-    data?: DateTimeFilter<"Refeicao"> | Date | string
+    proteinas?: FloatFilter<"Refeicao"> | number
+    carboidratos?: FloatFilter<"Refeicao"> | number
+    gorduras?: FloatFilter<"Refeicao"> | number
     usuarioId?: StringFilter<"Refeicao"> | string
     usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
+    alimentos?: AlimentoRefeicaoListRelationFilter
   }
 
   export type RefeicaoOrderByWithRelationInput = {
     id?: SortOrder
     nome?: SortOrder
-    carboidrato?: SortOrder
+    horario?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
-    data?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
     usuarioId?: SortOrder
     usuario?: UserOrderByWithRelationInput
+    alimentos?: AlimentoRefeicaoOrderByRelationAggregateInput
   }
 
   export type RefeicaoWhereUniqueInput = Prisma.AtLeast<{
@@ -6882,21 +8159,24 @@ export namespace Prisma {
     OR?: RefeicaoWhereInput[]
     NOT?: RefeicaoWhereInput | RefeicaoWhereInput[]
     nome?: StringFilter<"Refeicao"> | string
-    carboidrato?: FloatFilter<"Refeicao"> | number
+    horario?: DateTimeFilter<"Refeicao"> | Date | string
     calorias?: FloatFilter<"Refeicao"> | number
-    proteina?: FloatFilter<"Refeicao"> | number
-    data?: DateTimeFilter<"Refeicao"> | Date | string
+    proteinas?: FloatFilter<"Refeicao"> | number
+    carboidratos?: FloatFilter<"Refeicao"> | number
+    gorduras?: FloatFilter<"Refeicao"> | number
     usuarioId?: StringFilter<"Refeicao"> | string
     usuario?: XOR<UserScalarRelationFilter, UserWhereInput>
+    alimentos?: AlimentoRefeicaoListRelationFilter
   }, "id">
 
   export type RefeicaoOrderByWithAggregationInput = {
     id?: SortOrder
     nome?: SortOrder
-    carboidrato?: SortOrder
+    horario?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
-    data?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
     usuarioId?: SortOrder
     _count?: RefeicaoCountOrderByAggregateInput
     _avg?: RefeicaoAvgOrderByAggregateInput
@@ -6911,11 +8191,89 @@ export namespace Prisma {
     NOT?: RefeicaoScalarWhereWithAggregatesInput | RefeicaoScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Refeicao"> | string
     nome?: StringWithAggregatesFilter<"Refeicao"> | string
-    carboidrato?: FloatWithAggregatesFilter<"Refeicao"> | number
+    horario?: DateTimeWithAggregatesFilter<"Refeicao"> | Date | string
     calorias?: FloatWithAggregatesFilter<"Refeicao"> | number
-    proteina?: FloatWithAggregatesFilter<"Refeicao"> | number
-    data?: DateTimeWithAggregatesFilter<"Refeicao"> | Date | string
+    proteinas?: FloatWithAggregatesFilter<"Refeicao"> | number
+    carboidratos?: FloatWithAggregatesFilter<"Refeicao"> | number
+    gorduras?: FloatWithAggregatesFilter<"Refeicao"> | number
     usuarioId?: StringWithAggregatesFilter<"Refeicao"> | string
+  }
+
+  export type AlimentoRefeicaoWhereInput = {
+    AND?: AlimentoRefeicaoWhereInput | AlimentoRefeicaoWhereInput[]
+    OR?: AlimentoRefeicaoWhereInput[]
+    NOT?: AlimentoRefeicaoWhereInput | AlimentoRefeicaoWhereInput[]
+    id?: StringFilter<"AlimentoRefeicao"> | string
+    nomeAlimento?: StringFilter<"AlimentoRefeicao"> | string
+    quantidade?: FloatFilter<"AlimentoRefeicao"> | number
+    calorias?: FloatFilter<"AlimentoRefeicao"> | number
+    proteinas?: FloatFilter<"AlimentoRefeicao"> | number
+    carboidratos?: FloatFilter<"AlimentoRefeicao"> | number
+    gorduras?: FloatFilter<"AlimentoRefeicao"> | number
+    codigoOpenFood?: StringNullableFilter<"AlimentoRefeicao"> | string | null
+    refeicaoId?: StringFilter<"AlimentoRefeicao"> | string
+    refeicao?: XOR<RefeicaoScalarRelationFilter, RefeicaoWhereInput>
+  }
+
+  export type AlimentoRefeicaoOrderByWithRelationInput = {
+    id?: SortOrder
+    nomeAlimento?: SortOrder
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    codigoOpenFood?: SortOrder
+    refeicaoId?: SortOrder
+    refeicao?: RefeicaoOrderByWithRelationInput
+  }
+
+  export type AlimentoRefeicaoWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AlimentoRefeicaoWhereInput | AlimentoRefeicaoWhereInput[]
+    OR?: AlimentoRefeicaoWhereInput[]
+    NOT?: AlimentoRefeicaoWhereInput | AlimentoRefeicaoWhereInput[]
+    nomeAlimento?: StringFilter<"AlimentoRefeicao"> | string
+    quantidade?: FloatFilter<"AlimentoRefeicao"> | number
+    calorias?: FloatFilter<"AlimentoRefeicao"> | number
+    proteinas?: FloatFilter<"AlimentoRefeicao"> | number
+    carboidratos?: FloatFilter<"AlimentoRefeicao"> | number
+    gorduras?: FloatFilter<"AlimentoRefeicao"> | number
+    codigoOpenFood?: StringNullableFilter<"AlimentoRefeicao"> | string | null
+    refeicaoId?: StringFilter<"AlimentoRefeicao"> | string
+    refeicao?: XOR<RefeicaoScalarRelationFilter, RefeicaoWhereInput>
+  }, "id">
+
+  export type AlimentoRefeicaoOrderByWithAggregationInput = {
+    id?: SortOrder
+    nomeAlimento?: SortOrder
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    codigoOpenFood?: SortOrder
+    refeicaoId?: SortOrder
+    _count?: AlimentoRefeicaoCountOrderByAggregateInput
+    _avg?: AlimentoRefeicaoAvgOrderByAggregateInput
+    _max?: AlimentoRefeicaoMaxOrderByAggregateInput
+    _min?: AlimentoRefeicaoMinOrderByAggregateInput
+    _sum?: AlimentoRefeicaoSumOrderByAggregateInput
+  }
+
+  export type AlimentoRefeicaoScalarWhereWithAggregatesInput = {
+    AND?: AlimentoRefeicaoScalarWhereWithAggregatesInput | AlimentoRefeicaoScalarWhereWithAggregatesInput[]
+    OR?: AlimentoRefeicaoScalarWhereWithAggregatesInput[]
+    NOT?: AlimentoRefeicaoScalarWhereWithAggregatesInput | AlimentoRefeicaoScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AlimentoRefeicao"> | string
+    nomeAlimento?: StringWithAggregatesFilter<"AlimentoRefeicao"> | string
+    quantidade?: FloatWithAggregatesFilter<"AlimentoRefeicao"> | number
+    calorias?: FloatWithAggregatesFilter<"AlimentoRefeicao"> | number
+    proteinas?: FloatWithAggregatesFilter<"AlimentoRefeicao"> | number
+    carboidratos?: FloatWithAggregatesFilter<"AlimentoRefeicao"> | number
+    gorduras?: FloatWithAggregatesFilter<"AlimentoRefeicao"> | number
+    codigoOpenFood?: StringNullableWithAggregatesFilter<"AlimentoRefeicao"> | string | null
+    refeicaoId?: StringWithAggregatesFilter<"AlimentoRefeicao"> | string
   }
 
   export type UserCreateInput = {
@@ -7065,6 +8423,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: Date | string
     usuario: UserCreateNestedOneWithoutMetaInput
   }
 
@@ -7075,6 +8434,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: Date | string
     usuarioId: string
   }
 
@@ -7084,6 +8444,7 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     agua?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     usuario?: UserUpdateOneRequiredWithoutMetaNestedInput
   }
 
@@ -7093,6 +8454,7 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     agua?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     usuarioId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7103,6 +8465,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: Date | string
     usuarioId: string
   }
 
@@ -7112,6 +8475,7 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     agua?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MetaUncheckedUpdateManyInput = {
@@ -7120,6 +8484,7 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     agua?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
     usuarioId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7170,66 +8535,156 @@ export namespace Prisma {
   export type RefeicaoCreateInput = {
     id?: string
     nome: string
-    carboidrato: number
-    calorias: number
-    proteina: number
-    data?: Date | string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
     usuario: UserCreateNestedOneWithoutRefeicoesInput
+    alimentos?: AlimentoRefeicaoCreateNestedManyWithoutRefeicaoInput
   }
 
   export type RefeicaoUncheckedCreateInput = {
     id?: string
     nome: string
-    carboidrato: number
-    calorias: number
-    proteina: number
-    data?: Date | string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
     usuarioId: string
+    alimentos?: AlimentoRefeicaoUncheckedCreateNestedManyWithoutRefeicaoInput
   }
 
   export type RefeicaoUpdateInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
     usuario?: UserUpdateOneRequiredWithoutRefeicoesNestedInput
+    alimentos?: AlimentoRefeicaoUpdateManyWithoutRefeicaoNestedInput
   }
 
   export type RefeicaoUncheckedUpdateInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
     usuarioId?: StringFieldUpdateOperationsInput | string
+    alimentos?: AlimentoRefeicaoUncheckedUpdateManyWithoutRefeicaoNestedInput
   }
 
   export type RefeicaoCreateManyInput = {
     id?: string
     nome: string
-    carboidrato: number
-    calorias: number
-    proteina: number
-    data?: Date | string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
     usuarioId: string
   }
 
   export type RefeicaoUpdateManyMutationInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
   }
 
   export type RefeicaoUncheckedUpdateManyInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
     usuarioId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AlimentoRefeicaoCreateInput = {
+    id?: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood?: string | null
+    refeicao: RefeicaoCreateNestedOneWithoutAlimentosInput
+  }
+
+  export type AlimentoRefeicaoUncheckedCreateInput = {
+    id?: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood?: string | null
+    refeicaoId: string
+  }
+
+  export type AlimentoRefeicaoUpdateInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+    refeicao?: RefeicaoUpdateOneRequiredWithoutAlimentosNestedInput
+  }
+
+  export type AlimentoRefeicaoUncheckedUpdateInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+    refeicaoId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AlimentoRefeicaoCreateManyInput = {
+    id?: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood?: string | null
+    refeicaoId: string
+  }
+
+  export type AlimentoRefeicaoUpdateManyMutationInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AlimentoRefeicaoUncheckedUpdateManyInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+    refeicaoId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -7426,6 +8881,7 @@ export namespace Prisma {
     carboidratos?: SortOrder
     agua?: SortOrder
     gorduras?: SortOrder
+    dataCriacao?: SortOrder
     usuarioId?: SortOrder
   }
 
@@ -7444,6 +8900,7 @@ export namespace Prisma {
     carboidratos?: SortOrder
     agua?: SortOrder
     gorduras?: SortOrder
+    dataCriacao?: SortOrder
     usuarioId?: SortOrder
   }
 
@@ -7454,6 +8911,7 @@ export namespace Prisma {
     carboidratos?: SortOrder
     agua?: SortOrder
     gorduras?: SortOrder
+    dataCriacao?: SortOrder
     usuarioId?: SortOrder
   }
 
@@ -7494,46 +8952,153 @@ export namespace Prisma {
     quantidade?: SortOrder
   }
 
+  export type AlimentoRefeicaoListRelationFilter = {
+    every?: AlimentoRefeicaoWhereInput
+    some?: AlimentoRefeicaoWhereInput
+    none?: AlimentoRefeicaoWhereInput
+  }
+
+  export type AlimentoRefeicaoOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type RefeicaoCountOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
-    carboidrato?: SortOrder
+    horario?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
-    data?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
     usuarioId?: SortOrder
   }
 
   export type RefeicaoAvgOrderByAggregateInput = {
-    carboidrato?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
   }
 
   export type RefeicaoMaxOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
-    carboidrato?: SortOrder
+    horario?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
-    data?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
     usuarioId?: SortOrder
   }
 
   export type RefeicaoMinOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
-    carboidrato?: SortOrder
+    horario?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
-    data?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
     usuarioId?: SortOrder
   }
 
   export type RefeicaoSumOrderByAggregateInput = {
-    carboidrato?: SortOrder
     calorias?: SortOrder
-    proteina?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
+  }
+
+  export type RefeicaoScalarRelationFilter = {
+    is?: RefeicaoWhereInput
+    isNot?: RefeicaoWhereInput
+  }
+
+  export type AlimentoRefeicaoCountOrderByAggregateInput = {
+    id?: SortOrder
+    nomeAlimento?: SortOrder
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    codigoOpenFood?: SortOrder
+    refeicaoId?: SortOrder
+  }
+
+  export type AlimentoRefeicaoAvgOrderByAggregateInput = {
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+  }
+
+  export type AlimentoRefeicaoMaxOrderByAggregateInput = {
+    id?: SortOrder
+    nomeAlimento?: SortOrder
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    codigoOpenFood?: SortOrder
+    refeicaoId?: SortOrder
+  }
+
+  export type AlimentoRefeicaoMinOrderByAggregateInput = {
+    id?: SortOrder
+    nomeAlimento?: SortOrder
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+    codigoOpenFood?: SortOrder
+    refeicaoId?: SortOrder
+  }
+
+  export type AlimentoRefeicaoSumOrderByAggregateInput = {
+    quantidade?: SortOrder
+    calorias?: SortOrder
+    proteinas?: SortOrder
+    carboidratos?: SortOrder
+    gorduras?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+    isSet?: boolean
   }
 
   export type PerfilCreateNestedOneWithoutUsuarioInput = {
@@ -7748,12 +9313,73 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type AlimentoRefeicaoCreateNestedManyWithoutRefeicaoInput = {
+    create?: XOR<AlimentoRefeicaoCreateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput> | AlimentoRefeicaoCreateWithoutRefeicaoInput[] | AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput[]
+    connectOrCreate?: AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput | AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput[]
+    createMany?: AlimentoRefeicaoCreateManyRefeicaoInputEnvelope
+    connect?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+  }
+
+  export type AlimentoRefeicaoUncheckedCreateNestedManyWithoutRefeicaoInput = {
+    create?: XOR<AlimentoRefeicaoCreateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput> | AlimentoRefeicaoCreateWithoutRefeicaoInput[] | AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput[]
+    connectOrCreate?: AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput | AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput[]
+    createMany?: AlimentoRefeicaoCreateManyRefeicaoInputEnvelope
+    connect?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+  }
+
   export type UserUpdateOneRequiredWithoutRefeicoesNestedInput = {
     create?: XOR<UserCreateWithoutRefeicoesInput, UserUncheckedCreateWithoutRefeicoesInput>
     connectOrCreate?: UserCreateOrConnectWithoutRefeicoesInput
     upsert?: UserUpsertWithoutRefeicoesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutRefeicoesInput, UserUpdateWithoutRefeicoesInput>, UserUncheckedUpdateWithoutRefeicoesInput>
+  }
+
+  export type AlimentoRefeicaoUpdateManyWithoutRefeicaoNestedInput = {
+    create?: XOR<AlimentoRefeicaoCreateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput> | AlimentoRefeicaoCreateWithoutRefeicaoInput[] | AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput[]
+    connectOrCreate?: AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput | AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput[]
+    upsert?: AlimentoRefeicaoUpsertWithWhereUniqueWithoutRefeicaoInput | AlimentoRefeicaoUpsertWithWhereUniqueWithoutRefeicaoInput[]
+    createMany?: AlimentoRefeicaoCreateManyRefeicaoInputEnvelope
+    set?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    disconnect?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    delete?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    connect?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    update?: AlimentoRefeicaoUpdateWithWhereUniqueWithoutRefeicaoInput | AlimentoRefeicaoUpdateWithWhereUniqueWithoutRefeicaoInput[]
+    updateMany?: AlimentoRefeicaoUpdateManyWithWhereWithoutRefeicaoInput | AlimentoRefeicaoUpdateManyWithWhereWithoutRefeicaoInput[]
+    deleteMany?: AlimentoRefeicaoScalarWhereInput | AlimentoRefeicaoScalarWhereInput[]
+  }
+
+  export type AlimentoRefeicaoUncheckedUpdateManyWithoutRefeicaoNestedInput = {
+    create?: XOR<AlimentoRefeicaoCreateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput> | AlimentoRefeicaoCreateWithoutRefeicaoInput[] | AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput[]
+    connectOrCreate?: AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput | AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput[]
+    upsert?: AlimentoRefeicaoUpsertWithWhereUniqueWithoutRefeicaoInput | AlimentoRefeicaoUpsertWithWhereUniqueWithoutRefeicaoInput[]
+    createMany?: AlimentoRefeicaoCreateManyRefeicaoInputEnvelope
+    set?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    disconnect?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    delete?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    connect?: AlimentoRefeicaoWhereUniqueInput | AlimentoRefeicaoWhereUniqueInput[]
+    update?: AlimentoRefeicaoUpdateWithWhereUniqueWithoutRefeicaoInput | AlimentoRefeicaoUpdateWithWhereUniqueWithoutRefeicaoInput[]
+    updateMany?: AlimentoRefeicaoUpdateManyWithWhereWithoutRefeicaoInput | AlimentoRefeicaoUpdateManyWithWhereWithoutRefeicaoInput[]
+    deleteMany?: AlimentoRefeicaoScalarWhereInput | AlimentoRefeicaoScalarWhereInput[]
+  }
+
+  export type RefeicaoCreateNestedOneWithoutAlimentosInput = {
+    create?: XOR<RefeicaoCreateWithoutAlimentosInput, RefeicaoUncheckedCreateWithoutAlimentosInput>
+    connectOrCreate?: RefeicaoCreateOrConnectWithoutAlimentosInput
+    connect?: RefeicaoWhereUniqueInput
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+    unset?: boolean
+  }
+
+  export type RefeicaoUpdateOneRequiredWithoutAlimentosNestedInput = {
+    create?: XOR<RefeicaoCreateWithoutAlimentosInput, RefeicaoUncheckedCreateWithoutAlimentosInput>
+    connectOrCreate?: RefeicaoCreateOrConnectWithoutAlimentosInput
+    upsert?: RefeicaoUpsertWithoutAlimentosInput
+    connect?: RefeicaoWhereUniqueInput
+    update?: XOR<XOR<RefeicaoUpdateToOneWithWhereWithoutAlimentosInput, RefeicaoUpdateWithoutAlimentosInput>, RefeicaoUncheckedUpdateWithoutAlimentosInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -7850,6 +9476,51 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+    isSet?: boolean
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+    isSet?: boolean
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    isSet?: boolean
+  }
+
   export type PerfilCreateWithoutUsuarioInput = {
     id?: string
     nome: string
@@ -7886,6 +9557,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: Date | string
   }
 
   export type MetaUncheckedCreateWithoutUsuarioInput = {
@@ -7895,6 +9567,7 @@ export namespace Prisma {
     carboidratos: number
     agua: number
     gorduras: number
+    dataCriacao: Date | string
   }
 
   export type MetaCreateOrConnectWithoutUsuarioInput = {
@@ -7926,19 +9599,23 @@ export namespace Prisma {
   export type RefeicaoCreateWithoutUsuarioInput = {
     id?: string
     nome: string
-    carboidrato: number
-    calorias: number
-    proteina: number
-    data?: Date | string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
+    alimentos?: AlimentoRefeicaoCreateNestedManyWithoutRefeicaoInput
   }
 
   export type RefeicaoUncheckedCreateWithoutUsuarioInput = {
     id?: string
     nome: string
-    carboidrato: number
-    calorias: number
-    proteina: number
-    data?: Date | string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
+    alimentos?: AlimentoRefeicaoUncheckedCreateNestedManyWithoutRefeicaoInput
   }
 
   export type RefeicaoCreateOrConnectWithoutUsuarioInput = {
@@ -8000,6 +9677,7 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     agua?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MetaUncheckedUpdateWithoutUsuarioInput = {
@@ -8008,6 +9686,7 @@ export namespace Prisma {
     carboidratos?: FloatFieldUpdateOperationsInput | number
     agua?: FloatFieldUpdateOperationsInput | number
     gorduras?: FloatFieldUpdateOperationsInput | number
+    dataCriacao?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ConsumoAguaUpsertWithWhereUniqueWithoutUsuarioInput = {
@@ -8058,10 +9737,11 @@ export namespace Prisma {
     NOT?: RefeicaoScalarWhereInput | RefeicaoScalarWhereInput[]
     id?: StringFilter<"Refeicao"> | string
     nome?: StringFilter<"Refeicao"> | string
-    carboidrato?: FloatFilter<"Refeicao"> | number
+    horario?: DateTimeFilter<"Refeicao"> | Date | string
     calorias?: FloatFilter<"Refeicao"> | number
-    proteina?: FloatFilter<"Refeicao"> | number
-    data?: DateTimeFilter<"Refeicao"> | Date | string
+    proteinas?: FloatFilter<"Refeicao"> | number
+    carboidratos?: FloatFilter<"Refeicao"> | number
+    gorduras?: FloatFilter<"Refeicao"> | number
     usuarioId?: StringFilter<"Refeicao"> | string
   }
 
@@ -8238,6 +9918,37 @@ export namespace Prisma {
     create: XOR<UserCreateWithoutRefeicoesInput, UserUncheckedCreateWithoutRefeicoesInput>
   }
 
+  export type AlimentoRefeicaoCreateWithoutRefeicaoInput = {
+    id?: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood?: string | null
+  }
+
+  export type AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput = {
+    id?: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood?: string | null
+  }
+
+  export type AlimentoRefeicaoCreateOrConnectWithoutRefeicaoInput = {
+    where: AlimentoRefeicaoWhereUniqueInput
+    create: XOR<AlimentoRefeicaoCreateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput>
+  }
+
+  export type AlimentoRefeicaoCreateManyRefeicaoInputEnvelope = {
+    data: AlimentoRefeicaoCreateManyRefeicaoInput | AlimentoRefeicaoCreateManyRefeicaoInput[]
+  }
+
   export type UserUpsertWithoutRefeicoesInput = {
     update: XOR<UserUpdateWithoutRefeicoesInput, UserUncheckedUpdateWithoutRefeicoesInput>
     create: XOR<UserCreateWithoutRefeicoesInput, UserUncheckedCreateWithoutRefeicoesInput>
@@ -8265,6 +9976,95 @@ export namespace Prisma {
     consumoAgua?: ConsumoAguaUncheckedUpdateManyWithoutUsuarioNestedInput
   }
 
+  export type AlimentoRefeicaoUpsertWithWhereUniqueWithoutRefeicaoInput = {
+    where: AlimentoRefeicaoWhereUniqueInput
+    update: XOR<AlimentoRefeicaoUpdateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedUpdateWithoutRefeicaoInput>
+    create: XOR<AlimentoRefeicaoCreateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedCreateWithoutRefeicaoInput>
+  }
+
+  export type AlimentoRefeicaoUpdateWithWhereUniqueWithoutRefeicaoInput = {
+    where: AlimentoRefeicaoWhereUniqueInput
+    data: XOR<AlimentoRefeicaoUpdateWithoutRefeicaoInput, AlimentoRefeicaoUncheckedUpdateWithoutRefeicaoInput>
+  }
+
+  export type AlimentoRefeicaoUpdateManyWithWhereWithoutRefeicaoInput = {
+    where: AlimentoRefeicaoScalarWhereInput
+    data: XOR<AlimentoRefeicaoUpdateManyMutationInput, AlimentoRefeicaoUncheckedUpdateManyWithoutRefeicaoInput>
+  }
+
+  export type AlimentoRefeicaoScalarWhereInput = {
+    AND?: AlimentoRefeicaoScalarWhereInput | AlimentoRefeicaoScalarWhereInput[]
+    OR?: AlimentoRefeicaoScalarWhereInput[]
+    NOT?: AlimentoRefeicaoScalarWhereInput | AlimentoRefeicaoScalarWhereInput[]
+    id?: StringFilter<"AlimentoRefeicao"> | string
+    nomeAlimento?: StringFilter<"AlimentoRefeicao"> | string
+    quantidade?: FloatFilter<"AlimentoRefeicao"> | number
+    calorias?: FloatFilter<"AlimentoRefeicao"> | number
+    proteinas?: FloatFilter<"AlimentoRefeicao"> | number
+    carboidratos?: FloatFilter<"AlimentoRefeicao"> | number
+    gorduras?: FloatFilter<"AlimentoRefeicao"> | number
+    codigoOpenFood?: StringNullableFilter<"AlimentoRefeicao"> | string | null
+    refeicaoId?: StringFilter<"AlimentoRefeicao"> | string
+  }
+
+  export type RefeicaoCreateWithoutAlimentosInput = {
+    id?: string
+    nome: string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
+    usuario: UserCreateNestedOneWithoutRefeicoesInput
+  }
+
+  export type RefeicaoUncheckedCreateWithoutAlimentosInput = {
+    id?: string
+    nome: string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
+    usuarioId: string
+  }
+
+  export type RefeicaoCreateOrConnectWithoutAlimentosInput = {
+    where: RefeicaoWhereUniqueInput
+    create: XOR<RefeicaoCreateWithoutAlimentosInput, RefeicaoUncheckedCreateWithoutAlimentosInput>
+  }
+
+  export type RefeicaoUpsertWithoutAlimentosInput = {
+    update: XOR<RefeicaoUpdateWithoutAlimentosInput, RefeicaoUncheckedUpdateWithoutAlimentosInput>
+    create: XOR<RefeicaoCreateWithoutAlimentosInput, RefeicaoUncheckedCreateWithoutAlimentosInput>
+    where?: RefeicaoWhereInput
+  }
+
+  export type RefeicaoUpdateToOneWithWhereWithoutAlimentosInput = {
+    where?: RefeicaoWhereInput
+    data: XOR<RefeicaoUpdateWithoutAlimentosInput, RefeicaoUncheckedUpdateWithoutAlimentosInput>
+  }
+
+  export type RefeicaoUpdateWithoutAlimentosInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    usuario?: UserUpdateOneRequiredWithoutRefeicoesNestedInput
+  }
+
+  export type RefeicaoUncheckedUpdateWithoutAlimentosInput = {
+    nome?: StringFieldUpdateOperationsInput | string
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    usuarioId?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ConsumoAguaCreateManyUsuarioInput = {
     id?: string
     quantidade: number
@@ -8274,10 +10074,11 @@ export namespace Prisma {
   export type RefeicaoCreateManyUsuarioInput = {
     id?: string
     nome: string
-    carboidrato: number
-    calorias: number
-    proteina: number
-    data?: Date | string
+    horario?: Date | string
+    calorias?: number
+    proteinas?: number
+    carboidratos?: number
+    gorduras?: number
   }
 
   export type ConsumoAguaUpdateWithoutUsuarioInput = {
@@ -8297,26 +10098,72 @@ export namespace Prisma {
 
   export type RefeicaoUpdateWithoutUsuarioInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    alimentos?: AlimentoRefeicaoUpdateManyWithoutRefeicaoNestedInput
   }
 
   export type RefeicaoUncheckedUpdateWithoutUsuarioInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    alimentos?: AlimentoRefeicaoUncheckedUpdateManyWithoutRefeicaoNestedInput
   }
 
   export type RefeicaoUncheckedUpdateManyWithoutUsuarioInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    carboidrato?: FloatFieldUpdateOperationsInput | number
+    horario?: DateTimeFieldUpdateOperationsInput | Date | string
     calorias?: FloatFieldUpdateOperationsInput | number
-    proteina?: FloatFieldUpdateOperationsInput | number
-    data?: DateTimeFieldUpdateOperationsInput | Date | string
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+  }
+
+  export type AlimentoRefeicaoCreateManyRefeicaoInput = {
+    id?: string
+    nomeAlimento: string
+    quantidade: number
+    calorias: number
+    proteinas: number
+    carboidratos: number
+    gorduras: number
+    codigoOpenFood?: string | null
+  }
+
+  export type AlimentoRefeicaoUpdateWithoutRefeicaoInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AlimentoRefeicaoUncheckedUpdateWithoutRefeicaoInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AlimentoRefeicaoUncheckedUpdateManyWithoutRefeicaoInput = {
+    nomeAlimento?: StringFieldUpdateOperationsInput | string
+    quantidade?: FloatFieldUpdateOperationsInput | number
+    calorias?: FloatFieldUpdateOperationsInput | number
+    proteinas?: FloatFieldUpdateOperationsInput | number
+    carboidratos?: FloatFieldUpdateOperationsInput | number
+    gorduras?: FloatFieldUpdateOperationsInput | number
+    codigoOpenFood?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

@@ -28,7 +28,7 @@ model User {
 model Perfil {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
   nome           String
-  sobrenome      String
+  sobrenome      String  
   dataNascimento DateTime
   peso           Float
   altura         Float
@@ -47,10 +47,10 @@ model Meta {
   carboidratos   Float
   agua           Float
   gorduras       Float
+  dataCriacao    DateTime
   usuarioId      String   @unique @db.ObjectId
   usuario        User     @relation("MetaDoUsuario", fields: [usuarioId], references: [id])
 }
-
 
 
 model ConsumoAgua {
@@ -63,14 +63,30 @@ model ConsumoAgua {
 
 
 model Refeicao {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  nome       String
-  carboidrato Float
-  calorias   Float
-  proteina    Float
-  data       DateTime @default(now())
-  usuarioId  String   @db.ObjectId
-  usuario    User     @relation(fields: [usuarioId], references: [id])
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  nome        String
+  horario     DateTime @default(now())
+  calorias    Float    @default(0)
+  proteinas   Float    @default(0)
+  carboidratos Float   @default(0)
+  gorduras    Float    @default(0)
+  usuarioId   String
+  usuario     User     @relation(fields: [usuarioId], references: [id])
+  alimentos   AlimentoRefeicao[]
+}
+
+
+model AlimentoRefeicao {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  nomeAlimento    String 
+  quantidade      Float 
+  calorias        Float
+  proteinas       Float
+  carboidratos    Float
+  gorduras        Float
+  codigoOpenFood  String? 
+  refeicaoId      String
+  refeicao        Refeicao @relation(fields: [refeicaoId], references: [id])
 }
 
 

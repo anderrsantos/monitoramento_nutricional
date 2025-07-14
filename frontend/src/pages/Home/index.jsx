@@ -20,31 +20,6 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
     irParaEmailRecupecao()
   }
 
-  const checkPerfil = async (userData) => {
-    try {
-      const response = await api.get('/searchUserPerfil', {
-        params: { userId: userData.userId }
-      });
-      console.log(response);
-
-      if (response.status === 200) {
-        alert('Possui perfil');
-        irParaConteudo(userData);
-      }
-    } catch (error) {
-      console.error('Erro ao verificar perfil:', error);
-
-      // Se o erro tiver response e o status não for 200, assume que não possui perfil
-      if (error.response && error.response.status !== 200) {
-        alert('Não possui perfil');
-        irParaCadastroDados(userData);
-      } else {
-        alert('Erro inesperado ao verificar perfil');
-      }
-    }
-  };
-
-
   const handleSubmit = async (event) => {
     event.preventDefault()
     setErrorMessage('')
@@ -67,7 +42,7 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
     <>
       <nav
         id="nav_bar"
-        className="navbar navbar-expand-lg navbar-light bg-white px-4 py-2 position-fixed w-100 shadow-sm z-3 top-0 start-0"
+        className="navbar navbar-expand-lg navbar-light bg-white px-4 py-3 position-fixed w-100 shadow-sm z-3 top-0 start-0"
       >
         <div className="container-fluid justify-content-between start-0">
           <button

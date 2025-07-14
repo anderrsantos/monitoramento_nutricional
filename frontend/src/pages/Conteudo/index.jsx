@@ -11,83 +11,275 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [aguaConsumidaMl, setAguaConsumidaMl] = useState(0)
   const [metaAguaMl, setMetaAguaMl] = useState(2450)
   const [pesoKg, setPesoKg] = useState(0)
+  const [alturaCm, setAlturaCm] = useState(null);
+  const [nivelAtividade, setNivelAtividade] = useState('');
   const [imc, setImc] = useState(0)
   const [showModal, setShowModal] = useState(false)
-  const [aguaInputMl, setAguaInputMl] = useState(250)
-  const [calorias, setCalorias] = useState(0)
-  const [metaCalorias, setMetaCalorias] = useState(2900)
-  // NOVO: Modal de refeição
+
+  // Controlador de agua =================================================================================
+  const [aguaInputMl, setAguaInputMl] = useState(null) // serve para plotar dados no grafico
+  const [aguaRecebe, setAguaRecebe] = useState(null) // serve para receber dados pagina 
+  //======================================================================================================
+  // Controlador de calorias =============================================================================
+    const [caloriasInput, setCaloriasInput] = useState(0) // serve para plotar dados no grafico
+    const [caloriasRecebe, setCaloriasRecebe] = useState(null) // serve para receber dados pagina 
+
+    const [nomeRefeicao, setNomeRefeicao] = useState('')
+    const [alimentoBusca, setAlimentoBusca] = useState('')
+    const [resultadoAlimento, setResultadoAlimento] = useState(null)
+    const [quantidadeSelecionada, setQuantidadeSelecionada] = useState(100)
+
+    const [listaResultados, setListaResultados] = useState([])
+
+    const [buscandoAlimento, setBuscandoAlimento] = useState(false)
+    const [erroBusca, setErroBusca] = useState('')
+    const [alimentosRefeicao, setAlimentosRefeicao] = useState([])
+
+  //======================================================================================================
+
+  const [metaCalorias, setMetaCalorias] = useState(0)
   const [showRefeicaoModal, setShowRefeicaoModal] = useState(false)
-  const [alimentoBusca, setAlimentoBusca] = useState('')
-  const [resultadoAlimento, setResultadoAlimento] = useState(null)
-  const [listaResultados, setListaResultados] = useState([])
-  const [buscandoAlimento, setBuscandoAlimento] = useState(false)
-  const [erroBusca, setErroBusca] = useState('')
-  // Estado para lista de alimentos da refeição
-  const [alimentosRefeicao, setAlimentosRefeicao] = useState([])
-  // Estado para quantidade do alimento selecionado
-  const [quantidadeSelecionada, setQuantidadeSelecionada] = useState(100)
+  
+ 
+  
  
   const irParaPerfilLocal = () => {
     irParaPerfil(usuario);
   }
 
   // Carrega dados do usuário do backend
-useEffect(() => {
-  if (!usuario?.userId) return
-
-  const carregarPerfil = async () => {
-    try {
-      const response = await api.get('/getPerfil', {
-        params: { userId: usuario.userId } 
-      })
-
-      const dados = response.data.perfil
-
-      console.log('Perfil carregado:', dados)
-
-      setNomeUsuario(dados.nome)
-      setPesoKg(parseFloat(dados.peso))
-
-      const alturaMetros = parseFloat(dados.altura) / 100
-      const imcCalculado = parseFloat(dados.peso) / (alturaMetros * alturaMetros)
-      setImc(imcCalculado.toFixed(2))
-      
-
-    } catch (err) {
-      console.error('Erro ao carregar perfil:', err)
-      alert('Não foi possível carregar os dados do perfil.')
-    }
-  }
-
-  carregarPerfil()
-}, [usuario])
-
-
-
-
-
-
-
-  // Recalcula a meta de água sempre que o peso muda
   useEffect(() => {
-    if (pesoKg > 0) {
-      const metaCalculada = Math.round(pesoKg * 35)
-      setMetaAguaMl(metaCalculada)
+    if (!usuario?.userId) return;
+
+    const carregarPerfil = async () => {
+      try {
+        const response = await api.get('/getPerfil', {
+          params: { userId: usuario.userId }
+        });
+
+        const dadosPerfil = response.data.perfil;
+
+        console.log('Perfil carregado:', dadosPerfil);
+
+        setNomeUsuario(dadosPerfil.nome);
+        setPesoKg(parseFloat(dadosPerfil.peso));
+        setAlturaCm(parseFloat(dadosPerfil.altura));
+        setNivelAtividade(dadosPerfil.nivelAtividade);
+
+
+        
+        const alturaMetros = parseFloat(dadosPerfil.altura) / 100;
+        const imcCalculado = parseFloat(dadosPerfil.peso) / (alturaMetros * alturaMetros);
+        setImc(imcCalculado.toFixed(2));
+
+      } catch (err) {
+        console.error('Erro ao carregar perfil:', err);
+        alert('Não foi possível carregar os dados do perfil.');
+      }
+    };
+
+    carregarPerfil();
+  }, [usuario]);
+
+
+  useEffect(() => {
+
+    if (!usuario?.userId || pesoKg == null || alturaCm == null || !nivelAtividade) return;
+
+
+    const atualizarEMostrarMetas = async () => {
+      try {
+        // 1. Atualiza no backend
+        await api.post('/setMeta', {
+          userId: usuario.userId
+        });
+
+        console.log('Meta recalculada com sucesso.');
+
+        // 2. Busca as metas atualizadas
+        const response = await api.get('/getMetas', {
+          params: { userId: usuario.userId }
+        });
+
+        if (response.status !== 200) {
+          console.warn("Status diferente de 200:", response.status);
+          return;
+        }
+
+        const meta = response.data.meta;
+
+        if (meta) {
+          console.log('Meta carregada:', meta);
+          setMetaCalorias(meta.calorias);
+          setMetaAguaMl(meta.agua);
+        } else {
+          console.warn('Nenhuma meta encontrada para o usuário.');
+        }
+
+      } catch (err) {
+        console.error('Erro ao atualizar ou buscar metas:', err);
+        alert('Erro ao processar metas do usuário.');
+      }
+    };
+
+    atualizarEMostrarMetas();
+  }, [pesoKg, alturaCm, nivelAtividade, usuario]);
+
+
+// Novo useEffect para buscar metas (calorias e água)
+/*useEffect(() => {
+  if (!usuario?.userId) return;
+
+  const buscarMeta = async () => {
+    try {
+      const response = await api.get('/getMetas', {
+        params: { userId: usuario.userId }
+      });
+
+      if (response.status !== 200) {
+        console.warn("Status diferente de 200:", response.status);
+        return;
+      }
+
+      const meta = response.data.meta;
+
+      console.log('Meta carregada:', meta);
+
+      if (meta) {
+        setMetaCalorias(meta.calorias);
+        setMetaAguaMl(meta.agua);
+      } else {
+        console.warn('Nenhuma meta encontrada para o usuário.');
+      }
+
+    } catch (erro) {
+      console.error('Erro ao buscar metas:', erro);
+      alert('Erro ao buscar metas do usuário.');
     }
-  }, [pesoKg])
+  };
+
+  buscarMeta();
+}, [usuario]);
+
+*/
 
   // Manipuladores
   const voltarLocal = () => voltar()
-  const handleCloseModal = () => setShowModal(false)
+  const handleCloseModal = () => {setShowModal(false);   // Manipuladores
+  const voltarLocal = () => voltar()
+  const handleCloseModal = () => {setShowModal(false); setAguaInputMl(null)}
+  const handleShowModal = () => setShowModal(true)
+(null)}
   const handleShowModal = () => setShowModal(true)
 
-  const handleSalvarAgua = () => {
-    if (aguaInputMl > 0) {
-      setAguaConsumidaMl(aguaConsumidaMl + aguaInputMl)
+
+
+// Manipulação dos dados para o consumo do dia  ===============================================
+
+  // Carregar calorias e agua de hoje ao montar o componente
+  useEffect(() => {
+      if (usuario.userId) {
+       atualizarCaloriasAguaHoje();
+      }
+  }, [usuario]);
+
+  // Buscar caloriase agua consumidas hoje
+  async function atualizarCaloriasAguaHoje() {
+    console.log('usuario: ', usuario)
+    try {
+      // Buscar água consumida nas últimas 24h (1 dia)
+      const responseAgua = await api.get('/getConsumoAguaPorDia', {params: { userId: usuario.userId, dias: 1}});
+      const quantidade = Object.values(responseAgua.data.consumoPorDia)[0] || 0;
+      setAguaConsumidaMl(quantidade)
+
+      const responseCalorias = await api.get(`/calorias-hoje/${usuario.userId}`);
+      setCaloriasInput(responseCalorias.data.totalCalorias);
+
+
+    } catch (error) {
+      console.error('Erro ao buscar: ', error);
     }
-    handleCloseModal()
   }
+
+  const handleSalvarAgua = async () => {
+    console.log('Agua recebe: ', aguaRecebe);
+
+    if (aguaRecebe > 0) {
+      try {
+        const response = await api.post('/setConsumoAgua', {
+          usuarioId: usuario.userId,  
+          quantidade: aguaRecebe
+        });
+
+        setAguaRecebe(null);
+         await atualizarCaloriasAguaHoje(); // Atualiza os dados na tela
+      } catch (error) {
+        console.error('Erro ao salvar consumo de água:', error);
+      }
+    }
+
+    handleCloseModal(); // Fecha o modal mesmo que não salve
+  };
+
+  // Salvar refeição no backend
+  async function salvarRefeicao() {
+    if (alimentosRefeicao.length === 0) {
+      alert('Adicione pelo menos um alimento à refeição');
+      return;
+    }
+
+    if (!nomeRefeicao.trim()) {
+      alert('Digite um nome para a refeição');
+      return;
+    }
+
+    try {
+      const alimentosParaSalvar = alimentosRefeicao.map(item => ({
+        nomeAlimento: item.alimento.product_name || 'Nome não disponível',
+        quantidade: item.quantidade,
+        calorias: parseFloat(item.calorias) || 0,
+        proteinas: parseFloat(item.alimento.nutriments?.proteins) || 0,
+        carboidratos: parseFloat(item.alimento.nutriments?.carbohydrates) || 0,
+        gorduras: parseFloat(item.alimento.nutriments?.fat) || 0,
+        codigoOpenFood: item.alimento.code || null
+      }));
+
+      const response = await api.post('/refeicoes', {
+        usuarioId: usuario.id,
+        nome: nomeRefeicao,
+        alimentos: alimentosParaSalvar
+      });
+
+      // Atualizar calorias consumidas hoje
+      await atualizarCaloriasHoje();
+
+      // Limpar formulário
+      setAlimentosRefeicao([]);
+      setNomeRefeicao('');
+      setShowRefeicaoModal(false);
+
+      alert('Refeição salva com sucesso!');
+    } catch (error) {
+      console.error('Erro ao salvar refeição:', error);
+      alert('Erro ao salvar refeição. Tente novamente.');
+    }
+  }
+
+
+
+
+//===========================================================================================
+
+
+
+
+
+
+
+
+
+
+
 
   // NOVO: Função para buscar alimento na Open Food Facts
   async function buscarAlimento(nome) {
@@ -168,21 +360,60 @@ useEffect(() => {
   const aguaConsumidaL = (aguaConsumidaMl / 1000).toFixed(1)
   const metaAguaL = (metaAguaMl / 1000).toFixed(1)
 
+
+  
+
+
+
+
+
+
+
   return (
     <>
+      <div className="d-flex flex-column min-vh-100">
+
       {/* Navbar fixa */}
-      <nav className="navbar navbar-expand-lg bg-white px-4 py-2 position-fixed w-100 shadow-sm start-0 top-0" style={{ zIndex: 1000 }}>
-        <div className="container-fluid justify-content-between">
-          <a className="navbar-brand mx-auto d-flex align-items-center" href="#" onClick={voltarLocal} id="logo">
+      <nav
+        className="navbar navbar-expand-lg bg-white py-3 px-4 position-fixed w-100 shadow-sm"
+        style={{ zIndex: 1000, top: 0, height: '80px' }}
+      >
+        <div className="container position-relative d-flex justify-content-center align-items-center">
+
+          {/* Logo centralizada */}
+          <a
+            className="navbar-brand position-absolute top-50 start-50 translate-middle d-flex align-items-center"
+            href="#"
+            id="logo"
+          >
             <img src={logo} alt="Logo" style={{ height: '40px' }} />
-            <span className="ms-2 fw-bold text-success d-none d-lg-inline">
+            <span className="ms-2 fw-bold text-success d-none d-md-inline">
               NUTRI<span className="text-danger">TRACKER</span>
             </span>
           </a>
+
+          {/* Botão de sair no canto direito */}
+          <button
+            className="position-absolute fw-bold end-0"
+            onClick={voltarLocal}
+            style={{
+              top: '50%',
+              transform: 'translateY(-50%)',
+              fontSize: '20px',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+            }}
+          >
+            Sair
+          </button>
         </div>
       </nav>
 
-      <main className="container py-4 mt-5 pt-5">
+
+
+      <main className="container py-4 mt-5 pt-5 flex-grow-1">
         <header className="mb-4 d-flex justify-content-between align-items-center">
           <div>
             <h2>Olá, {nomeUsuario}!</h2>
@@ -199,7 +430,7 @@ useEffect(() => {
                 <div className="row text-center">
                   <div className="col-md-6 mb-3">
                     <div className="d-flex flex-column align-items-center">
-                      <GraficoAnel valor={calorias} meta={metaCalorias} cor="#dc3545" unidade="Kcal" />
+                      <GraficoAnel valor={caloriasInput} meta={metaCalorias} cor="#dc3545" unidade="Kcal" />
                       <p className="mt-2 mb-0"><strong>Calorias</strong></p>
                     </div>
                   </div>
@@ -257,12 +488,13 @@ useEffect(() => {
         </div>
       </main>
 
-      <footer className="bg-white border-top text-center py-3 mt-auto">
-        <div className="small">
-          <p className="mb-1">© 2025 <strong>NutriTracker</strong>. Todos os direitos reservados.</p>
-        </div>
-      </footer>
+    <footer className="bg-white border-top text-center py-3 mt-auto">
+      <div className="small">
+        <p className="mb-1">© 2025 <strong>NutriTracker</strong>. Todos os direitos reservados.</p>
+      </div>
+    </footer>
 
+      {/* MODAL NOVA CONSUMO DE AGUA */}          
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
           <Modal.Title>Adicionar Água</Modal.Title>
@@ -273,7 +505,7 @@ useEffect(() => {
             type="number"
             className="form-control"
             value={aguaInputMl}
-            onChange={e => setAguaInputMl(parseInt(e.target.value))}
+            onChange={e => setAguaRecebe(parseInt(e.target.value))}
             placeholder="Ex: 250"
           />
           <small className="text-muted">Valor em ml</small>
@@ -290,6 +522,17 @@ useEffect(() => {
           <Modal.Title>Adicionar Refeição</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+        <div className="mb-3">
+           <label className="form-label">Nome da refeição:</label>
+           <input
+             type="text"
+             className="form-control"
+             value={nomeRefeicao}
+             onChange={e => setNomeRefeicao(e.target.value)}
+             placeholder="Ex: Café da manhã, Almoço, Jantar..."
+           />
+         </div>
+         <hr />
           <label htmlFor="alimentoBusca" className="form-label">Digite o nome do alimento:</label>
           <input
             id="alimentoBusca"
@@ -384,6 +627,14 @@ useEffect(() => {
                ))}
              </ul>
              <div className="fw-bold">Total de calorias da refeição: {totalCaloriasRefeicao} kcal</div>
+             <Button 
+               variant="success" 
+               className="mt-3 w-100" 
+               onClick={salvarRefeicao}
+               disabled={!nomeRefeicao.trim()}
+             >
+               Salvar Refeição
+             </Button>
            </div>
          )}
         </Modal.Body>
@@ -391,6 +642,7 @@ useEffect(() => {
           <Button variant="secondary" onClick={() => setShowRefeicaoModal(false)}>Fechar</Button>
         </Modal.Footer>
       </Modal>
+    </div>
     </>
   )
 }

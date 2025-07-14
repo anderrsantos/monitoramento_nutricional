@@ -139,6 +139,7 @@ exports.Prisma.MetaScalarFieldEnum = {
   carboidratos: 'carboidratos',
   agua: 'agua',
   gorduras: 'gorduras',
+  dataCriacao: 'dataCriacao',
   usuarioId: 'usuarioId'
 };
 
@@ -152,11 +153,24 @@ exports.Prisma.ConsumoAguaScalarFieldEnum = {
 exports.Prisma.RefeicaoScalarFieldEnum = {
   id: 'id',
   nome: 'nome',
-  carboidrato: 'carboidrato',
+  horario: 'horario',
   calorias: 'calorias',
-  proteina: 'proteina',
-  data: 'data',
+  proteinas: 'proteinas',
+  carboidratos: 'carboidratos',
+  gorduras: 'gorduras',
   usuarioId: 'usuarioId'
+};
+
+exports.Prisma.AlimentoRefeicaoScalarFieldEnum = {
+  id: 'id',
+  nomeAlimento: 'nomeAlimento',
+  quantidade: 'quantidade',
+  calorias: 'calorias',
+  proteinas: 'proteinas',
+  carboidratos: 'carboidratos',
+  gorduras: 'gorduras',
+  codigoOpenFood: 'codigoOpenFood',
+  refeicaoId: 'refeicaoId'
 };
 
 exports.Prisma.SortOrder = {
@@ -175,7 +189,8 @@ exports.Prisma.ModelName = {
   Perfil: 'Perfil',
   Meta: 'Meta',
   ConsumoAgua: 'ConsumoAgua',
-  Refeicao: 'Refeicao'
+  Refeicao: 'Refeicao',
+  AlimentoRefeicao: 'AlimentoRefeicao'
 };
 
 /**

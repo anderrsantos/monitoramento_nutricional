@@ -17,12 +17,13 @@ function EmailRecuperacao({irParaCodigoSenha, voltarHome }) {
       });
 
       if (response.status === 200 && response.data?.id) {
-        // ('Este email já está cadastrado');
+        setAviso ('Este email já está cadastrado');
         return false;
       }
     } catch (error) {
       if (error.response?.status === 404) {
-        return true; // Email não encontrado, pode seguir
+        setAviso ('Este email não esta cadastrado');
+        return true; 
       }
       console.error('Erro ao verificar o email:', error);
       alert('Erro ao verificar o email. Por favor, tente novamente mais tarde.');

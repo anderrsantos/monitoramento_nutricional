@@ -26,6 +26,15 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     }
   };
 
+  const registrarMeta = async (userId) => {
+    try {
+      const response = await api.post('/setMeta', { userId }); // agora userId é passado no body
+      console.log('Meta registrada:', response.data);
+    } catch (error) {
+      console.error('Erro ao registrar metas:', error);
+    }
+  };
+
   // Chama automaticamente uma vez ao montar o componente
   useEffect(() => {
     registrarUsuario();
@@ -59,14 +68,16 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
         sexo,
         objetivo,
         nivelAtividade
-      });
+    });
 
-      if (response.status === 200) {
-        console.log(response.data)
-        irParaConteudo(response.data);
-      } else {
-        alert(response.data?.message || 'Erro inesperado ao registrar perfil.');
-      }
+    if (response.status === 200) {
+      const userId = response.data.userId;
+      await registrarMeta(userId);
+      irParaConteudo(response.data);
+    } else {
+      alert(response.data?.message || 'Erro inesperado ao registrar perfil.');
+    }
+
     } catch (error) {
       console.error('Erro ao salvar dados:', error);
       alert('Erro ao salvar dados. Por favor, tente novamente.');
