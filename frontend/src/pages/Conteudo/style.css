@@ -1,0 +1,37 @@
+/* Container para o dropdown e o botão */
+.refeicoes-container {
+  position: relative;
+}
+
+/* O painel que flutua */
+.refeicoes-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  
+  /* Animação */
+  max-height: 0; /* Começa fechado */
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+/* Classe que ativa a animação de abrir */
+.refeicoes-dropdown.aberto {
+  max-height: 500px; /* Altura máxima ao abrir */
+}
+
+/* Estilos para o card dentro do painel */
+.refeicoes-dropdown .card {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Adiciona rolagem se a lista for muito grande */
+.refeicoes-dropdown .list-group {
+  max-height: 350px;
+  overflow-y: auto;
+}

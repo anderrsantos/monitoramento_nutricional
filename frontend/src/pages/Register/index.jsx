@@ -4,20 +4,20 @@ import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 import api from '../../services/api.js'
 import InputSenha from '../../components/InputSenha/index.jsx'
-import {FaEye, FaEyeSlash} from 'react-icons/fa'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 
 function Register({ irParaRegisterConfirm, voltar }) {
   const [aviso, setAviso] = useState('')
   const [senhaVisivel, setSenhaVisivel] = useState(false)
-  const [confirmarSenhaVisivel, setConfirmarVisivel] = useState(false)
+  const [confirmarSenhaVisivel, setConfirmarSenhaVisivel] = useState(false)
 
   const voltarLocal = () => {
     voltar()
   }
 
   const enviarCodigoEmail = (email) => {
-    api.post('/serviceEmail', {email:email}) // Pode ajustar nome se houver
+    api.post('/serviceEmail', { email: email }) // Pode ajustar nome se houver
       .then((response) => {
         console.log('Código enviado para o email:', response.data)
         setAviso('Código enviado com sucesso.')
@@ -124,7 +124,7 @@ function Register({ irParaRegisterConfirm, voltar }) {
       {/* Conteúdo principal */}
       <main className="d-flex align-items-center justify-content-center min-vh-100">
         <form
-          onSubmit={handleSubmit} 
+          onSubmit={handleSubmit}
           className="card shadow-sm p-4 rounded-4 position-relative center"
           style={{ maxWidth: '450px', width: '100%' }}
         >
@@ -148,56 +148,57 @@ function Register({ irParaRegisterConfirm, voltar }) {
             <input
               type="email"
               id="email"
-              name="email" 
+              name="email"
               className="form-control"
               placeholder="Digite seu e-mail"
               required
             />
           </div>
 
-         {/* Senha */}
-<div className="mb-3">
-  <label htmlFor="senha" className="form-label">Senha</label>
-  <div className="input-group">
-    <input
-      type={senhaVisivel ? 'text' : 'password'}
-      id="senha"
-      name="senha" 
-      className="form-control"
-      placeholder="Digite sua senha"
-      required
-    />
-    <button
-      className="btn btn-outline-secondary"
-      type="button"
-      onClick={() => setSenhaVisivel(!senhaVisivel)}
-      >
-        {senhaVisivel ? <FaEyeSlash /> : <FaEye />}
-      </button>
-  </div>
-</div>
+          {/* Senha */}
+          <div className="mb-3">
+            <label htmlFor="senha" className="form-label">Senha</label>
+            <div className="campo-senha">
+              <input
+                type={senhaVisivel ? 'text' : 'password'}
+                id="senha"
+                name="senha"
+                className="input-senha"
+                placeholder="Digite sua senha"
+                required
+              />
+              <button
+                type="button"
+                className="btn-olho"
+                onClick={() => setSenhaVisivel(!senhaVisivel)}
+              >
+                {senhaVisivel ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+          </div>
 
-{/* Confirmar senha (este já estava correto) */}
-<div className="mb-4">
-  <label htmlFor="confirmar" className="form-label">Confirmar senha</label>
-  <div className="input-group">
-    <input
-      type={confirmarSenhaVisivel ? 'text' : 'password'}
-      id="confirmar"
-      name="confirmar"
-      className="form-control"
-      placeholder="Repita sua senha"
-      required
-    />
-    <button
-      className="btn btn-outline-secondary"
-      type="button"
-      onClick={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)}
-      >
-        {confirmarSenhaVisivel ? <FaEyeSlash /> : <FaEye />}
-    </button>
-  </div>
-</div>
+          {/* Confirmar senha */}
+          <div className="mb-4">
+            <label htmlFor="confirmar" className="form-label">Confirmar senha</label>
+            <div className="campo-senha">
+              <input
+                type={confirmarSenhaVisivel ? 'text' : 'password'}
+                id="confirmar"
+                name="confirmar"
+                className="input-senha"
+                placeholder="Repita sua senha"
+                required
+              />
+              <button
+                type="button"
+                className="btn-olho"
+                onClick={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)}
+              >
+                {confirmarSenhaVisivel ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
+          </div>
+
 
           {/* Botão */}
           <button

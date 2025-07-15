@@ -2,61 +2,66 @@ import '../../index.css'
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 import api from '../../services/api.js'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
-function RecuperarSenha({usuario, voltarHome}) {
-    const [aviso, setAviso] = useState('')
-    
 
-    const voltarLocal = () => {
-        voltarHome()
+function RecuperarSenha({ usuario, voltarHome }) {
+  const [aviso, setAviso] = useState('')
+
+  const [senhaVisivel, setSenhaVisivel] = useState(false)
+  const [confirmarSenhaVisivel, setConfirmarSenhaVisivel] = useState(false)
+
+
+  const voltarLocal = () => {
+    voltarHome()
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const password = event.target.senha.value;
+    const confirmPassword = event.target.confirmar.value;
+
+    setAviso('');
+
+    if (!password || !confirmPassword) {
+      setAviso('Todos os campos são obrigatórios.');
+      return;
     }
 
-   const handleSubmit = async (event) => {
-        event.preventDefault();
-        const password = event.target.senha.value;
-        const confirmPassword = event.target.confirmar.value;
+    const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!senhaForteRegex.test(password)) {
+      setAviso('A senha deve conter letras maiúsculas, minúsculas e números.');
+      return;
+    }
 
-        setAviso('');
+    if (password !== confirmPassword) {
+      setAviso('As senhas não coincidem. Por favor, tente novamente.');
+      return;
+    }
 
-        if (!password || !confirmPassword) {
-            setAviso('Todos os campos são obrigatórios.');
-            return;
-        }
+    if (password.length < 8) {
+      setAviso('A senha precisa ter pelo menos 8 caracteres.');
+      return;
+    }
+    console.log(password)
 
-        const senhaForteRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-        if (!senhaForteRegex.test(password)) {
-            setAviso('A senha deve conter letras maiúsculas, minúsculas e números.');
-            return;
-        }
+    try {
+      const response = await api.put('/updateUser', { email: usuario.email, password });
 
-        if (password !== confirmPassword) {
-            setAviso('As senhas não coincidem. Por favor, tente novamente.');
-            return;
-        }
+      if (response.status === 200) {
+        setAviso(response.data.message);
+        await delay(2000);
+        voltarHome();
+      }
+    } catch (erro) {
+      console.error('Erro ao atualizar senha:', erro.response || erro.message || erro);
+      setAviso('Erro ao atualizar senha. Tente novamente mais tarde.');
+    }
 
-        if (password.length < 8) {
-            setAviso('A senha precisa ter pelo menos 8 caracteres.');
-            return;
-        }
-        console.log(password)
-
-        try {
-            const response = await api.put('/updateUser', { email: usuario.email, password });
-
-            if (response.status === 200) {
-              setAviso(response.data.message);
-              await delay(2000); 
-              voltarHome();
-            }
-        } catch (erro) {
-            console.error('Erro ao atualizar senha:', erro.response || erro.message || erro);
-            setAviso('Erro ao atualizar senha. Tente novamente mais tarde.');
-        }
-
-   };
+  };
 
 
-return (
+  return (
     <>
       {/* Navbar fixa */}
       <nav
@@ -77,7 +82,7 @@ return (
       {/* Conteúdo principal */}
       <main className="d-flex align-items-center justify-content-center min-vh-100">
         <form
-          onSubmit={handleSubmit} 
+          onSubmit={handleSubmit}
           className="card shadow-sm p-4 rounded-4 position-relative center"
           style={{ maxWidth: '450px', width: '100%' }}
         >
@@ -97,28 +102,48 @@ return (
           {/* Senha */}
           <div className="mb-3">
             <label htmlFor="senha" className="form-label">Senha</label>
-            <input
-              type="password"
-              id="senha"
-              name="senha" 
-              className="form-control"
-              placeholder="Digite sua senha"
-              required
-            />
+            <div className="campo-senha">
+              <input
+                type={senhaVisivel ? 'text' : 'password'}
+                id="senha"
+                name="senha"
+                className="input-senha"
+                placeholder="Digite sua senha"
+                required
+              />
+              <button
+                type="button"
+                className="btn-olho"
+                onClick={() => setSenhaVisivel(!senhaVisivel)}
+              >
+                {senhaVisivel ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
+
 
           {/* Confirmar senha */}
           <div className="mb-4">
             <label htmlFor="confirmar" className="form-label">Confirmar senha</label>
-            <input
-              type="password"
-              id="confirmar"
-              name="confirmar"
-              className="form-control"
-              placeholder="Repita sua senha"
-              required
-            />
+            <div className="campo-senha">
+              <input
+                type={confirmarSenhaVisivel ? 'text' : 'password'}
+                id="confirmar"
+                name="confirmar"
+                className="input-senha"
+                placeholder="Repita sua senha"
+                required
+              />
+              <button
+                type="button"
+                className="btn-olho"
+                onClick={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)}
+              >
+                {confirmarSenhaVisivel ? <FaEyeSlash /> : <FaEye />}
+              </button>
+            </div>
           </div>
+
 
           {/* Botão */}
           <button

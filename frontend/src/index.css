@@ -104,3 +104,32 @@ body {
   color: #fff;
   box-shadow: 0 2px 6px rgba(239, 43, 45, 0.4);
 }
+
+.campo-senha {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.input-senha {
+  flex: 1;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  outline: none;
+}
+
+.btn-olho {
+  background: transparent;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.campo-senha:focus-within {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+

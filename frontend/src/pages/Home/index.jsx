@@ -121,33 +121,32 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
 
             <div className="mb-3">
               <label htmlFor="inputSenha" className="form-label">Senha</label>
-              {/* Adicionado o input-group para agrupar o campo e o botão */}
-              <div className="input-group">
+              <div className="campo-senha">
                 <input
-                  // O tipo agora é dinâmico
                   type={senhaVisivel ? 'text' : 'password'}
                   id="inputSenha"
                   name="senha"
-                  className="form-control"
+                  className="input-senha"
                   placeholder="Digite sua senha"
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                 />
                 <button
-                  className="btn btn-outline-secondary"
                   type="button"
+                  className="btn-olho"
                   onClick={() => setSenhaVisivel(!senhaVisivel)}
                   title={senhaVisivel ? 'Ocultar senha' : 'Mostrar senha'}
                 >
                   {senhaVisivel ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              {/* Mensagem de erro permanece fora do input-group */}
+
               {errorMessage && (
                 <p className="text-danger small mt-2">{errorMessage}</p>
               )}
             </div>
+
 
             <div className="text-end mb-3">
               <a href="#" className="text-decoration-none small text-muted" onClick={irParaEmailRecupecaoLocal}>Esqueceu a sua senha?</a>
