@@ -431,7 +431,7 @@ const plotarSugestao = () => {
     if (getSugestaoComida && getSugestaoComida[diaFormatado]) {
       const sugestaoHoje = getSugestaoComida[diaFormatado];
 
-      console.log('sugestaoHoje:', sugestaoHoje);
+      console.log('sugestaoHoje:',{ dia: diaFormatado, dados: sugestaoHoje });
       setPlotarComida({ dia: diaFormatado, dados: sugestaoHoje });
     } else {
       console.warn('Nenhuma sugestão para o dia atual encontrada.');
@@ -717,73 +717,125 @@ const plotarSugestao = () => {
           </section>
         </div>
       {/* ====================================================================================================== */}
-      {!getPlotarComida ? (
-        <div className="mt-5 text-center text-muted">
-          <div className="spinner-border text-success" role="status">
-            <span className="visually-hidden">Carregando...</span>
-          </div>
-          <p className="mt-3">Carregando sugestão alimentar...</p>
-        </div>
-      ) : (
-        <div className="mt-5">
-          <h5 className="card-title mb-4">
-          Sugestão de refeição de <strong>{getPlotarComida.dia}</strong>
-          </h5>
+{!getPlotarComida?.dados?.cafe || !getPlotarComida?.dados?.almoco || !getPlotarComida?.dados?.janta ? (
+  <div className="mt-5 text-center text-muted">
+    <div className="spinner-border text-success" role="status">
+      <span className="visually-hidden">Carregando...</span>
+    </div>
+    <p className="mt-3">Carregando sugestão alimentar...</p>
+  </div>
+) : (
+  <div className="mt-5">
+    <h5 className="card-title mb-4">
+      Sugestão de refeição de <strong>{getPlotarComida?.dia ?? '---'}</strong>
+    </h5>
 
-          <div className="row g-4">
-            {/* Café da manhã */}
-            <div className="col-12 col-md-4">
-              <div className="card h-100 shadow-sm border-primary">
-                <div className="card-body">
-                  <h5 className="card-title mb-3 text-primary">
-                    ☕ Café da manhã
-                  </h5>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Calorias: {getPlotarComida.dados.cafe.calorias} kcal</li>
-                    <li className="list-group-item">Proteínas: {getPlotarComida.dados.cafe.proteinas} g</li>
-                    <li className="list-group-item">Carboidratos: {getPlotarComida.dados.cafe.carboidratos} g</li>
-                    <li className="list-group-item">Gorduras: {getPlotarComida.dados.cafe.gorduras} g</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+    <div className="row g-4">
+      {/* Café da manhã */}
+      <div className="col-12 col-md-4">
+        <div className="card h-100 shadow-sm border-primary">
+          <div className="card-body">
+            <h5 className="card-title mb-3 text-primary">☕ Café da manhã</h5>
 
-            {/* Almoço */}
-            <div className="col-12 col-md-4">
-              <div className="card h-100 shadow-sm border-success">
-                <div className="card-body">
-                  <h5 className="card-title mb-3 text-success">
-                    Almoço
-                  </h5>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Calorias: {getPlotarComida.dados.almoco.calorias} kcal</li>
-                    <li className="list-group-item">Proteínas: {getPlotarComida.dados.almoco.proteinas} g</li>
-                    <li className="list-group-item">Carboidratos: {getPlotarComida.dados.almoco.carboidratos} g</li>
-                    <li className="list-group-item">Gorduras: {getPlotarComida.dados.almoco.gorduras} g</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            {/* Alimentos */}
+            <ul className="list-group list-group-flush mb-3">
+              {getPlotarComida?.dados?.cafe?.alimentos?.map((alimento, index) => (
+                <li key={index} className="list-group-item border-0 px-0">
+                  {alimento.nome} - {alimento.quantidade}
+                  {typeof alimento.quantidade === 'number' ? 'g' : ''}
+                </li>
+              ))}
+            </ul>
 
-            {/* Janta */}
-            <div className="col-12 col-md-4">
-              <div className="card h-100 shadow-sm border-warning">
-                <div className="card-body">
-                  <h5 className="card-title mb-3 text-warning">
-                     Janta
-                  </h5>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item">Calorias: {getPlotarComida.dados.janta.calorias} kcal</li>
-                    <li className="list-group-item">Proteínas: {getPlotarComida.dados.janta.proteinas} g</li>
-                    <li className="list-group-item">Carboidratos: {getPlotarComida.dados.janta.carboidratos} g</li>
-                    <li className="list-group-item">Gorduras: {getPlotarComida.dados.janta.gorduras} g</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            {/* Macronutrientes */}
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item border-top pt-3 mt-2 px-0">
+                Calorias: {getPlotarComida?.dados?.cafe?.calorias ?? '---'} kcal
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Proteínas: {getPlotarComida?.dados?.cafe?.proteinas ?? '---'} g
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Carboidratos: {getPlotarComida?.dados?.cafe?.carboidratos ?? '---'} g
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Gorduras: {getPlotarComida?.dados?.cafe?.gorduras ?? '---'} g
+              </li>
+            </ul>
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Almoço */}
+      <div className="col-12 col-md-4">
+        <div className="card h-100 shadow-sm border-success">
+          <div className="card-body">
+            <h5 className="card-title mb-3 text-success">🍛 Almoço</h5>
+
+            <ul className="list-group list-group-flush mb-3">
+              {getPlotarComida?.dados?.almoco?.alimentos?.map((alimento, index) => (
+                <li key={index} className="list-group-item border-0 px-0">
+                  {alimento.nome} - {alimento.quantidade}
+                  {typeof alimento.quantidade === 'number' ? 'g' : ''}
+                </li>
+              ))}
+            </ul>
+
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item border-top pt-3 mt-2 px-0">
+                Calorias: {getPlotarComida?.dados?.almoco?.calorias ?? '---'} kcal
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Proteínas: {getPlotarComida?.dados?.almoco?.proteinas ?? '---'} g
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Carboidratos: {getPlotarComida?.dados?.almoco?.carboidratos ?? '---'} g
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Gorduras: {getPlotarComida?.dados?.almoco?.gorduras ?? '---'} g
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Janta */}
+      <div className="col-12 col-md-4">
+        <div className="card h-100 shadow-sm border-warning">
+          <div className="card-body">
+            <h5 className="card-title mb-3 text-warning">🌙 Janta</h5>
+
+            <ul className="list-group list-group-flush mb-3">
+              {getPlotarComida?.dados?.janta?.alimentos?.map((alimento, index) => (
+                <li key={index} className="list-group-item border-0 px-0">
+                  {alimento.nome} - {alimento.quantidade}
+                  {typeof alimento.quantidade === 'number' ? 'g' : ''}
+                </li>
+              ))}
+            </ul>
+
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item border-top pt-3 mt-2 px-0">
+                Calorias: {getPlotarComida?.dados?.janta?.calorias ?? '---'} kcal
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Proteínas: {getPlotarComida?.dados?.janta?.proteinas ?? '---'} g
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Carboidratos: {getPlotarComida?.dados?.janta?.carboidratos ?? '---'} g
+              </li>
+              <li className="list-group-item border-0 px-0">
+                Gorduras: {getPlotarComida?.dados?.janta?.gorduras ?? '---'} g
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+
 
       {/* ====================================================================================================== */}
 
