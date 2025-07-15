@@ -756,7 +756,7 @@ app.post('/refeicoes', async (req, res) => {
 // Buscar refeições do usuário
 app.get('/getRefeicoes', async (req, res) => {
   try {
-    const { usuarioId } = req.params;
+    const { usuarioId } = req.query;
     
     const refeicoes = await prisma.refeicao.findMany({
       where: { usuarioId },
@@ -776,7 +776,7 @@ app.get('/getRefeicoes', async (req, res) => {
 // Buscar calorias consumidas hoje
 app.get('/getCaloriasHoje', async (req, res) => {
   try {
-    const { usuarioId } = req.params;
+    const { usuarioId } = req.query;
     //console.log('entrou no caloriqaqs hoke')
     const hoje = new Date();
     const inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
