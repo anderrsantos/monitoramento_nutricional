@@ -1,42 +1,31 @@
-import { calcularConsumoAgua, calcularIMC, calcularMacroNutrientes, calcularTMB, activityFactors } from './calculoSaude.js';
+// Importe SOMENTE a nova função
+import { gerarPlanoNutricionalCompleto } from './calculoSaude.js';
 import { PrismaClient } from '../../generated/prisma/index.js';
 const prisma = new PrismaClient();
 
-export async function criarOuAtualizarMeta(userId, perfis, opcoes = {}) {
-  const {
-    proteinFrac = 0.3,
-    carboFrac   = 0.5,
-    fatFrac     = 0.2
-  } = opcoes;
-
-  const { peso, altura, dataNascimento, sexo, nivelAtividade } = perfis;
-  const idade = new Date().getFullYear() - new Date(dataNascimento).getFullYear();
-  const dataCriacao = new Date();
-
-  const tmb            = calcularTMB(peso, altura, idade, sexo);
-  const fatorAtiv      = activityFactors[nivelAtividade.toLowerCase()] || activityFactors.sedentario;
-  const tdee           = tmb * fatorAtiv;
-  const agua           = calcularConsumoAgua(peso);
-  const macros         = calcularMacroNutrientes(tdee, proteinFrac, carboFrac, fatFrac);
+// A função agora só precisa do ID e do perfil completo
+export async function criarOuAtualizarMeta(userId, perfilCompleto) {
+  // A nova função faz todo o trabalho pesado
+  
+  const plano = gerarPlanoNutricionalCompleto(perfilCompleto);
 
   const meta = await prisma.meta.upsert({
     where: { usuarioId: userId },
     create: {
-      usuario:       { connect: { id: userId } },
-      calorias:      tdee,
-      proteinas:     macros.proteinaGramas,
-      carboidratos:  macros.carboidratoGramas,
-      gorduras:      macros.gorduraGramas,
-      agua:          agua,
-      dataCriacao:   dataCriacao
+      usuarioId:    userId,
+      calorias:     plano.calorias,
+      proteinas:    plano.proteinas,
+      carboidratos: plano.carboidratos,
+      gorduras:     plano.gorduras,
+      agua:         plano.agua,
+      dataCriacao:  new Date()
     },
     update: {
-      calorias:      tdee,
-      proteinas:     macros.proteinaGramas,
-      carboidratos:  macros.carboidratoGramas,
-      gorduras:      macros.gorduraGramas,
-      agua:          agua,
-      dataCriacao:   dataCriacao
+      calorias:     plano.calorias,
+      proteinas:    plano.proteinas,
+      carboidratos: plano.carboidratos,
+      gorduras:     plano.gorduras,
+      agua:         plano.agua,
     }
   });
 

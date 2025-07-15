@@ -3,11 +3,15 @@ import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 import frutasImg from '../../assets/frutas.jpg'
 import api from '../../services/api.js'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmailRecupecao }) {
   const [menuAberto, setMenuAberto] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const [senhaVisivel, setSenhaVisivel] = useState(false)
+
   const [errorMessage, setErrorMessage] = useState('')
 
   const toggleMenu = () => setMenuAberto(prev => !prev)
@@ -16,7 +20,7 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
     irParaCadastro()
     fecharMenu()
   }
-  const irParaEmailRecupecaoLocal = () =>{
+  const irParaEmailRecupecaoLocal = () => {
     irParaEmailRecupecao()
   }
 
@@ -25,7 +29,7 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
     setErrorMessage('')
 
     try {
-      const response = await api.post('/login', { email, password }) 
+      const response = await api.post('/login', { email, password })
 
       if (response.status === 200) {
         console.log('Login bem-sucedido:', response.data.email)
@@ -117,16 +121,29 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
 
             <div className="mb-3">
               <label htmlFor="inputSenha" className="form-label">Senha</label>
-              <input
-                type="password"
-                id="inputSenha"
-                name="senha"
-                className="form-control"
-                placeholder="Digite sua senha"
-                required
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-              />
+              {/* Adicionado o input-group para agrupar o campo e o botão */}
+              <div className="input-group">
+                <input
+                  // O tipo agora é dinâmico
+                  type={senhaVisivel ? 'text' : 'password'}
+                  id="inputSenha"
+                  name="senha"
+                  className="form-control"
+                  placeholder="Digite sua senha"
+                  required
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+                <button
+                  className="btn btn-outline-secondary"
+                  type="button"
+                  onClick={() => setSenhaVisivel(!senhaVisivel)}
+                  title={senhaVisivel ? 'Ocultar senha' : 'Mostrar senha'}
+                >
+                  {senhaVisivel ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+              {/* Mensagem de erro permanece fora do input-group */}
               {errorMessage && (
                 <p className="text-danger small mt-2">{errorMessage}</p>
               )}

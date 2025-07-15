@@ -29,7 +29,7 @@ app.use(express.json());
 app.post('/sugestaoAlimentacao', async (req, res) => {
   const { usuarioId, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
   try {
-    console.log("wdckawjnckjwncjavjnv")
+    //console.log("wdckawjnckjwncjavjnv")
     const texto = `Uma pessoa do sexo ${sexo} começou a fazer dieta. Ela nasceu em ${dataNascimento}, pesa ${peso} kg,
     tem ${altura} cm de altura, objetivo de ${objetivo} e seu nível de atividade física é ${nivelAtividade}. E o seu consumo para essa semana é:
     água: ${dados.agua} ml
@@ -264,9 +264,9 @@ app.get('/getVerificarCodigo', async (req, res) => {
       return res.status(400).json({ message: 'Dados incompletos fornecidos.' });
     }
 
-    console.log('Verificação afmaowfnajfnjfe')
+   // console.log('Verificação afmaowfnajfnjfe')
     const codigoEsperado = codigos.get(email);
-    console.log(codigoEsperado)
+   // console.log(codigoEsperado)
 
     if (!codigoEsperado) {
       return res.status(400).json({ message: 'Código expirado ou não encontrado.' });
@@ -306,7 +306,7 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  console.log('Login attempt:', { email, password });
+  //console.log('Login attempt:', { email, password });
 
   try {
     const user = await prisma.user.findUnique({
@@ -331,13 +331,13 @@ app.post('/login', async (req, res) => {
 
 app.put('/updateUser', async (req, res) => {
   const { email, password } = req.body;
-  console.log('Recebido:', { email, password });
+  //console.log('Recebido:', { email, password });
 
   try {
     const user = await prisma.user.findUnique({ where: { email } });
     
     if (!user) {
-      console.log(' Usuário não encontrado:', email);  
+      //console.log(' Usuário não encontrado:', email);  
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
@@ -349,7 +349,7 @@ app.put('/updateUser', async (req, res) => {
     });
 
 
-    console.log('Senha atualizada com sucesso para o usuário:', email);
+    //console.log('Senha atualizada com sucesso para o usuário:', email);
     res.status(200).json({ message: 'Senha atualizada com sucesso.' });
 
   } catch (error) {
@@ -400,13 +400,13 @@ app.get('/searchUserPerfil', async (req, res) => {
     const verificaPerfil = await prisma.perfil.findUnique({
       where: { usuarioId: user.id }
     });
-    console.log('verificacao: ',verificaPerfil)
+    //console.log('verificacao: ',verificaPerfil)
 
     if(!verificaPerfil){
       return res.status(405).json({ message: 'Perfil não encontrado.' });
     }
 
-    console.log('verificacao: ',verificaPerfil)
+    //console.log('verificacao: ',verificaPerfil)
 
     res.status(200).json({
       userId: verificaPerfil.userId,
@@ -450,13 +450,7 @@ app.post('/setPerfil', async (req, res) => {
       }
     });
 
-    const metasCriadas = await criarOuAtualizarMeta(user.id, {
-      peso: parseFloat(peso),
-      altura: parseFloat(altura),
-      dataNascimento: new Date(dataNascimento),
-      sexo,
-      nivelAtividade
-    });
+    const metasCriadas = await criarOuAtualizarMeta(user.id, perfil);
 
 
     usuariosPendentes.delete(email);
@@ -499,7 +493,7 @@ app.get('/getPerfil', async (req, res) => {
       return res.status(404).json({ message: 'Perfil não encontrado.' });
     }
 
-    console.log(perfil)
+    //console.log(perfil)
 
     res.status(200).json({ perfil });
 
@@ -587,20 +581,21 @@ app.put('/updatePerfil', async (req, res) => {
 
 app.post('/setMeta', async (req, res) => {
   const { userId } = req.body;
-  const { proteinFrac = '0.3', carboFrac = '0.5', fatFrac = '0.2' } = req.query;
 
   try {
     const perfil = await prisma.perfil.findUnique({ where: { usuarioId: userId } });
+
+    //console.log('Perfil retornado do banco:', perfil);
+
 
     if (!perfil) {
       return res.status(404).json({ message: 'Perfil não encontrado' });
     }
 
-    const metas = await criarOuAtualizarMeta(userId, perfil, {
-      proteinFrac: parseFloat(proteinFrac),
-      carboFrac: parseFloat(carboFrac),
-      fatFrac: parseFloat(fatFrac)
-    });
+    // A função agora usa o 'perfil' completo para recalcular tudo com base na meta salva.
+    const metas = await criarOuAtualizarMeta(userId, perfil);
+
+    //console.log('metas retornado do banco:', metas);
 
     return res.status(200).json(metas);
   } catch (error) {
@@ -655,7 +650,7 @@ app.get('/getMeta', async (req, res) => {
     if (!meta) {
       return res.status(404).json({ message: 'Metas não encontradas para este usuário.' });
     }
-    console.log(meta)
+    //console.log(meta)
     return res.status(200).json({ meta });
   } catch (error) {
     console.error('Erro ao buscar metas:', error);
@@ -702,7 +697,7 @@ app.get('/api/openfoodfacts', async (req, res) => {
 app.post('/refeicoes', async (req, res) => {
   try {
     const { usuarioId, nome, alimentos } = req.body;
-    console.log('addw: ', req.body)
+    //console.log('addw: ', req.body)
     if (!usuarioId || !nome || !alimentos || !Array.isArray(alimentos)) {
       return res.status(400).json({ error: 'Dados inválidos' });
     }
@@ -729,7 +724,7 @@ app.post('/refeicoes', async (req, res) => {
       }
     });
 
-    console.log('refeicao: ',refeicao)
+    //console.log('refeicao: ',refeicao)
 
     // Criar alimentos da refeição
     for (const alimento of alimentos) {
@@ -746,7 +741,7 @@ app.post('/refeicoes', async (req, res) => {
         }
       });
     }
-    console.log('refeicao: ',refeicao)
+    //console.log('refeicao: ',refeicao)
 
     res.status(201).json({ 
       message: 'Refeição salva com sucesso',
@@ -782,11 +777,11 @@ app.get('/getRefeicoes', async (req, res) => {
 app.get('/getCaloriasHoje', async (req, res) => {
   try {
     const { usuarioId } = req.params;
-    console.log('entrou no caloriqaqs hoke')
+    //console.log('entrou no caloriqaqs hoke')
     const hoje = new Date();
     const inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
     const fimDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
-    console.log('calorias do dia ')
+    //console.log('calorias do dia ')
     const refeicoesHoje = await prisma.refeicao.findMany({
       where: {
         usuarioId,
@@ -825,7 +820,7 @@ app.post('/setConsumoAgua', async (req, res) => {
     return res.status(400).json({ error: 'Quantidade e usuarioId são obrigatórios.' });
   }
 
-  console.log('setConsumo:', req.body);
+  //console.log('setConsumo:', req.body);
 
   try {
     const novoRegistro = await prisma.consumoAgua.create({
@@ -881,7 +876,7 @@ app.get('/getConsumoAguaPorDia', async (req, res) => {
       }
       consumoPorDia[dia] += registro.quantidade;
     });
-    console.log(consumoPorDia)
+    //console.log(consumoPorDia)
     return res.status(200).json({ consumoPorDia });
   } catch (error) {
     console.error('Erro ao buscar consumo diário:', error);
@@ -918,7 +913,7 @@ app.get('/getConsumoAguaAgrupamentoDias', async (req, res) => {
     });
 
     // Retorna o array de registros sem somar
-    console.log(registros)
+    //console.log(registros)
     return res.status(200).json({ registrosconsumoPorDia:registros });
   } catch (error) {
     console.error('Erro ao buscar registros:', error);

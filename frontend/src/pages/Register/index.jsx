@@ -3,9 +3,14 @@ import '../../index.css'
 import React, { useState } from 'react'
 import logo from '../../assets/logo.png'
 import api from '../../services/api.js'
+import InputSenha from '../../components/InputSenha/index.jsx'
+import {FaEye, FaEyeSlash} from 'react-icons/fa'
+
 
 function Register({ irParaRegisterConfirm, voltar }) {
   const [aviso, setAviso] = useState('')
+  const [senhaVisivel, setSenhaVisivel] = useState(false)
+  const [confirmarSenhaVisivel, setConfirmarVisivel] = useState(false)
 
   const voltarLocal = () => {
     voltar()
@@ -150,31 +155,49 @@ function Register({ irParaRegisterConfirm, voltar }) {
             />
           </div>
 
-          {/* Senha */}
-          <div className="mb-3">
-            <label htmlFor="senha" className="form-label">Senha</label>
-            <input
-              type="password"
-              id="senha"
-              name="senha" 
-              className="form-control"
-              placeholder="Digite sua senha"
-              required
-            />
-          </div>
+         {/* Senha */}
+<div className="mb-3">
+  <label htmlFor="senha" className="form-label">Senha</label>
+  <div className="input-group">
+    <input
+      type={senhaVisivel ? 'text' : 'password'}
+      id="senha"
+      name="senha" 
+      className="form-control"
+      placeholder="Digite sua senha"
+      required
+    />
+    <button
+      className="btn btn-outline-secondary"
+      type="button"
+      onClick={() => setSenhaVisivel(!senhaVisivel)}
+      >
+        {senhaVisivel ? <FaEyeSlash /> : <FaEye />}
+      </button>
+  </div>
+</div>
 
-          {/* Confirmar senha */}
-          <div className="mb-4">
-            <label htmlFor="confirmar" className="form-label">Confirmar senha</label>
-            <input
-              type="password"
-              id="confirmar"
-              name="confirmar"
-              className="form-control"
-              placeholder="Repita sua senha"
-              required
-            />
-          </div>
+{/* Confirmar senha (este já estava correto) */}
+<div className="mb-4">
+  <label htmlFor="confirmar" className="form-label">Confirmar senha</label>
+  <div className="input-group">
+    <input
+      type={confirmarSenhaVisivel ? 'text' : 'password'}
+      id="confirmar"
+      name="confirmar"
+      className="form-control"
+      placeholder="Repita sua senha"
+      required
+    />
+    <button
+      className="btn btn-outline-secondary"
+      type="button"
+      onClick={() => setConfirmarSenhaVisivel(!confirmarSenhaVisivel)}
+      >
+        {confirmarSenhaVisivel ? <FaEyeSlash /> : <FaEye />}
+    </button>
+  </div>
+</div>
 
           {/* Botão */}
           <button

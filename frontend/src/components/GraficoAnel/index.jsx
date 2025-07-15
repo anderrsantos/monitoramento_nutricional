@@ -43,3 +43,4 @@ function GraficoAnel({ valor, meta, cor, unidade }) {
 }
 
 export default GraficoAnel;
+

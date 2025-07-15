@@ -2,6 +2,7 @@ import '../../index.css'
 import React, { useEffect, useState, useRef } from 'react'
 import logo from '../../assets/logo.png'
 import GraficoAnel from '../../components/GraficoAnel'
+import GraficoBarraHorizontal from '../../components/GraficoBarra'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import api from '../../services/api.js'
@@ -11,6 +12,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [aguaConsumidaMl, setAguaConsumidaMl] = useState(0)
   const [metaAguaMl, setMetaAguaMl] = useState(2450)
   const [pesoKg, setPesoKg] = useState(0)
+  const [objetivo, setObjetivo] = useState('');
   const [alturaCm, setAlturaCm] = useState(null);
   const [nivelAtividade, setNivelAtividade] = useState('');
   const [imc, setImc] = useState(0)
@@ -19,6 +21,8 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [refeicoesDia, setRefeicoesDia] = useState([]);
   const [mostrarTodasRefeicoes, setMostrarTodasRefeicoes] = useState(false);
   const [getPerfil, setPerfil]=useState(false)
+  const[mostrarModalRefeicoes, setMostrarModalRefeicoes] = useState(false)
+  
   // Ordenar as refeições do dia por horário
   const refeicoesDiaOrdenadas = [...refeicoesDia].sort((a, b) => new Date(a.horario) - new Date(b.horario));
 
@@ -78,8 +82,8 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         setPesoKg(parseFloat(dadosPerfil.peso));
         setAlturaCm(parseFloat(dadosPerfil.altura));
         setNivelAtividade(dadosPerfil.nivelAtividade);
-        setPerfil(dadosPerfil)
-
+        setPerfil(dadosPerfil);
+        setObjetivo(dadosPerfil.objetivo);
 
         
         const alturaMetros = parseFloat(dadosPerfil.altura) / 100;
@@ -98,7 +102,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
   useEffect(() => {
 
-    if (!usuario?.userId || pesoKg == null || alturaCm == null || !nivelAtividade) return;
+    if (!usuario?.userId || pesoKg == null || alturaCm == null || !nivelAtividade || !objetivo) return;
 
 
     const atualizarEMostrarMetas = async () => {
@@ -140,45 +144,10 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
     };
 
     atualizarEMostrarMetas();
-  }, [pesoKg, alturaCm, nivelAtividade, usuario]);
+  }, [pesoKg, alturaCm, nivelAtividade, objetivo, usuario]);
 
 
-// Novo useEffect para buscar metas (calorias e água)
-/*useEffect(() => {
-  if (!usuario?.userId) return;
 
-  const buscarMeta = async () => {
-    try {
-      const response = await api.get('/getMetas', {
-        params: { userId: usuario.userId }
-      });
-
-      if (response.status !== 200) {
-        console.warn("Status diferente de 200:", response.status);
-        return;
-      }
-
-      const meta = response.data.meta;
-
-      console.log('Meta carregada:', meta);
-
-      if (meta) {
-        setMetaCalorias(meta.calorias);
-        setMetaAguaMl(meta.agua);
-      } else {
-        console.warn('Nenhuma meta encontrada para o usuário.');
-      }
-
-    } catch (erro) {
-      console.error('Erro ao buscar metas:', erro);
-      alert('Erro ao buscar metas do usuário.');
-    }
-  };
-
-  buscarMeta();
-}, [usuario]);
-
-*/
 
   // Manipuladores
   const voltarLocal = () => voltar()
@@ -608,20 +577,43 @@ const plotarSugestao = () => {
                   </div>
                 </div>
                 {/* Gráficos de macros */}
-                <div className="row text-center justify-content-center align-items-center mt-2" style={{gap: '0'}}>
-                  <div className="col-auto mb-2 px-1">
-                    <GraficoAnel valor={Math.round(consumoProteinas)} meta={Math.round(metaProteinas)} cor="#007bff" unidade="g" tamanho={90} />
-                    <div className="small">Proteínas</div>
-                  </div>
-                  <div className="col-auto mb-2 px-1">
-                    <GraficoAnel valor={Math.round(consumoCarboidratos)} meta={Math.round(metaCarboidratos)} cor="#ffc107" unidade="g" tamanho={90} />
-                    <div className="small">Carboidratos</div>
-                  </div>
-                  <div className="col-auto mb-2 px-1">
-                    <GraficoAnel valor={Math.round(consumoGorduras)} meta={Math.round(metaGorduras)} cor="#28a745" unidade="g" tamanho={90} />
-                    <div className="small">Gorduras</div>
-                  </div>
+                <hr />
+            <div className="mt-3 px-md-3">
+              <div className="row">
+                {/* 1. Cada gráfico agora fica em uma 'col-12' para ocupar a linha toda */}
+                {/* 2. A propriedade 'label' é usada para exibir o nome do macronutriente */}
+
+                <div className="col-12">
+                  <GraficoBarraHorizontal
+                    label="Proteínas"
+                    valor={Math.round(consumoProteinas)}
+                    meta={Math.round(metaProteinas)}
+                    unidade="g"
+                    cor="#007bff"
+                  />
                 </div>
+
+                <div className="col-12">
+                  <GraficoBarraHorizontal
+                    label="Carboidratos"
+                    valor={Math.round(consumoCarboidratos)}
+                    meta={Math.round(metaCarboidratos)}
+                    unidade="g"
+                    cor="#ffc107"
+                  />
+                </div>
+
+                <div className="col-12">
+                  <GraficoBarraHorizontal
+                    label="Gorduras"
+                    valor={Math.round(consumoGorduras)}
+                    meta={Math.round(metaGorduras)}
+                    unidade="g"
+                    cor="#28a745"
+                  />
+                </div>
+              </div>
+            </div>
               </div>
             </div>
           </section>
