@@ -158,7 +158,7 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
 
             <div className="text-center mt-3">
               Não tem uma conta? <br />
-              <a className="bnt text-decoration-none small" onClick={criarConta}>Cadastre-se.</a>
+              <a className="bnt text-decoration-none small" onClick={criarConta} style={{cursor: 'pointer'}}>Cadastre-se.</a>
             </div>
           </form>
         </section>

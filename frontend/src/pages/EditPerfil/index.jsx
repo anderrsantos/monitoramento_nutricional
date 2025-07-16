@@ -178,7 +178,9 @@ function EditPerfil({ usuario, voltar }) {
                 <button type="button" className="btn-close" onClick={() => setShowConfirmModal(false)}></button>
               </div>
               <div className="modal-body">
-                <p>Deseja realmente salvar as alterações do seu perfil?</p>
+                <p>Deseja realmente salvar as alterações do seu perfil?
+                  <br />
+                </p>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>Cancelar</button>
@@ -199,7 +201,10 @@ function EditPerfil({ usuario, voltar }) {
                 <button type="button" className="btn-close" onClick={() => setShowDeleteModal(false)}></button>
               </div>
               <div className="modal-body">
-                <p>Tem certeza de que deseja deletar sua conta? Essa ação não poderá ser desfeita.</p>
+                <p>Tem certeza de que deseja deletar sua conta?
+                  <br />
+                  Essa ação não poderá ser desfeita.
+                </p>
               </div>
               <div className="modal-footer">
                 <button className="btn btn-secondary" onClick={() => setShowDeleteModal(false)}>Cancelar</button>
