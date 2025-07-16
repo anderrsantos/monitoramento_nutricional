@@ -175,7 +175,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/dev--anderson/Documentos/anderson_github/monitoramento_nutricional/backend_server/generated/prisma",
+      "value": "/home/eduardo/Documentos/5 Periodo/Eng Software/monitoramento_nutricional/backend_server/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -189,12 +189,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/dev--anderson/Documentos/anderson_github/monitoramento_nutricional/backend_server/src/prisma/schema.prisma",
+    "sourceFilePath": "/home/eduardo/Documentos/5 Periodo/Eng Software/monitoramento_nutricional/backend_server/src/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../src/prisma",
   "clientVersion": "6.11.1",
@@ -203,7 +202,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mongodb",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {

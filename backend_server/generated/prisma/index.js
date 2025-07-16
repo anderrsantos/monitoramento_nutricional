@@ -176,7 +176,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/home/dev--anderson/Documentos/anderson_github/monitoramento_nutricional/backend_server/generated/prisma",
+      "value": "/home/eduardo/Documentos/5 Periodo/Eng Software/monitoramento_nutricional/backend_server/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -190,12 +190,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/home/dev--anderson/Documentos/anderson_github/monitoramento_nutricional/backend_server/src/prisma/schema.prisma",
+    "sourceFilePath": "/home/eduardo/Documentos/5 Periodo/Eng Software/monitoramento_nutricional/backend_server/src/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../src/prisma",
   "clientVersion": "6.11.1",
@@ -204,7 +203,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mongodb",
-  "postinstall": false,
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -223,8 +222,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
+    "../generated/prisma",
     "generated/prisma",
-    "prisma",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -254,7 +253,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
-path.join(process.cwd(), "generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
+path.join(process.cwd(), "../generated/prisma/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/prisma/schema.prisma")
+path.join(process.cwd(), "../generated/prisma/schema.prisma")

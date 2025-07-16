@@ -15,6 +15,11 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   const [nivelAtividade, setNivelAtividade] = useState('');
   const [imc, setImc] = useState(0)
   const [showModal, setShowModal] = useState(false)
+  const [caloriasPorDiaSemana, setCaloriasPorDiaSemana] = useState([0,0,0,0,0,0,0]);
+  const [refeicoesDia, setRefeicoesDia] = useState([]);
+  const [mostrarTodasRefeicoes, setMostrarTodasRefeicoes] = useState(false);
+  // Ordenar as refeições do dia por horário
+  const refeicoesDiaOrdenadas = [...refeicoesDia].sort((a, b) => new Date(a.horario) - new Date(b.horario));
 
    const teste = () =>{
     console.log('teste')
@@ -44,9 +49,16 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
   const [metaCalorias, setMetaCalorias] = useState(0)
   const [showRefeicaoModal, setShowRefeicaoModal] = useState(false)
+  const [metaProteinas, setMetaProteinas] = useState(0);
+  const [metaCarboidratos, setMetaCarboidratos] = useState(0);
+  const [metaGorduras, setMetaGorduras] = useState(0);
+  const [consumoProteinas, setConsumoProteinas] = useState(0);
+  const [consumoCarboidratos, setConsumoCarboidratos] = useState(0);
+  const [consumoGorduras, setConsumoGorduras] = useState(0);
   
  
   
+ 
  
   const irParaPerfilLocal = () => {
     irParaPerfil(usuario);
@@ -117,6 +129,9 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
           console.log('Meta carregada:', meta);
           setMetaCalorias(meta.calorias);
           setMetaAguaMl(meta.agua);
+          setMetaProteinas(meta.proteinas);
+          setMetaCarboidratos(meta.carboidratos);
+          setMetaGorduras(meta.gorduras);
         } else {
           console.warn('Nenhuma meta encontrada para o usuário.');
         }
@@ -198,10 +213,63 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       setAguaConsumidaMl(quantidade)
 
       const responseCalorias = await api.get(`/calorias-hoje/${usuario.userId}`);
-      console.log(responseCalorias)
       setCaloriasInput(responseCalorias.data.totalCalorias);
 
+      // Buscar refeições do dia para calcular macros
+      const hoje = new Date();
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dia = String(hoje.getDate()).padStart(2, '0');
+      const dataHoje = `${ano}-${mes}-${dia}`;
+      const responseRefeicoes = await api.get('/getrefeicoes', { params: { usuarioId: usuario.userId } });
+      const refeicoes = responseRefeicoes.data;
+      let prot = 0, carb = 0, gord = 0;
+      refeicoes.forEach(refeicao => {
+        // Verifica se a refeição é de hoje
+        const dataRefeicao = refeicao.horario ? refeicao.horario.split('T')[0] : null;
+        if (dataRefeicao === dataHoje) {
+          prot += refeicao.proteinas || 0;
+          carb += refeicao.carboidratos || 0;
+          gord += refeicao.gorduras || 0;
+        }
+      });
+      setConsumoProteinas(prot);
+      setConsumoCarboidratos(carb);
+      setConsumoGorduras(gord);
 
+      // Buscar refeições dos últimos 7 dias para estatísticas semanais
+      const hojeSemana = new Date();
+      // Encontrar a segunda-feira da semana atual
+      const diaSemana = hojeSemana.getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
+      const diffSegunda = diaSemana === 0 ? -6 : 1 - diaSemana; // se domingo, volta 6 dias, senão ajusta para segunda
+      const segundaSemana = new Date(hojeSemana);
+      segundaSemana.setDate(hojeSemana.getDate() + diffSegunda);
+      segundaSemana.setHours(0,0,0,0);
+      const domingoSemana = new Date(segundaSemana);
+      domingoSemana.setDate(segundaSemana.getDate() + 6);
+      domingoSemana.setHours(23,59,59,999);
+      const responseRefeicoesSemana = await api.get('/getrefeicoes', { params: { usuarioId: usuario.userId } });
+      const refeicoesSemana = responseRefeicoesSemana.data;
+      // Agrupar calorias por dia da semana (segunda=0, ..., domingo=6)
+      const caloriasPorDia = [0,0,0,0,0,0,0];
+      refeicoesSemana.forEach(refeicao => {
+        if (!refeicao.horario) return;
+        const data = new Date(refeicao.horario);
+        if (data >= segundaSemana && data <= domingoSemana) {
+          // 0=segunda, ..., 6=domingo
+          let dia = data.getDay();
+          dia = dia === 0 ? 6 : dia - 1;
+          caloriasPorDia[dia] += refeicao.calorias || 0;
+        }
+      });
+      setCaloriasPorDiaSemana(caloriasPorDia);
+
+      // Buscar refeições do dia para mostrar na lista
+      const refeicoesDiaHoje = refeicoes.filter(refeicao => {
+        const dataRefeicao = refeicao.horario ? refeicao.horario.split('T')[0] : null;
+        return dataRefeicao === dataHoje;
+      });
+      setRefeicoesDia(refeicoesDiaHoje);
     } catch (error) {
       console.error('Erro ao buscar: ', error);
     }
@@ -447,7 +515,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
                 <div className="row text-center">
                   <div className="col-md-6 mb-3">
                     <div className="d-flex flex-column align-items-center">
-                      <GraficoAnel valor={caloriasInput} meta={metaCalorias} cor="#dc3545" unidade="Kcal" />
+                      <GraficoAnel valor={caloriasInput} meta={Math.round(metaCalorias)} cor="#dc3545" unidade="Kcal" />
                       <p className="mt-2 mb-0"><strong>Calorias</strong></p>
                     </div>
                   </div>
@@ -456,6 +524,21 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
                       <GraficoAnel valor={aguaConsumidaMl} meta={metaAguaMl} cor="#0dcaf0" unidade="ml" />
                       <p className="mt-2 mb-0"><strong>Água</strong></p>
                     </div>
+                  </div>
+                </div>
+                {/* Gráficos de macros */}
+                <div className="row text-center justify-content-center align-items-center mt-2" style={{gap: '0'}}>
+                  <div className="col-auto mb-2 px-1">
+                    <GraficoAnel valor={Math.round(consumoProteinas)} meta={Math.round(metaProteinas)} cor="#007bff" unidade="g" tamanho={90} />
+                    <div className="small">Proteínas</div>
+                  </div>
+                  <div className="col-auto mb-2 px-1">
+                    <GraficoAnel valor={Math.round(consumoCarboidratos)} meta={Math.round(metaCarboidratos)} cor="#ffc107" unidade="g" tamanho={90} />
+                    <div className="small">Carboidratos</div>
+                  </div>
+                  <div className="col-auto mb-2 px-1">
+                    <GraficoAnel valor={Math.round(consumoGorduras)} meta={Math.round(metaGorduras)} cor="#28a745" unidade="g" tamanho={90} />
+                    <div className="small">Gorduras</div>
                   </div>
                 </div>
               </div>
@@ -478,12 +561,26 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
                 <h5 className="card-title mb-3">Estatísticas da Semana</h5>
                 <div className="d-flex justify-content-between text-center mb-3">
                   {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((dia, index) => {
-                    const heights = [44, 34, 100, 47, 32, 79, 24]
-                    const cores = ['#dc3545', '#dc3545', '#ade754', '#dc3545', '#dc3545', '#dc3545', '#dc3545']
+                    // Calcular altura proporcional
+                    const maxCal = Math.max(...caloriasPorDiaSemana, 1); // evitar divisão por zero
+                    const altura = Math.round((caloriasPorDiaSemana[index] / maxCal) * 100);
+                    // Descobre o dia da semana atual (0=Domingo, 1=Segunda, ..., 6=Sábado)
+                    const hoje = new Date();
+                    let diaSemanaAtual = hoje.getDay(); // 0=Dom, 1=Seg, ..., 6=Sáb
+                    let indexDiaAtual = diaSemanaAtual === 0 ? 6 : diaSemanaAtual - 1;
+                    // Definir cor da barra
+                    let cor = '#e0e0e0'; // padrão: cinza para dias futuros
+                    if (index < indexDiaAtual) {
+                      // Dias passados
+                      cor = caloriasPorDiaSemana[index] >= metaCalorias ? '#28a745' : '#dc3545'; // verde se bateu meta, vermelho se não
+                    } else if (index === indexDiaAtual) {
+                      cor = '#007bff'; // azul para o dia atual
+                    }
                     return (
                       <div className="flex-fill mx-1 rounded d-flex flex-column justify-content-end" style={{ height: '100px' }} key={dia}>
-                        <div className="w-100 mb-1 rounded" style={{ height: `${heights[index]}%`, backgroundColor: cores[index] }}></div>
-                        <small>{dia === 'Qua' ? <strong>{dia}</strong> : dia}</small>
+                        <div className="w-100 mb-1 rounded" style={{ height: `${altura}%`, backgroundColor: cor, transition: 'height 0.5s' }}></div>
+                        <small>{index === indexDiaAtual ? <strong>{dia}</strong> : dia}</small>
+                        <div className="small text-muted">{Math.round(caloriasPorDiaSemana[index])} kcal</div>
                       </div>
                     )
                   })}
@@ -498,6 +595,49 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
                     <h5>Peso</h5>
                     <p className="fw-semibold">{pesoKg}kg</p>
                   </div>
+                </div>
+                {/* Quadro de refeições do dia */}
+                <div className="mt-3">
+                  <div className="card p-2 mb-2">
+                    <strong>Última refeição do dia</strong>
+                    {refeicoesDia.length > 0 ? (
+                      <div className="mt-2">
+                        <div><strong>{refeicoesDiaOrdenadas[refeicoesDiaOrdenadas.length-1].nome}</strong></div>
+                        <div className="text-muted small">{Math.round(refeicoesDiaOrdenadas[refeicoesDiaOrdenadas.length-1].calorias)} kcal</div>
+                      </div>
+                    ) : (
+                      <div className="text-muted small">Nenhuma refeição registrada hoje.</div>
+                    )}
+                  </div>
+                  {refeicoesDia.length > 1 && (
+                    <Button variant="outline-primary" size="sm" className="mb-2" onClick={() => setMostrarTodasRefeicoes(m => !m)}>
+                      {mostrarTodasRefeicoes ? 'Ocultar todas as refeições do dia' : 'Ver todas as refeições do dia'}
+                    </Button>
+                  )}
+                  {mostrarTodasRefeicoes && refeicoesDia.length > 1 && (
+                    <div className="card p-2">
+                      <strong>Todas as refeições do dia</strong>
+                      <ul className="list-group list-group-flush mt-2">
+                        {refeicoesDiaOrdenadas.map((ref, idx) => (
+                          <li key={idx} className="list-group-item px-0 py-1">
+                            <div className="d-flex justify-content-between align-items-center">
+                              <span>{ref.nome}</span>
+                              <span className="text-muted small">{Math.round(ref.calorias)} kcal</span>
+                            </div>
+                            {Array.isArray(ref.alimentos) && ref.alimentos.length > 0 && (
+                              <ul className="small text-muted ms-2 mb-1" style={{listStyle: 'circle'}}>
+                                {ref.alimentos.map((al, i) => (
+                                  <li key={i}>
+                                    {al.nomeAlimento} {al.quantidade}g
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
