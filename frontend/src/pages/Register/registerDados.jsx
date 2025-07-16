@@ -16,6 +16,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
   // Função reutilizável
   const registrarUsuario = async () => {
     try {
+      console.log("aqui foi registrar Usuario")
       await api.post('/register', {
         email: usuario.email,
         password: usuario.password
@@ -69,6 +70,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
         objetivo,
         nivelAtividade
     });
+    
 
     if (response.status === 200) {
       const userId = response.data.userId;

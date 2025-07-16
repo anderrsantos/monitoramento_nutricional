@@ -45,12 +45,17 @@ function RecuperarSenha({ usuario, voltarHome }) {
     }
     console.log(password)
 
+    // Função utilitária para delay
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
     try {
       const response = await api.put('/updateUser', { email: usuario.email, password });
 
       if (response.status === 200) {
         setAviso(response.data.message);
+
         await delay(2000);
+
         voltarHome();
       }
     } catch (erro) {

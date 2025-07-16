@@ -76,8 +76,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
         const dadosPerfil = response.data.perfil;
 
-        console.log('Perfil carregado:', dadosPerfil);
-
         setNomeUsuario(dadosPerfil.nome);
         setPesoKg(parseFloat(dadosPerfil.peso));
         setAlturaCm(parseFloat(dadosPerfil.altura));
@@ -112,7 +110,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
           userId: usuario.userId
         });
 
-        console.log('Meta recalculada com sucesso.');
 
         // 2. Busca as metas atualizadas
         const response = await api.get('/getMetas', {
@@ -127,7 +124,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         const meta = response.data.meta;
 
         if (meta) {
-          console.log('Meta carregada:', meta);
           setMetaCalorias(meta.calorias);
           setMetaAguaMl(meta.agua);
           setMetaProteinas(meta.proteinas);
@@ -145,7 +141,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
     atualizarEMostrarMetas();
   }, [pesoKg, alturaCm, nivelAtividade, objetivo, usuario]);
-
 
 
 
@@ -172,20 +167,15 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
   // Buscar caloriase agua consumidas hoje
   async function atualizarCaloriasAguaHoje() {
-    console.log('usuario  agua calorias: ', usuario)
     try {
       // Buscar água consumida nas últimas 24h (1 dia)
-      console.log("entrou em calorias 1");
       const responseAgua = await api.get('/getConsumoAguaPorDia', { params: { userId: usuario.userId, dias: 1 } });
       const quantidade = Object.values(responseAgua.data.consumoPorDia)[0] || 0;
-      console.log("entrou em calorias 2: ", quantidade);
 
       setAguaConsumidaMl(quantidade)
 
-      console.log("entrou     em caloris 3")
       const responseCalorias = await api.get('/getCaloriasHoje', { params: { usuarioId: usuario.userId } });
       setCaloriasInput(responseCalorias.data.totalCalorias);
-      console.log("entrou em calorias 4: ", responseCalorias.data.totalCalorias);
 
       // Buscar refeições do dia para calcular macros
       const hoje = new Date();
@@ -196,7 +186,11 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
       const responseRefeicoes = await api.get('/getRefeicoes', { params: { usuarioId: usuario.userId } });
       const refeicoes = responseRefeicoes.data;
+      
+
       let prot = 0, carb = 0, gord = 0;
+     
+
       refeicoes.forEach(refeicao => {
         // Verifica se a refeição é de hoje
         const dataRefeicao = refeicao.horario ? refeicao.horario.split('T')[0] : null;
@@ -206,9 +200,11 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
           gord += refeicao.gorduras || 0;
         }
       });
+
       setConsumoProteinas(prot);
       setConsumoCarboidratos(carb);
       setConsumoGorduras(gord);
+
 
       // Buscar refeições dos últimos 7 dias para estatísticas semanais
       const hojeSemana = new Date();
@@ -249,7 +245,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   }
 
   const handleSalvarAgua = async () => {
-    console.log('Agua recebe: ', aguaRecebe);
 
     if (aguaRecebe > 0) {
       try {
@@ -271,7 +266,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
   // Salvar refeição no backend
   const salvarRefeicao = async () => {
 
-    console.log('chamou ascjkjkjnckjkcjnkjv')
     if (alimentosRefeicao.length === 0) {
       alert('Adicione pelo menos um alimento à refeição');
       return;
@@ -314,10 +308,10 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       setNomeRefeicao('');
       setShowRefeicaoModal(false);
 
-      alert('Refeição salva com sucesso!');
+      //alert('Refeição salva com sucesso!');
     } catch (error) {
       console.error('Erro ao salvar refeição:', error);
-      alert('Erro ao salvar refeição. Tente novamente.');
+      //alert('Erro ao salvar refeição. Tente novamente.');
     }
   }
 
@@ -354,7 +348,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
   useEffect(() => {
     if (usuario.userId && !carregou.current) {
-      console.log('entrou aqui')
       verificarESincronizarSugestao();
 
       carregou.current = true;
@@ -375,7 +368,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       } else if (!response.data[diaFormatado]) {
         await gerarSugestao();
       } else {
-        console.log('verificarESincronizarSugestao response.data: ', response.data)
         setSugestaoComida(response.data);
       }
     } catch (e) {
@@ -409,11 +401,7 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       params: { usuarioId: usuario.userId },
     });
 
-    console.log('gerarSugestao response.data: ', nova.data)
-
     setSugestaoComida(nova.data);
-
-    console.log('gerarSugestao response.data 892E: ', getSugestaoComida)
 
   };
 
@@ -433,7 +421,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       if (getSugestaoComida && getSugestaoComida[diaFormatado]) {
         const sugestaoHoje = getSugestaoComida[diaFormatado];
 
-        console.log('sugestaoHoje:', { dia: diaFormatado, dados: sugestaoHoje });
         setPlotarComida({ dia: diaFormatado, dados: sugestaoHoje });
       } else {
         console.warn('Nenhuma sugestão para o dia atual encontrada.');
@@ -501,10 +488,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
 
   // Calorias totais da refeição
   const totalCaloriasRefeicao = alimentosRefeicao.reduce((acc, item) => acc + (parseFloat(item.calorias) || 0), 0).toFixed(1)
-
-  const aguaConsumidaL = (aguaConsumidaMl / 1000).toFixed(1)
-  const metaAguaL = (metaAguaMl / 1000).toFixed(1)
-
 
   return (
     <>

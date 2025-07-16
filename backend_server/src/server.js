@@ -67,6 +67,17 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
           "carboidrato": 50,
           "gordura": 15
         },
+        "lanche":{
+          "alimentos": [
+            { "nome": "Iogurte", "quantidade": "200ml" },
+            { "nome": "Pão integral", "quantidade": "2 fatias" },
+            { "nome": "Banana", "quantidade": "1 unidade" }
+          ],
+          "calorias": 350,
+          "proteina": 20,
+          "carboidrato": 40,
+          "gordura": 10
+        },
         "janta": {
           "alimentos": [
             { "nome": "Sopa de legumes", "quantidade": "300ml" },
@@ -77,7 +88,8 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
           "carboidrato": 30,
           "gordura": 5
         }
-      }
+      },
+      "Terça":..... "Quarta":....."Sábado".....
     }`;
     const respostaGemini = await sendTextToGemini(texto);
 
@@ -233,22 +245,22 @@ app.get('/getSugestaoAlimentacao', async (req, res) => {
   }
 });
 
-
-
 // Enviar código por e-mail
 app.post('/serviceEmail', async (req, res) => {
   try {
     const emailDestinatario = req.body.email;
 
-    if (!emailDestinatario) {
+    const emailLower =emailDestinatario.toLowerCase();
+
+    if (!emailLower) {
       return res.status(400).json({ message: 'Email não fornecido.' });
     }
 
     const codigoGerado = Math.floor(100000 + Math.random() * 900000); // Gera um código de 6 dígitos
 
-    codigos.set(emailDestinatario, String(codigoGerado)); // Armazena como string
+    codigos.set(emailLower, String(codigoGerado)); // Armazena como string
 
-    await sendEmailCodigo(emailDestinatario, codigoGerado);
+    await sendEmailCodigo(emailLower, codigoGerado);
 
     res.status(200).json({ message: 'Código de verificação enviado para o email.' });
   } catch (error) {
@@ -260,12 +272,15 @@ app.get('/getVerificarCodigo', async (req, res) => {
   try {
     const { email, codigoRecebido } = req.query;
 
-    if (!email || !codigoRecebido) {
+    const emailLower = email.toLowerCase();
+
+
+    if (!emailLower || !codigoRecebido) {
       return res.status(400).json({ message: 'Dados incompletos fornecidos.' });
     }
 
    // console.log('Verificação afmaowfnajfnjfe')
-    const codigoEsperado = codigos.get(email);
+    const codigoEsperado = codigos.get(emailLower);
    // console.log(codigoEsperado)
 
     if (!codigoEsperado) {
@@ -278,7 +293,7 @@ app.get('/getVerificarCodigo', async (req, res) => {
     if (recebidoNormalizado !== esperadoNormalizado) {
       return res.status(400).json({ message: 'Código de verificação inválido.' });
     }
-    codigos.delete(email); // Remove o código após uso
+    codigos.delete(emailLower); // Remove o código após uso
 
     return res.status(200).json({ message: 'Código confirmado com sucesso.' });
   } catch (error) {
@@ -291,9 +306,10 @@ app.post('/register', async (req, res) => {
   try {
     const { email, password,} = req.body;
 
-
+    const emailLower = email.toLowerCase();
     // Armazenamos email e senha temporariamente em memória (não no banco)
-    usuariosPendentes.set(email, password);
+    console.log("Aqui esta entrando!!!")
+    usuariosPendentes.set(emailLower, password);
 
 
     res.status(200).json({ message: 'Código validado. Agora preencha o perfil.' });
@@ -309,9 +325,14 @@ app.post('/login', async (req, res) => {
   //console.log('Login attempt:', { email, password });
 
   try {
+    const emailLower = email.toLowerCase();
+
+    
+
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: emailLower },
     });
+    console.log(emailLower)
 
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
@@ -331,10 +352,11 @@ app.post('/login', async (req, res) => {
 
 app.put('/updateUser', async (req, res) => {
   const { email, password } = req.body;
-  //console.log('Recebido:', { email, password });
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
+      const emailLower = email.toLowerCase();
+
+      const user = await prisma.user.findUnique({ where: { email: emailLower } });
     
     if (!user) {
       //console.log(' Usuário não encontrado:', email);  
@@ -344,7 +366,7 @@ app.put('/updateUser', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await prisma.user.update({
-      where: { email: user.email },
+      where: { email:  emailLower},
       data: { password: hashedPassword }
     });
 
@@ -363,8 +385,11 @@ app.get('/searchUser', async (req, res) => {
   const email = req.query.email; 
 
   try {
+
+    const emailLower = email.toLowerCase();
+    //console.log('email axax: ', emailLower)
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: emailLower },
       select: {
         id: true,
       },
@@ -373,6 +398,8 @@ app.get('/searchUser', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
+
+    
 
     res.status(200).json(user);
   } catch (error) {
@@ -422,16 +449,23 @@ app.post('/setPerfil', async (req, res) => {
   const { email, nome, sobrenome, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade } = req.body;
 
   try {
-    if (!usuariosPendentes.has(email)) {
+    const emailLower = email.toLowerCase();
+    console.log("logo: ", req.body)
+    console.log("logo: ", emailLower)
+
+
+    if (!usuariosPendentes.has(emailLower)) {
       return res.status(400).json({ message: 'Usuário não encontrado ou código não validado.' });
     }
+    console.log("logo: ", req.body)
 
-    const password = usuariosPendentes.get(email);
+
+    const password = usuariosPendentes.get(emailLower);
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
       data: {
-        email,
+        email: emailLower,
         password: hashedPassword,
       },
     });
@@ -453,7 +487,7 @@ app.post('/setPerfil', async (req, res) => {
     const metasCriadas = await criarOuAtualizarMeta(user.id, perfil);
 
 
-    usuariosPendentes.delete(email);
+    usuariosPendentes.delete(emailLower);
 
     // res.status(200).json({ 
     //   message: 'Cadastro completo com sucesso!', 
@@ -511,38 +545,89 @@ app.delete('/deleteUser', async (req, res) => {
   }
 
   try {
-    // Remove todas as refeições
+    // Verifica se o usuário existe
+    const userExists = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!userExists) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    // --- Sugestões de alimentação ---
+    const sugestoes = await prisma.sugestaoAlimentacao.findMany({
+      where: { usuarioId: userId },
+      select: { id: true }
+    });
+
+    for (const sugestao of sugestoes) {
+      const sugestaoId = sugestao.id;
+
+      const sugestoesRefeicao = await prisma.sugestaoRefeicao.findMany({
+        where: { sugestaoAlimentacaoId: sugestaoId },
+        select: { id: true }
+      });
+
+      for (const refeicao of sugestoesRefeicao) {
+        await prisma.sugestaoAlimento.deleteMany({
+          where: { sugestaoRefeicaoId: refeicao.id }
+        });
+      }
+
+      await prisma.sugestaoRefeicao.deleteMany({
+        where: { sugestaoAlimentacaoId: sugestaoId }
+      });
+    }
+
+    await prisma.sugestaoAlimentacao.deleteMany({
+      where: { usuarioId: userId }
+    });
+
+    // --- Refeições (deletar filhos antes) ---
+    const refeicoes = await prisma.refeicao.findMany({
+      where: { usuarioId: userId },
+      select: { id: true }
+    });
+
+    for (const refeicao of refeicoes) {
+      await prisma.alimentoRefeicao.deleteMany({
+        where: { refeicaoId: refeicao.id }
+      });
+    }
+
     await prisma.refeicao.deleteMany({
       where: { usuarioId: userId }
     });
 
-    // Remove todos os registros de consumo de água
+    // --- Demais relações simples ---
     await prisma.consumoAgua.deleteMany({
       where: { usuarioId: userId }
     });
 
-    // Remove a meta (se existir)
     await prisma.meta.deleteMany({
       where: { usuarioId: userId }
     });
 
-    // Remove o perfil (se existir)
     await prisma.perfil.deleteMany({
       where: { usuarioId: userId }
     });
 
-    // Por fim, remove o usuário
-    await prisma.user.delete({
+    // --- Usuário ---
+    const deletedUser = await prisma.user.deleteMany({
       where: { id: userId }
     });
 
+    if (deletedUser.count === 0) {
+      console.warn(`Usuário com ID ${userId} já foi deletado ou não existe.`);
+    }
+
     res.status(200).json({ message: 'Usuário e todos os dados relacionados foram deletados com sucesso.' });
+
   } catch (error) {
     console.error('Erro ao deletar usuário:', error);
     res.status(500).json({ message: 'Erro ao deletar o usuário.' });
   }
 });
-
 
 app.put('/updatePerfil', async (req, res) => {
   const { userId, nome, sobrenome, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade } = req.body;
