@@ -29,7 +29,6 @@ app.use(express.json());
 app.post('/sugestaoAlimentacao', async (req, res) => {
   const { usuarioId, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
   try {
-    //console.log("wdckawjnckjwncjavjnv")
     const texto = `Uma pessoa do sexo ${sexo} começou a fazer dieta. Ela nasceu em ${dataNascimento}, pesa ${peso} kg,
     tem ${altura} cm de altura, objetivo de ${objetivo} e seu nível de atividade física é ${nivelAtividade}. E o seu consumo para essa semana é:
     água: ${dados.agua} ml
@@ -66,17 +65,6 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
           "proteina": 40,
           "carboidrato": 50,
           "gordura": 15
-        },
-        "lanche":{
-          "alimentos": [
-            { "nome": "Iogurte", "quantidade": "200ml" },
-            { "nome": "Pão integral", "quantidade": "2 fatias" },
-            { "nome": "Banana", "quantidade": "1 unidade" }
-          ],
-          "calorias": 350,
-          "proteina": 20,
-          "carboidrato": 40,
-          "gordura": 10
         },
         "janta": {
           "alimentos": [
@@ -122,12 +110,13 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
           alimentos: {
             create: detalhes.alimentos.map(alimento => ({
               nome: alimento.nome,
-              quantidade: parseFloat(alimento.quantidade) || 0
+              quantidade: alimento.quantidade || "0"
             }))
           }
         };
       });
 
+      // Verifica se já existe sugestão para este dia
       const sugestaoExistente = await prisma.sugestaoAlimentacao.findFirst({
         where: {
           usuarioId,
@@ -135,41 +124,58 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
           createdAt: { gte: hoje }
         },
         include: {
-          sugestaoRefeicoes: { include: { alimentos: true } }
+          sugestaoRefeicoes: { select: { id: true } }
         }
       });
 
-      if (!sugestaoExistente) {
-        const nova = await prisma.sugestaoAlimentacao.create({
-          data: {
-            usuarioId,
-            diaSemana: diaNome,
-            sugestaoRefeicoes: {
-              create: refeicoes.map(ref => ({
-                tipo: ref.tipo,
-                calorias: ref.calorias,
-                proteinas: ref.proteinas,
-                carboidratos: ref.carboidratos,
-                gorduras: ref.gorduras,
-                alimentos: ref.alimentos
-              }))
-            },
-          },
-          include: {
-            sugestaoRefeicoes: { include: { alimentos: true } },
-          },
+      // Se existir, deleta as refeições e a sugestão
+      if (sugestaoExistente) {
+        for (const ref of sugestaoExistente.sugestaoRefeicoes) {
+          await prisma.sugestaoAlimento.deleteMany({
+            where: { sugestaoRefeicaoId: ref.id }
+          });
+        }
+
+        await prisma.sugestaoRefeicao.deleteMany({
+          where: { sugestaoAlimentacaoId: sugestaoExistente.id }
         });
-        resultados.push(nova);
+
+        await prisma.sugestaoAlimentacao.delete({
+          where: { id: sugestaoExistente.id }
+        });
       }
+
+      // Cria nova sugestão com os dados atualizados
+      const nova = await prisma.sugestaoAlimentacao.create({
+        data: {
+          usuarioId,
+          diaSemana: diaNome,
+          sugestaoRefeicoes: {
+            create: refeicoes.map(ref => ({
+              tipo: ref.tipo,
+              calorias: ref.calorias,
+              proteinas: ref.proteinas,
+              carboidratos: ref.carboidratos,
+              gorduras: ref.gorduras,
+              alimentos: ref.alimentos
+            }))
+          },
+        },
+        include: {
+          sugestaoRefeicoes: { include: { alimentos: true } },
+        },
+      });
+
+      resultados.push(nova);
     }
 
-    //console.log('set: ', resultados);
     res.status(201).json({ resultados });
   } catch (error) {
     console.error('Erro ao obter sugestão do Gemini:', error);
     res.status(500).json({ message: 'Erro ao processar sugestão de alimentação.' });
   }
 });
+
 
 app.get('/getSugestaoAlimentacao', async (req, res) => {
   const { usuarioId } = req.query;

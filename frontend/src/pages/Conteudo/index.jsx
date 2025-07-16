@@ -421,7 +421,10 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       if (getSugestaoComida && getSugestaoComida[diaFormatado]) {
         const sugestaoHoje = getSugestaoComida[diaFormatado];
 
+        console.log('sugestaoHoje reeee: ', sugestaoHoje)
         setPlotarComida({ dia: diaFormatado, dados: sugestaoHoje });
+
+
       } else {
         console.warn('Nenhuma sugestão para o dia atual encontrada.');
       }

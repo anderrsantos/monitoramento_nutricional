@@ -117,7 +117,7 @@ model SugestaoRefeicao {
 model SugestaoAlimento {
   id                  String             @id @default(auto()) @map("_id") @db.ObjectId
   nome                String
-  quantidade          Float              // em gramas/ml
+  quantidade          String              // em gramas/ml
   sugestaoRefeicaoId  String             @db.ObjectId
   sugestaoRefeicao    SugestaoRefeicao   @relation(fields: [sugestaoRefeicaoId], references: [id])
 }

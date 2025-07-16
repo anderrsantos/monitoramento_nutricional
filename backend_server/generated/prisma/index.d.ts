@@ -10155,31 +10155,21 @@ export namespace Prisma {
 
   export type AggregateSugestaoAlimento = {
     _count: SugestaoAlimentoCountAggregateOutputType | null
-    _avg: SugestaoAlimentoAvgAggregateOutputType | null
-    _sum: SugestaoAlimentoSumAggregateOutputType | null
     _min: SugestaoAlimentoMinAggregateOutputType | null
     _max: SugestaoAlimentoMaxAggregateOutputType | null
-  }
-
-  export type SugestaoAlimentoAvgAggregateOutputType = {
-    quantidade: number | null
-  }
-
-  export type SugestaoAlimentoSumAggregateOutputType = {
-    quantidade: number | null
   }
 
   export type SugestaoAlimentoMinAggregateOutputType = {
     id: string | null
     nome: string | null
-    quantidade: number | null
+    quantidade: string | null
     sugestaoRefeicaoId: string | null
   }
 
   export type SugestaoAlimentoMaxAggregateOutputType = {
     id: string | null
     nome: string | null
-    quantidade: number | null
+    quantidade: string | null
     sugestaoRefeicaoId: string | null
   }
 
@@ -10191,14 +10181,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type SugestaoAlimentoAvgAggregateInputType = {
-    quantidade?: true
-  }
-
-  export type SugestaoAlimentoSumAggregateInputType = {
-    quantidade?: true
-  }
 
   export type SugestaoAlimentoMinAggregateInputType = {
     id?: true
@@ -10260,18 +10242,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: SugestaoAlimentoAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: SugestaoAlimentoSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: SugestaoAlimentoMinAggregateInputType
@@ -10302,8 +10272,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: SugestaoAlimentoCountAggregateInputType | true
-    _avg?: SugestaoAlimentoAvgAggregateInputType
-    _sum?: SugestaoAlimentoSumAggregateInputType
     _min?: SugestaoAlimentoMinAggregateInputType
     _max?: SugestaoAlimentoMaxAggregateInputType
   }
@@ -10311,11 +10279,9 @@ export namespace Prisma {
   export type SugestaoAlimentoGroupByOutputType = {
     id: string
     nome: string
-    quantidade: number
+    quantidade: string
     sugestaoRefeicaoId: string
     _count: SugestaoAlimentoCountAggregateOutputType | null
-    _avg: SugestaoAlimentoAvgAggregateOutputType | null
-    _sum: SugestaoAlimentoSumAggregateOutputType | null
     _min: SugestaoAlimentoMinAggregateOutputType | null
     _max: SugestaoAlimentoMaxAggregateOutputType | null
   }
@@ -10364,7 +10330,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       nome: string
-      quantidade: number
+      quantidade: string
       sugestaoRefeicaoId: string
     }, ExtArgs["result"]["sugestaoAlimento"]>
     composites: {}
@@ -10761,7 +10727,7 @@ export namespace Prisma {
   interface SugestaoAlimentoFieldRefs {
     readonly id: FieldRef<"SugestaoAlimento", 'String'>
     readonly nome: FieldRef<"SugestaoAlimento", 'String'>
-    readonly quantidade: FieldRef<"SugestaoAlimento", 'Float'>
+    readonly quantidade: FieldRef<"SugestaoAlimento", 'String'>
     readonly sugestaoRefeicaoId: FieldRef<"SugestaoAlimento", 'String'>
   }
     
@@ -11890,7 +11856,7 @@ export namespace Prisma {
     NOT?: SugestaoAlimentoWhereInput | SugestaoAlimentoWhereInput[]
     id?: StringFilter<"SugestaoAlimento"> | string
     nome?: StringFilter<"SugestaoAlimento"> | string
-    quantidade?: FloatFilter<"SugestaoAlimento"> | number
+    quantidade?: StringFilter<"SugestaoAlimento"> | string
     sugestaoRefeicaoId?: StringFilter<"SugestaoAlimento"> | string
     sugestaoRefeicao?: XOR<SugestaoRefeicaoScalarRelationFilter, SugestaoRefeicaoWhereInput>
   }
@@ -11909,7 +11875,7 @@ export namespace Prisma {
     OR?: SugestaoAlimentoWhereInput[]
     NOT?: SugestaoAlimentoWhereInput | SugestaoAlimentoWhereInput[]
     nome?: StringFilter<"SugestaoAlimento"> | string
-    quantidade?: FloatFilter<"SugestaoAlimento"> | number
+    quantidade?: StringFilter<"SugestaoAlimento"> | string
     sugestaoRefeicaoId?: StringFilter<"SugestaoAlimento"> | string
     sugestaoRefeicao?: XOR<SugestaoRefeicaoScalarRelationFilter, SugestaoRefeicaoWhereInput>
   }, "id">
@@ -11920,10 +11886,8 @@ export namespace Prisma {
     quantidade?: SortOrder
     sugestaoRefeicaoId?: SortOrder
     _count?: SugestaoAlimentoCountOrderByAggregateInput
-    _avg?: SugestaoAlimentoAvgOrderByAggregateInput
     _max?: SugestaoAlimentoMaxOrderByAggregateInput
     _min?: SugestaoAlimentoMinOrderByAggregateInput
-    _sum?: SugestaoAlimentoSumOrderByAggregateInput
   }
 
   export type SugestaoAlimentoScalarWhereWithAggregatesInput = {
@@ -11932,7 +11896,7 @@ export namespace Prisma {
     NOT?: SugestaoAlimentoScalarWhereWithAggregatesInput | SugestaoAlimentoScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
     nome?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
-    quantidade?: FloatWithAggregatesFilter<"SugestaoAlimento"> | number
+    quantidade?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
     sugestaoRefeicaoId?: StringWithAggregatesFilter<"SugestaoAlimento"> | string
   }
 
@@ -12471,44 +12435,44 @@ export namespace Prisma {
   export type SugestaoAlimentoCreateInput = {
     id?: string
     nome: string
-    quantidade: number
+    quantidade: string
     sugestaoRefeicao: SugestaoRefeicaoCreateNestedOneWithoutAlimentosInput
   }
 
   export type SugestaoAlimentoUncheckedCreateInput = {
     id?: string
     nome: string
-    quantidade: number
+    quantidade: string
     sugestaoRefeicaoId: string
   }
 
   export type SugestaoAlimentoUpdateInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
     sugestaoRefeicao?: SugestaoRefeicaoUpdateOneRequiredWithoutAlimentosNestedInput
   }
 
   export type SugestaoAlimentoUncheckedUpdateInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
     sugestaoRefeicaoId?: StringFieldUpdateOperationsInput | string
   }
 
   export type SugestaoAlimentoCreateManyInput = {
     id?: string
     nome: string
-    quantidade: number
+    quantidade: string
     sugestaoRefeicaoId: string
   }
 
   export type SugestaoAlimentoUpdateManyMutationInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
   }
 
   export type SugestaoAlimentoUncheckedUpdateManyInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
     sugestaoRefeicaoId?: StringFieldUpdateOperationsInput | string
   }
 
@@ -13038,10 +13002,6 @@ export namespace Prisma {
     sugestaoRefeicaoId?: SortOrder
   }
 
-  export type SugestaoAlimentoAvgOrderByAggregateInput = {
-    quantidade?: SortOrder
-  }
-
   export type SugestaoAlimentoMaxOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
@@ -13054,10 +13014,6 @@ export namespace Prisma {
     nome?: SortOrder
     quantidade?: SortOrder
     sugestaoRefeicaoId?: SortOrder
-  }
-
-  export type SugestaoAlimentoSumOrderByAggregateInput = {
-    quantidade?: SortOrder
   }
 
   export type PerfilCreateNestedOneWithoutUsuarioInput = {
@@ -14391,13 +14347,13 @@ export namespace Prisma {
   export type SugestaoAlimentoCreateWithoutSugestaoRefeicaoInput = {
     id?: string
     nome: string
-    quantidade: number
+    quantidade: string
   }
 
   export type SugestaoAlimentoUncheckedCreateWithoutSugestaoRefeicaoInput = {
     id?: string
     nome: string
-    quantidade: number
+    quantidade: string
   }
 
   export type SugestaoAlimentoCreateOrConnectWithoutSugestaoRefeicaoInput = {
@@ -14454,7 +14410,7 @@ export namespace Prisma {
     NOT?: SugestaoAlimentoScalarWhereInput | SugestaoAlimentoScalarWhereInput[]
     id?: StringFilter<"SugestaoAlimento"> | string
     nome?: StringFilter<"SugestaoAlimento"> | string
-    quantidade?: FloatFilter<"SugestaoAlimento"> | number
+    quantidade?: StringFilter<"SugestaoAlimento"> | string
     sugestaoRefeicaoId?: StringFilter<"SugestaoAlimento"> | string
   }
 
@@ -14674,22 +14630,22 @@ export namespace Prisma {
   export type SugestaoAlimentoCreateManySugestaoRefeicaoInput = {
     id?: string
     nome: string
-    quantidade: number
+    quantidade: string
   }
 
   export type SugestaoAlimentoUpdateWithoutSugestaoRefeicaoInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
   }
 
   export type SugestaoAlimentoUncheckedUpdateWithoutSugestaoRefeicaoInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
   }
 
   export type SugestaoAlimentoUncheckedUpdateManyWithoutSugestaoRefeicaoInput = {
     nome?: StringFieldUpdateOperationsInput | string
-    quantidade?: FloatFieldUpdateOperationsInput | number
+    quantidade?: StringFieldUpdateOperationsInput | string
   }
 
 

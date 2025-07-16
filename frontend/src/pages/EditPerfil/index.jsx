@@ -69,7 +69,30 @@ function EditPerfil({ usuario, voltar }) {
     }
 
     try {
-      await api.put('/updatePerfil', dadosParaEnviar)
+      const response = await api.put('/updatePerfil', dadosParaEnviar)
+      const responseMeta = await api.get('/getMetas', {
+          params: { userId: usuario.userId }
+        });
+
+        const btn = document.getElementById('confirmarUpdate');
+        btn.textContent = "Alterando...";
+        btn.disabled = true;
+
+        document.getElementById('cancelarUpdate').disabled = true
+
+       await api.post('/sugestaoAlimentacao',{
+       //const { usuarioId, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
+         usuarioId: usuario.userId,
+         dataNascimento: response.data.perfil.dataNascimento,
+         peso: response.data.perfil.peso,
+         altura: response.data.perfil.altura,
+         sexo: response.data.perfil.sexo,
+         objetivo: response.data.perfil.objetivo,
+         nivelAtividade: response.data.perfil.nivelAtividade,
+         dados: responseMeta.data.meta
+      })
+
+      
       setShowConfirmModal(false)
       voltarLocal()
     } catch (err) {
@@ -175,7 +198,7 @@ function EditPerfil({ usuario, voltar }) {
             <div className="modal-content p-3">
               <div className="modal-header">
                 <h5 className="modal-title text-success">Confirmar alterações</h5>
-                <button type="button" className="btn-close" onClick={() => setShowConfirmModal(false)}></button>
+                <button id = "cancelarXUpdate" type="button" className="btn-close" onClick={() => setShowConfirmModal(false)}></button>
               </div>
               <div className="modal-body">
                 <p>Deseja realmente salvar as alterações do seu perfil?
@@ -183,8 +206,8 @@ function EditPerfil({ usuario, voltar }) {
                 </p>
               </div>
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>Cancelar</button>
-                <button className="btn btn-success" onClick={handleSubmitEditar}>Confirmar</button>
+                <button id = "cancelarUpdate" className="btn btn-secondary" onClick={() => setShowConfirmModal(false)}>Cancelar</button>
+                <button id = "confirmarUpdate" className="btn btn-success" onClick={handleSubmitEditar}>Confirmar</button>
               </div>
             </div>
           </div>
