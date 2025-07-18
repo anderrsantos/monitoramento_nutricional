@@ -95,7 +95,11 @@ git clone https://github.com/anderrsantos/monitoramento_nutricional.git
 cd monitoramento_nutricional
 ```
 
-2. Inicie o Backend:
+2. **Configure o ambiente:**
+- Renomeie o arquivo .env_exemplo para .env
+- Preencha as variáveis com as credenciais e configurações necessárias (ex: conexão com o banco de dados, chave da API, etc.)
+
+3. Inicie o Backend:
 
 ```bash
 cd backend_server 
@@ -103,7 +107,7 @@ npm install
 npm run start
 ```
 
-3. Inicie o Frontend (em outro terminal):
+4. Inicie o Frontend (em outro terminal):
 
 ```bash
 cd frontend 
@@ -111,11 +115,11 @@ npm install
 npm run dev
 ```
 
-4. Acesse a aplicação: 
+5. Acesse a aplicação: 
 ```bash
 http://localhost:5173
 ```
-Ou clique no link exibido no terminal após o passo 3.
+Ou clique no link exibido no terminal após o passo 4.
 
 ---
 
