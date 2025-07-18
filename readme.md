@@ -146,7 +146,7 @@ A aplicação pode ser executada localmente ou adaptada facilmente para deploy e
 
 - **Disciplina**: Engenharia de Software
 - **Instituição**: CEFET-MG  
-- **Professor**: 
+- **Professor**: Igor
 - **Ano/Semestre**: 2025/1
 
 ---
