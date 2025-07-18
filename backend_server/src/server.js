@@ -4,28 +4,30 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import bcrypt from 'bcryptjs';
-import { PrismaClient, Prisma } from '../generated/prisma/index.js';
+import { PrismaClient } from '../generated/prisma/index.js';
 import { sendEmailCodigo } from '../src/email.js';
-import {calcularIMC,calcularTMB,calcularConsumoAgua,calcularMacroNutrientes} from './utils/calculoSaude.js';
-import {sendTextToGemini} from './ia_gemini/scriptIA.js';
+import { sendTextToGemini } from './ia_gemini/scriptIA.js';
 import { criarOuAtualizarMeta } from './utils/criarOuAtualizarMeta.js';
-import fetch from 'node-fetch';  // Remova a linha abaixo se estiver usando Node.js 18 ou superior
+import fetch from 'node-fetch'; // (necessário apenas se for Node < 18)
 
-const codigos = new Map(); // chave: email, valor: código
-const usuariosPendentes = new Map(); // chave: email, valor: senha
-const metasPorUsuario = new Map(); 
+const codigos = new Map();              // email → código
+const usuariosPendentes = new Map();    // email → senha (em verificação)
 
 const prisma = new PrismaClient();
 const app = express();
 
-
 app.use(cors());
 app.use(express.json());
 
-
+/**
+ * Rota: POST /sugestaoAlimentacao
+ * Gera sugestão alimentar da semana usando IA (Gemini) e salva no banco.
+ */
 app.post('/sugestaoAlimentacao', async (req, res) => {
   const { usuarioId, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
+
   try {
+    // Gera o prompt com base nos dados do usuário e sua meta
     const texto = `Uma pessoa do sexo ${sexo} começou a fazer dieta. Ela nasceu em ${dataNascimento}, pesa ${peso} kg,
     tem ${altura} cm de altura, objetivo de ${objetivo} e seu nível de atividade física é ${nivelAtividade}. E o seu consumo para essa semana é:
     água: ${dados.agua} ml
@@ -76,6 +78,7 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
       },
       "Terça":..... "Quarta":....."Sábado".....
     }`;
+
     const respostaGemini = await sendTextToGemini(texto);
 
     let sugestao;
@@ -87,80 +90,56 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
     }
 
     const diasSemana = ['Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
-    const hoje = new Date();
-    hoje.setHours(0, 0, 0, 0);
-
+    const hoje = new Date(); hoje.setHours(0, 0, 0, 0);
     const resultados = [];
+
+    // Ordena os dias da semana
     const keys = Object.keys(sugestao);
     keys.sort((a, b) => diasSemana.indexOf(a) - diasSemana.indexOf(b));
 
     for (const diaNome of keys) {
       const refeicoesObj = sugestao[diaNome];
 
-      const refeicoes = Object.entries(refeicoesObj).map(([tipo, detalhes]) => {
-        return {
-          tipo,
-          calorias: detalhes.calorias,
-          proteinas: detalhes.proteina || 0,
-          carboidratos: detalhes.carboidrato || 0,
-          gorduras: detalhes.gordura || 0,
-          alimentos: {
-            create: detalhes.alimentos.map(alimento => ({
-              nome: alimento.nome,
-              quantidade: alimento.quantidade || "0"
-            }))
-          }
-        };
-      });
-
-      // Verifica se já existe sugestão para este dia
-      const sugestaoExistente = await prisma.sugestaoAlimentacao.findFirst({
-        where: {
-          usuarioId,
-          diaSemana: diaNome,
-          createdAt: { gte: hoje }
-        },
-        include: {
-          sugestaoRefeicoes: { select: { id: true } }
+      const refeicoes = Object.entries(refeicoesObj).map(([tipo, detalhes]) => ({
+        tipo,
+        calorias: detalhes.calorias,
+        proteinas: detalhes.proteina || 0,
+        carboidratos: detalhes.carboidrato || 0,
+        gorduras: detalhes.gordura || 0,
+        alimentos: {
+          create: detalhes.alimentos.map(alimento => ({
+            nome: alimento.nome,
+            quantidade: alimento.quantidade || "0"
+          }))
         }
+      }));
+
+      // Deleta sugestão anterior (se houver)
+      const sugestaoExistente = await prisma.sugestaoAlimentacao.findFirst({
+        where: { usuarioId, diaSemana: diaNome, createdAt: { gte: hoje } },
+        include: { sugestaoRefeicoes: { select: { id: true } } }
       });
 
-      // Se existir, deleta as refeições e a sugestão
       if (sugestaoExistente) {
         for (const ref of sugestaoExistente.sugestaoRefeicoes) {
-          await prisma.sugestaoAlimento.deleteMany({
-            where: { sugestaoRefeicaoId: ref.id }
-          });
+          await prisma.sugestaoAlimento.deleteMany({ where: { sugestaoRefeicaoId: ref.id } });
         }
-
-        await prisma.sugestaoRefeicao.deleteMany({
-          where: { sugestaoAlimentacaoId: sugestaoExistente.id }
-        });
-
-        await prisma.sugestaoAlimentacao.delete({
-          where: { id: sugestaoExistente.id }
-        });
+        await prisma.sugestaoRefeicao.deleteMany({ where: { sugestaoAlimentacaoId: sugestaoExistente.id } });
+        await prisma.sugestaoAlimentacao.delete({ where: { id: sugestaoExistente.id } });
       }
 
-      // Cria nova sugestão com os dados atualizados
+      // Cria nova sugestão
       const nova = await prisma.sugestaoAlimentacao.create({
         data: {
           usuarioId,
           diaSemana: diaNome,
           sugestaoRefeicoes: {
-            create: refeicoes.map(ref => ({
-              tipo: ref.tipo,
-              calorias: ref.calorias,
-              proteinas: ref.proteinas,
-              carboidratos: ref.carboidratos,
-              gorduras: ref.gorduras,
-              alimentos: ref.alimentos
-            }))
-          },
+            create: refeicoes
+          }
         },
         include: {
-          sugestaoRefeicoes: { include: { alimentos: true } },
-        },
+          sugestaoRefeicoes: { include: { alimentos: true } }
+        }
       });
 
       resultados.push(nova);
@@ -173,13 +152,15 @@ app.post('/sugestaoAlimentacao', async (req, res) => {
   }
 });
 
+/**
+ * Rota: GET /getSugestaoAlimentacao
+ * Retorna sugestões alimentares da semana atual para o usuário.
+ */
 app.get('/getSugestaoAlimentacao', async (req, res) => {
   const { usuarioId } = req.query;
 
   try {
     const hoje = new Date();
-
-    // Define início da semana (domingo) e fim da semana (sábado)
     const inicioSemana = new Date(hoje);
     inicioSemana.setDate(hoje.getDate() - hoje.getDay());
     inicioSemana.setHours(0, 0, 0, 0);
@@ -188,31 +169,24 @@ app.get('/getSugestaoAlimentacao', async (req, res) => {
     fimSemana.setDate(inicioSemana.getDate() + 6);
     fimSemana.setHours(23, 59, 59, 999);
 
-    // Busca apenas sugestões da semana atual
     const sugestoes = await prisma.sugestaoAlimentacao.findMany({
       where: {
         usuarioId,
-        createdAt: {
-          gte: inicioSemana,
-          lte: fimSemana,
-        },
+        createdAt: { gte: inicioSemana, lte: fimSemana }
       },
       include: {
-        sugestaoRefeicoes: {
-          include: {
-            alimentos: true,
-          },
-        },
-      },
+        sugestaoRefeicoes: { include: { alimentos: true } }
+      }
     });
 
     if (sugestoes.length === 0) {
       return res.status(200).json({ message: 'Nenhuma sugestão de alimentação encontrada.' });
     }
+
+    // Agrupa as sugestões por dia
     const agrupadoPorDia = {};
     for (const sugestao of sugestoes) {
       const dia = sugestao.diaSemana;
-
       agrupadoPorDia[dia] = agrupadoPorDia[dia] || {};
 
       for (const refeicao of sugestao.sugestaoRefeicoes) {
@@ -223,19 +197,17 @@ app.get('/getSugestaoAlimentacao', async (req, res) => {
           gorduras: refeicao.gorduras,
           alimentos: refeicao.alimentos.map(a => ({
             nome: a.nome,
-            quantidade: a.quantidade,
-          })),
+            quantidade: a.quantidade
+          }))
         };
       }
     }
 
-    // Ordenação cronológica dos dias da semana
+    // Ordena dias da semana
     const ordemDias = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     const agrupadoOrdenado = {};
     ordemDias.forEach(dia => {
-      if (agrupadoPorDia[dia]) {
-        agrupadoOrdenado[dia] = agrupadoPorDia[dia];
-      }
+      if (agrupadoPorDia[dia]) agrupadoOrdenado[dia] = agrupadoPorDia[dia];
     });
 
     res.status(200).json(agrupadoOrdenado);
@@ -245,20 +217,21 @@ app.get('/getSugestaoAlimentacao', async (req, res) => {
   }
 });
 
-// Enviar código por e-mail
+/**
+ * Rota: POST /serviceEmail
+ * Gera e envia código de verificação por e-mail.
+ */
 app.post('/serviceEmail', async (req, res) => {
   try {
     const emailDestinatario = req.body.email;
-
-    const emailLower =emailDestinatario.toLowerCase();
+    const emailLower = emailDestinatario.toLowerCase();
 
     if (!emailLower) {
       return res.status(400).json({ message: 'Email não fornecido.' });
     }
 
-    const codigoGerado = Math.floor(100000 + Math.random() * 900000); // Gera um código de 6 dígitos
-
-    codigos.set(emailLower, String(codigoGerado)); // Armazena como string
+    const codigoGerado = Math.floor(100000 + Math.random() * 900000);
+    codigos.set(emailLower, String(codigoGerado));
 
     await sendEmailCodigo(emailLower, codigoGerado);
 
@@ -268,10 +241,13 @@ app.post('/serviceEmail', async (req, res) => {
   }
 });
 
+/**
+ * Rota: GET /getVerificarCodigo
+ * Verifica se o código de verificação enviado é válido.
+ */
 app.get('/getVerificarCodigo', async (req, res) => {
   try {
     const { email, codigoRecebido } = req.query;
-
     const emailLower = email.toLowerCase();
 
     if (!emailLower || !codigoRecebido) {
@@ -279,19 +255,15 @@ app.get('/getVerificarCodigo', async (req, res) => {
     }
 
     const codigoEsperado = codigos.get(emailLower);
-
     if (!codigoEsperado) {
       return res.status(400).json({ message: 'Código expirado ou não encontrado.' });
     }
 
-    const recebidoNormalizado = String(codigoRecebido).trim();
-    const esperadoNormalizado = String(codigoEsperado).trim();
-
-    if (recebidoNormalizado !== esperadoNormalizado) {
+    if (String(codigoRecebido).trim() !== String(codigoEsperado).trim()) {
       return res.status(400).json({ message: 'Código de verificação inválido.' });
     }
-    codigos.delete(emailLower); // Remove o código após uso
 
+    codigos.delete(emailLower);
     return res.status(200).json({ message: 'Código confirmado com sucesso.' });
   } catch (error) {
     console.error('Erro no getVerificarCodigo:', error);
@@ -299,35 +271,38 @@ app.get('/getVerificarCodigo', async (req, res) => {
   }
 });
 
+/**
+ * Rota: POST /register
+ * Registra usuário pendente após validação do código.
+ */
 app.post('/register', async (req, res) => {
   try {
-    const { email, password,} = req.body;
-
+    const { email, password } = req.body;
     const emailLower = email.toLowerCase();
+
     usuariosPendentes.set(emailLower, password);
-
-
     res.status(200).json({ message: 'Código validado. Agora preencha o perfil.' });
   } catch (error) {
     res.status(500).json({ message: 'Erro ao registrar usuário.' });
   }
 });
 
-// Login
+/**
+ * Rota: POST /login
+ * Realiza login do usuário com email e senha.
+ */
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
     const emailLower = email.toLowerCase();
-    const user = await prisma.user.findUnique({
-      where: { email: emailLower },
-    });
+    const user = await prisma.user.findUnique({ where: { email: emailLower } });
 
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
-    const senhaConfere = await bcrypt.compare(password, user.password);
 
+    const senhaConfere = await bcrypt.compare(password, user.password);
     if (!senhaConfere) {
       return res.status(401).json({ message: 'Senha incorreta.' });
     }
@@ -338,46 +313,45 @@ app.post('/login', async (req, res) => {
   }
 });
 
+/**
+ * Rota: PUT /updateUser
+ * Atualiza a senha do usuário.
+ */
 app.put('/updateUser', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-      const emailLower = email.toLowerCase();
+    const emailLower = email.toLowerCase();
+    const user = await prisma.user.findUnique({ where: { email: emailLower } });
 
-      const user = await prisma.user.findUnique({ where: { email: emailLower } });
-    
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
     await prisma.user.update({
-      where: { email:  emailLower},
+      where: { email: emailLower },
       data: { password: hashedPassword }
     });
 
-
-    //console.log('Senha atualizada com sucesso para o usuário:', email);
     res.status(200).json({ message: 'Senha atualizada com sucesso.' });
-
   } catch (error) {
-    console.error(' Erro ao atualizar usuário:', error); 
+    console.error('Erro ao atualizar usuário:', error);
     res.status(500).json({ message: 'Erro ao atualizar usuário.' });
   }
 });
 
-// Buscar usuário por email
+/**
+ * Rota: GET /searchUser
+ * Busca usuário pelo email e retorna seu ID.
+ */
 app.get('/searchUser', async (req, res) => {
-  const email = req.query.email; 
+  const email = req.query.email;
   try {
-
     const emailLower = email.toLowerCase();
     const user = await prisma.user.findUnique({
       where: { email: emailLower },
-      select: {
-        id: true,
-      },
+      select: { id: true },
     });
 
     if (!user) {
@@ -391,7 +365,10 @@ app.get('/searchUser', async (req, res) => {
   }
 });
 
-// Verificar se o perfil do usuário já está cadastrado
+/**
+ * Rota: GET /searchUserPerfil
+ * Verifica se o perfil do usuário está cadastrado.
+ */
 app.get('/searchUserPerfil', async (req, res) => {
   const { userId } = req.query;
 
@@ -400,43 +377,42 @@ app.get('/searchUserPerfil', async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
-      where: { id: userId }
-    });
+    const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
-    const verificaPerfil = await prisma.perfil.findUnique({
-      where: { usuarioId: user.id }
-    });
-
-    if(!verificaPerfil){
+    const verificaPerfil = await prisma.perfil.findUnique({ where: { usuarioId: user.id } });
+    if (!verificaPerfil) {
       return res.status(405).json({ message: 'Perfil não encontrado.' });
     }
 
-    res.status(200).json({
-      userId: verificaPerfil.userId,
-    });
-
+    res.status(200).json({ userId: verificaPerfil.userId });
   } catch (error) {
     res.status(500).json({ message: 'Erro interno do servidor.' });
   }
 });
 
+/**
+ * Rota: POST /setPerfil
+ * Cria usuário e perfil completo, além de gerar metas nutricionais.
+ */
 app.post('/setPerfil', async (req, res) => {
   const { email, nome, sobrenome, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade } = req.body;
 
   try {
     const emailLower = email.toLowerCase();
 
+    // Verifica se o usuário passou pela validação de código
     if (!usuariosPendentes.has(emailLower)) {
       return res.status(400).json({ message: 'Usuário não encontrado ou código não validado.' });
     }
 
+    // Recupera senha pendente e cria hash
     const password = usuariosPendentes.get(emailLower);
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Cria usuário no banco
     const user = await prisma.user.create({
       data: {
         email: emailLower,
@@ -444,6 +420,7 @@ app.post('/setPerfil', async (req, res) => {
       },
     });
 
+    // Cria perfil associado ao usuário
     const perfil = await prisma.perfil.create({
       data: {
         nome,
@@ -458,24 +435,27 @@ app.post('/setPerfil', async (req, res) => {
       }
     });
 
-    const metasCriadas = await criarOuAtualizarMeta(user.id, perfil);
+    // Gera ou atualiza meta nutricional
+    await criarOuAtualizarMeta(user.id, perfil);
 
-
+    // Remove usuário pendente após criação
     usuariosPendentes.delete(emailLower);
 
     res.status(200).json({ 
-     message: 'Cadastro completo com sucesso!', 
+      message: 'Cadastro completo com sucesso!', 
       userId: user.id, 
-      perfilId: perfil.id
-     });
-
-
+      perfilId: perfil.id 
+    });
   } catch (error) {
     console.error('Erro ao registrar perfil:', error);
     res.status(500).json({ message: 'Erro interno no servidor.' });
   }
 });
 
+/**
+ * Rota: GET /getPerfil
+ * Busca perfil completo do usuário pelo userId.
+ */
 app.get('/getPerfil', async (req, res) => {
   try {
     const userId = req.query.userId;
@@ -483,7 +463,6 @@ app.get('/getPerfil', async (req, res) => {
     if (!userId) {
       return res.status(400).json({ message: 'ID do usuário é obrigatório.' });
     }
-
 
     const perfil = await prisma.perfil.findUnique({
       where: { usuarioId: userId }
@@ -493,16 +472,17 @@ app.get('/getPerfil', async (req, res) => {
       return res.status(404).json({ message: 'Perfil não encontrado.' });
     }
 
-    //console.log(perfil)
-
     res.status(200).json({ perfil });
-
   } catch (error) {
     console.error('Erro ao buscar perfil:', error);
     res.status(500).json({ message: 'Erro interno no servidor.' });
   }
 });
 
+/**
+ * Rota: DELETE /deleteUser
+ * Deleta usuário e todos os dados relacionados (perfil, metas, refeições, sugestões).
+ */
 app.delete('/deleteUser', async (req, res) => {
   const { userId } = req.body;
 
@@ -512,15 +492,12 @@ app.delete('/deleteUser', async (req, res) => {
 
   try {
     // Verifica se o usuário existe
-    const userExists = await prisma.user.findUnique({
-      where: { id: userId }
-    });
-
+    const userExists = await prisma.user.findUnique({ where: { id: userId } });
     if (!userExists) {
       return res.status(404).json({ message: 'Usuário não encontrado.' });
     }
 
-    // --- Sugestões de alimentação ---
+    // Deleta sugestões de alimentação e seus filhos (refeições, alimentos)
     const sugestoes = await prisma.sugestaoAlimentacao.findMany({
       where: { usuarioId: userId },
       select: { id: true }
@@ -528,7 +505,6 @@ app.delete('/deleteUser', async (req, res) => {
 
     for (const sugestao of sugestoes) {
       const sugestaoId = sugestao.id;
-
       const sugestoesRefeicao = await prisma.sugestaoRefeicao.findMany({
         where: { sugestaoAlimentacaoId: sugestaoId },
         select: { id: true }
@@ -549,7 +525,7 @@ app.delete('/deleteUser', async (req, res) => {
       where: { usuarioId: userId }
     });
 
-    // --- Refeições (deletar filhos antes) ---
+    // Deleta refeições e seus alimentos associados
     const refeicoes = await prisma.refeicao.findMany({
       where: { usuarioId: userId },
       select: { id: true }
@@ -565,36 +541,28 @@ app.delete('/deleteUser', async (req, res) => {
       where: { usuarioId: userId }
     });
 
-    // --- Demais relações simples ---
-    await prisma.consumoAgua.deleteMany({
-      where: { usuarioId: userId }
-    });
+    // Deleta demais dados relacionados
+    await prisma.consumoAgua.deleteMany({ where: { usuarioId: userId } });
+    await prisma.meta.deleteMany({ where: { usuarioId: userId } });
+    await prisma.perfil.deleteMany({ where: { usuarioId: userId } });
 
-    await prisma.meta.deleteMany({
-      where: { usuarioId: userId }
-    });
-
-    await prisma.perfil.deleteMany({
-      where: { usuarioId: userId }
-    });
-
-    // --- Usuário ---
-    const deletedUser = await prisma.user.deleteMany({
-      where: { id: userId }
-    });
-
+    // Deleta o usuário
+    const deletedUser = await prisma.user.deleteMany({ where: { id: userId } });
     if (deletedUser.count === 0) {
       console.warn(`Usuário com ID ${userId} já foi deletado ou não existe.`);
     }
 
     res.status(200).json({ message: 'Usuário e todos os dados relacionados foram deletados com sucesso.' });
-
   } catch (error) {
     console.error('Erro ao deletar usuário:', error);
     res.status(500).json({ message: 'Erro ao deletar o usuário.' });
   }
 });
 
+/**
+ * Rota: PUT /updatePerfil
+ * Atualiza os dados do perfil do usuário.
+ */
 app.put('/updatePerfil', async (req, res) => {
   const { userId, nome, sobrenome, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade } = req.body;
 
@@ -609,8 +577,9 @@ app.put('/updatePerfil', async (req, res) => {
       return res.status(404).json({ message: 'Perfil não encontrado.' });
     }
 
+    // Atualiza o perfil com os dados recebidos
     const perfilAtualizado = await prisma.perfil.update({
-      where: { usuarioId: userId},
+      where: { usuarioId: userId },
       data: {
         nome,
         sobrenome,
@@ -630,16 +599,22 @@ app.put('/updatePerfil', async (req, res) => {
   }
 });
 
+/**
+ * Rota: POST /setMeta
+ * Recalcula e atualiza a meta nutricional do usuário com base no perfil.
+ */
 app.post('/setMeta', async (req, res) => {
   const { userId } = req.body;
 
   try {
+    // Busca o perfil do usuário
     const perfil = await prisma.perfil.findUnique({ where: { usuarioId: userId } });
 
     if (!perfil) {
       return res.status(404).json({ message: 'Perfil não encontrado' });
     }
-    // A função agora usa o 'perfil' completo para recalcular tudo com base na meta salva.
+
+    // Recalcula ou cria metas nutricionais
     const metas = await criarOuAtualizarMeta(userId, perfil);
 
     return res.status(200).json(metas);
@@ -649,21 +624,23 @@ app.post('/setMeta', async (req, res) => {
   }
 });
 
+/**
+ * Rota: GET /getMetas
+ * Busca as metas nutricionais do usuário.
+ */
 app.get('/getMetas', async (req, res) => {
   const { userId } = req.query;
 
   try {
     const meta = await prisma.meta.findUnique({
-      where: {
-        usuarioId: userId
-      },
+      where: { usuarioId: userId },
       select: {
         agua: true,
         calorias: true,
         proteinas: true,
         carboidratos: true,
+        gorduras: true,
         dataCriacao: true,
-        gorduras: true
       }
     });
 
@@ -672,14 +649,16 @@ app.get('/getMetas', async (req, res) => {
     }
 
     res.status(200).json({ meta });
-
   } catch (error) {
     console.error('Erro ao buscar meta:', error);
     res.status(500).json({ message: 'Erro ao buscar meta no banco de dados.' });
   }
 });
 
-
+/**
+ * Rota: GET /getMeta
+ * Busca as metas nutricionais do usuário pelo ID.
+ */
 app.get('/getMeta', async (req, res) => {
   const { userId } = req.query;
 
@@ -688,6 +667,7 @@ app.get('/getMeta', async (req, res) => {
   }
 
   try {
+    // Busca meta pelo userId (verifique se o campo na tabela é 'usuarioId' ou 'userId')
     const meta = await prisma.meta.findUnique({
       where: { userId }
     });
@@ -695,7 +675,7 @@ app.get('/getMeta', async (req, res) => {
     if (!meta) {
       return res.status(404).json({ message: 'Metas não encontradas para este usuário.' });
     }
-    //console.log(meta)
+
     return res.status(200).json({ meta });
   } catch (error) {
     console.error('Erro ao buscar metas:', error);
@@ -703,7 +683,10 @@ app.get('/getMeta', async (req, res) => {
   }
 });
 
-// Listar todos os usuários
+/**
+ * Rota: GET /showUsers
+ * Lista todos os usuários cadastrados (id e email).
+ */
 app.get('/showUsers', async (req, res) => {
   try {
     const allUsers = await prisma.user.findMany({
@@ -720,10 +703,17 @@ app.get('/showUsers', async (req, res) => {
   }
 });
 
-// Proxy para Open Food Facts
+/**
+ * Rota: GET /api/openfoodfacts
+ * Proxy para consulta à API do Open Food Facts.
+ * Parâmetro: search (string) - termo para busca.
+ */
 app.get('/api/openfoodfacts', async (req, res) => {
   const { search } = req.query;
-  if (!search) return res.status(400).json({ error: 'Parâmetro de busca obrigatório' });
+
+  if (!search) {
+    return res.status(400).json({ error: 'Parâmetro de busca obrigatório' });
+  }
 
   try {
     const url = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(search)}&search_simple=1&action=process&json=1`;
@@ -731,32 +721,32 @@ app.get('/api/openfoodfacts', async (req, res) => {
     const data = await response.json();
     res.json(data);
   } catch (err) {
+    console.error('Erro ao buscar na Open Food Facts:', err);
     res.status(500).json({ error: 'Erro ao buscar na Open Food Facts' });
   }
 });
 
-
-// Manipulação de Refeições ==============================================================
-
-// Salvar nova refeição
+/**
+ * Rota: POST /refeicoes
+ * Salva uma nova refeição com seus alimentos e calcula totais nutricionais.
+ */
 app.post('/refeicoes', async (req, res) => {
   try {
     const { usuarioId, nome, alimentos } = req.body;
+
     if (!usuarioId || !nome || !alimentos || !Array.isArray(alimentos)) {
       return res.status(400).json({ error: 'Dados inválidos' });
     }
 
-    // Calcular totais da refeição
-    const totais = alimentos.reduce((acc, alimento) => {
-      return {
-        calorias: acc.calorias + (parseFloat(alimento.calorias) || 0),
-        proteinas: acc.proteinas + (parseFloat(alimento.proteinas) || 0),
-        carboidratos: acc.carboidratos + (parseFloat(alimento.carboidratos) || 0),
-        gorduras: acc.gorduras + (parseFloat(alimento.gorduras) || 0)
-      };
-    }, { calorias: 0, proteinas: 0, carboidratos: 0, gorduras: 0 });
+    // Calcula totais nutricionais da refeição
+    const totais = alimentos.reduce((acc, alimento) => ({
+      calorias: acc.calorias + (parseFloat(alimento.calorias) || 0),
+      proteinas: acc.proteinas + (parseFloat(alimento.proteinas) || 0),
+      carboidratos: acc.carboidratos + (parseFloat(alimento.carboidratos) || 0),
+      gorduras: acc.gorduras + (parseFloat(alimento.gorduras) || 0),
+    }), { calorias: 0, proteinas: 0, carboidratos: 0, gorduras: 0 });
 
-    // Criar refeição no banco
+    // Cria a refeição no banco de dados
     const refeicao = await prisma.refeicao.create({
       data: {
         nome,
@@ -768,7 +758,7 @@ app.post('/refeicoes', async (req, res) => {
       }
     });
 
-    // Criar alimentos da refeição
+    // Cria os registros dos alimentos associados à refeição
     for (const alimento of alimentos) {
       await prisma.alimentoRefeicao.create({
         data: {
@@ -783,45 +773,51 @@ app.post('/refeicoes', async (req, res) => {
         }
       });
     }
-    //console.log('refeicao: ',refeicao)
 
-    res.status(201).json({ 
+    res.status(201).json({
       message: 'Refeição salva com sucesso',
       refeicao: { ...refeicao, alimentos }
     });
+
   } catch (error) {
     console.error('Erro ao salvar refeição:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
-// Buscar refeições do usuário
+/**
+ * Rota: GET /getRefeicoes
+ * Busca todas as refeições do usuário, incluindo alimentos, ordenadas por horário decrescente.
+ */
 app.get('/getRefeicoes', async (req, res) => {
   try {
     const { usuarioId } = req.query;
-    
+
     const refeicoes = await prisma.refeicao.findMany({
       where: { usuarioId },
-      include: {
-        alimentos: true
-      },
+      include: { alimentos: true },
       orderBy: { horario: 'desc' }
     });
 
     res.json(refeicoes);
+
   } catch (error) {
     console.error('Erro ao buscar refeições:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
-// Buscar calorias consumidas hoje
+/**
+ * Rota: GET /getCaloriasHoje
+ * Calcula o total de calorias consumidas pelo usuário no dia atual.
+ */
 app.get('/getCaloriasHoje', async (req, res) => {
   try {
     const { usuarioId } = req.query;
     const hoje = new Date();
     const inicioDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
     const fimDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
+
     const refeicoesHoje = await prisma.refeicao.findMany({
       where: {
         usuarioId,
@@ -832,40 +828,36 @@ app.get('/getCaloriasHoje', async (req, res) => {
       }
     });
 
-    const totalCalorias = refeicoesHoje.reduce((acc, refeicao) => {
-      return acc + refeicao.calorias;
-    }, 0);
+    const totalCalorias = refeicoesHoje.reduce((acc, refeicao) => acc + refeicao.calorias, 0);
 
-    res.json({ 
+    res.json({
       totalCalorias,
       refeicoesHoje: refeicoesHoje.length
     });
+
   } catch (error) {
     console.error('Erro ao buscar calorias de hoje:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
-//========================================================================================
 
-// Manipulação do consumo de Agua  =======================================================
-// dias = 1 → últimas 24h
-// dias = 7 → última semana
-// dias = 30 → último mês
-// dias = 365 → último ano
+/**
+ * Rota: POST /setConsumoAgua
+ * Registra o consumo de água de um usuário.
+ * Retorna: JSON com o registro criado do consumo de água.
+ */
 app.post('/setConsumoAgua', async (req, res) => {
   const { usuarioId, quantidade } = req.body;
 
-  // Validação simples
   if (!quantidade || !usuarioId) {
     return res.status(400).json({ error: 'Quantidade e usuarioId são obrigatórios.' });
   }
-
 
   try {
     const novoRegistro = await prisma.consumoAgua.create({
       data: {
         quantidade: parseFloat(quantidade),
-        usuarioId: usuarioId,
+        usuarioId,
       },
     });
 
@@ -876,11 +868,15 @@ app.post('/setConsumoAgua', async (req, res) => {
   }
 });
 
-
+/**
+ * Rota: GET /getConsumoAguaPorDia
+ * Busca o consumo diário de água do usuário nos últimos N dias.
+ * Retorna: JSON com objeto onde as chaves são datas (YYYY-MM-DD) e valores a soma do consumo naquele dia.
+ */
 app.get('/getConsumoAguaPorDia', async (req, res) => {
-  const { userId, dias } = req.query;
+  const { usuarioId, dias } = req.query;
 
-  if (!userId || !dias) {
+  if (!usuarioId || !dias) {
     return res.status(400).json({ error: 'Parâmetros usuarioId e dias são obrigatórios.' });
   }
 
@@ -893,29 +889,19 @@ app.get('/getConsumoAguaPorDia', async (req, res) => {
   dataInicial.setDate(dataInicial.getDate() - numeroDias);
 
   try {
-    // Busca os registros no intervalo
     const registros = await prisma.consumoAgua.findMany({
       where: {
-        usuarioId : userId,
-        data: {
-          gte: dataInicial,
-        },
-      },
-    });
-
-    // Agrupando os registros por data (formato: YYYY-MM-DD)
-    const consumoPorDia = {};
-
-    registros.forEach((registro) => {
-      const data = new Date(registro.data);
-      const dia = data.toISOString().split('T')[0]; // formato 'YYYY-MM-DD'
-
-      if (!consumoPorDia[dia]) {
-        consumoPorDia[dia] = 0;
+        usuarioId,
+        data: { gte: dataInicial }
       }
-      consumoPorDia[dia] += registro.quantidade;
     });
-    //console.log(consumoPorDia)
+
+    const consumoPorDia = {};
+    registros.forEach(({ data, quantidade }) => {
+      const dia = new Date(data).toISOString().split('T')[0];
+      consumoPorDia[dia] = (consumoPorDia[dia] || 0) + quantidade;
+    });
+
     return res.status(200).json({ consumoPorDia });
   } catch (error) {
     console.error('Erro ao buscar consumo diário:', error);
@@ -923,10 +909,15 @@ app.get('/getConsumoAguaPorDia', async (req, res) => {
   }
 });
 
+/**
+ * Rota: GET /getConsumoAguaAgrupamentoDias
+ * Retorna os registros detalhados de consumo de água dos últimos N dias, ordenados por data.
+ * Retorna: JSON com array de registros de consumo, incluindo data e quantidade.
+ */
 app.get('/getConsumoAguaAgrupamentoDias', async (req, res) => {
-  const { userId, dias } = req.query;
+  const { usuarioId, dias } = req.query;
 
-  if (!userId || !dias) {
+  if (!usuarioId || !dias) {
     return res.status(400).json({ error: 'Parâmetros usuarioId e dias são obrigatórios.' });
   }
 
@@ -941,28 +932,22 @@ app.get('/getConsumoAguaAgrupamentoDias', async (req, res) => {
   try {
     const registros = await prisma.consumoAgua.findMany({
       where: {
-        usuarioId: userId,
-        data: {
-          gte: dataInicial,
-        },
+        usuarioId,
+        data: { gte: dataInicial }
       },
-      orderBy: {
-        data: 'asc',  // ordena do mais antigo para o mais recente
-      },
+      orderBy: { data: 'asc' }
     });
 
-    // Retorna o array de registros sem somar
-    //console.log(registros)
-    return res.status(200).json({ registrosconsumoPorDia:registros });
+    return res.status(200).json({ registrosConsumoPorDia: registros });
   } catch (error) {
     console.error('Erro ao buscar registros:', error);
     return res.status(500).json({ error: 'Erro interno do servidor.' });
   }
 });
 
-//========================================================================================
-
-// Iniciar servidor
+/**
+ * Iniciar servidor
+ */
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);

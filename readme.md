@@ -61,10 +61,6 @@ monitoramento_nutricional/              # Raiz do projeto
   
 
 ```
-
----
-
-
 ---
 
 ## 🥪 Tecnologias Utilizadas

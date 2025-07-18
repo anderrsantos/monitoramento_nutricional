@@ -1,14 +1,13 @@
-// Importe SOMENTE a nova função
 import { gerarPlanoNutricionalCompleto } from './calculoSaude.js';
 import { PrismaClient } from '../../generated/prisma/index.js';
 const prisma = new PrismaClient();
 
-// A função agora só precisa do ID e do perfil completo
+// Cria ou atualiza a meta nutricional de um usuário no banco de dados
 export async function criarOuAtualizarMeta(userId, perfilCompleto) {
-  // A nova função faz todo o trabalho pesado
-  
+  // Gera o plano com base no perfil do usuário
   const plano = gerarPlanoNutricionalCompleto(perfilCompleto);
 
+  // Usa o método `upsert` para criar ou atualizar os dados da meta no banco
   const meta = await prisma.meta.upsert({
     where: { usuarioId: userId },
     create: {
