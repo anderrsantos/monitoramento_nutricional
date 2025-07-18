@@ -1,12 +1,3 @@
-/**
- * Funções para cálculo de indicadores e metas de saúde.
- *
- * - IMC: Índice de Massa Corporal
- * - TMB: Taxa Metabólica Basal (Harris–Benedict)
- * - TDEE: Gasto Energético Diário Total
- * - Consumo de Água: Ajustado por atividade
- * - Plano Nutricional: Calorias e Macros ajustados por meta
- */
 
 // Objeto com fatores de atividade para cálculo do gasto calórico diário.
 export const activityFactors = {

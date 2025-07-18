@@ -1,5 +1,4 @@
 import '../../index.css'
-import './style.css'
 import React, { useState, useEffect } from 'react'
 import logo from '../../assets/logo.png'
 import api from '../../services/api.js'
@@ -81,7 +80,6 @@ function EditPerfil({ usuario, voltar }) {
         document.getElementById('cancelarUpdate').disabled = true
 
        await api.post('/sugestaoAlimentacao',{
-       //const { usuarioId, dataNascimento, peso, altura, sexo, objetivo, nivelAtividade, dados } = req.body;
          usuarioId: usuario.userId,
          dataNascimento: response.data.perfil.dataNascimento,
          peso: response.data.perfil.peso,

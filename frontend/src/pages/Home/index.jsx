@@ -32,8 +32,6 @@ function Home({ irParaCadastro, irParaConteudo, irParaCadastroDados, irParaEmail
       const response = await api.post('/login', { email, password })
 
       if (response.status === 200) {
-        console.log('Login bem-sucedido:', response.data.email)
-        //checkPerfil(response.data) // Envia o ID do usuário para verificação do perfil
         irParaConteudo(response.data);
       }
     } catch (error) {

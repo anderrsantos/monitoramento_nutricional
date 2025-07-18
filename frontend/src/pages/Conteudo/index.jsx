@@ -275,7 +275,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
       alert('Digite um nome para a refeição');
       return;
     }
-    console.log('usuario: ', usuario)
     try {
       const alimentosParaSalvar = alimentosRefeicao.map(item => ({
         nomeAlimento: item.alimento.product_name || 'Nome não disponível',
@@ -286,7 +285,6 @@ function Conteudo({ usuario, voltar, irParaPerfil }) {
         gorduras: parseFloat(item.alimento.nutriments?.fat) || 0,
         codigoOpenFood: item.alimento.code || null
       }));
-      console.log('usuario: ', usuario)
 
       try {
         const response = await api.post('/refeicoes', {

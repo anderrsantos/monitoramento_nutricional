@@ -1,4 +1,3 @@
-import './style.css'
 import '../../index.css'
 import React, { useEffect } from 'react'
 import logo from '../../assets/logo.png'
@@ -16,7 +15,6 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
   // Função reutilizável
   const registrarUsuario = async () => {
     try {
-      console.log("aqui foi registrar Usuario")
       await api.post('/register', {
         email: usuario.email,
         password: usuario.password
@@ -29,14 +27,12 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
 
   const registrarMeta = async (userId) => {
     try {
-      const response = await api.post('/setMeta', { userId }); // agora userId é passado no body
-      console.log('Meta registrada:', response.data);
+      const response = await api.post('/setMeta', { userId }); 
     } catch (error) {
       console.error('Erro ao registrar metas:', error);
     }
   };
 
-  // Chama automaticamente uma vez ao montar o componente
   useEffect(() => {
     registrarUsuario();
   }, []);
@@ -55,8 +51,6 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     const objetivo = event.target.objetivo.value;
     const nivelAtividade = event.target.nivel_atividade.value;
     const email = usuario.email;
-
-    console.log('Registro:', usuario);
 
     try {
       const response = await api.post('/setPerfil', {
