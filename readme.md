@@ -4,6 +4,8 @@ Este repositório contém o projeto desenvolvido como trabalho final da discipli
 
 O objetivo principal foi criar um sistema completo a partir do zero, desde a definição dos requisitos até a entrega final do produto. A ideia escolhida foi o desenvolvimento de um site para monitoramento alimentar.
 
+**NutriTracker** é um sistema web que permite que usuários monitorem sua alimentação diária, consumo de água, calorias, objetivos nutricionais e progresso físico.
+
 ---
 
 ## ⚙️ Funcionalidades
@@ -62,6 +64,14 @@ monitoramento_nutricional/              # Raiz do projeto
 
 ```
 ---
+## Estados (useState) usados no Frontend
+
+- O componente `Conteudo.jsx` é responsável por renderizar os dados nutricionais diários.
+- Os `useState` controlam informações como: dados pessoais do usuário (peso, altura, IMC), metas nutricionais (calorias, proteínas, carboidratos, gorduras), consumo de água, refeições e alimentos registrados, além do controle da interface (modais, gráficos e buscas).
+
+
+
+---
 
 ## 🥪 Tecnologias Utilizadas
 
@@ -103,7 +113,7 @@ npm run dev
 
 4. Acesse a aplicação: 
 ```bash
-http://localhost:3000
+http://localhost:5173
 ```
 Ou clique no link exibido no terminal após o passo 3.
 

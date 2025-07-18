@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 import logo from '../../assets/logo.png';
 import api from '../../services/api.js';
 
-function EmailRecuperacao({irParaCodigoSenha, voltarHome }) {
+function EmailRecuperacao({ irParaCodigoSenha, voltarHome }) {
   const [aviso, setAviso] = useState('');
 
   const voltarHomeLocal = () => {
     voltarHome();
   };
 
+  // Verifica se o email está cadastrado (existe no sistema)
+  // Retorna true se o email EXISTE, false caso contrário
   const verificarEmail = async (email) => {
     try {
       const response = await api.get('/searchUser', {
@@ -17,20 +19,22 @@ function EmailRecuperacao({irParaCodigoSenha, voltarHome }) {
       });
 
       if (response.status === 200 && response.data?.id) {
-        setAviso ('Este email já está cadastrado');
-        return false;
+        // Email está cadastrado
+        setAviso('');
+        return true;
       }
     } catch (error) {
       if (error.response?.status === 404) {
-        setAviso ('Este email não esta cadastrado');
-        return true; 
+        // Email NÃO cadastrado
+        setAviso('Este email não está cadastrado.');
+        return false;
       }
       console.error('Erro ao verificar o email:', error);
       alert('Erro ao verificar o email. Por favor, tente novamente mais tarde.');
       return false;
     }
 
-    return true;
+    return false;
   };
 
   const handleSubmit = async (event) => {
@@ -42,10 +46,14 @@ function EmailRecuperacao({irParaCodigoSenha, voltarHome }) {
       return;
     }
 
-    const emailValido = await verificarEmail(email); 
+    const emailExiste = await verificarEmail(email);
 
-    if (!emailValido) {
-      irParaCodigoSenha({ email }); 
+    if (emailExiste) {
+      // Se o email existe, vai para tela de código
+      irParaCodigoSenha({ email });
+    } else {
+      // Se não existe, não avança
+      // Aviso já definido dentro de verificarEmail
     }
   };
 

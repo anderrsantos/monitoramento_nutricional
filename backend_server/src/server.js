@@ -12,6 +12,7 @@ import fetch from 'node-fetch'; // (necessário apenas se for Node < 18)
 
 const codigos = new Map();              // email → código
 const usuariosPendentes = new Map();    // email → senha (em verificação)
+const metasPorUsuario = new Map();      // cache de metas por usuário
 
 const prisma = new PrismaClient();
 const app = express();
@@ -871,11 +872,17 @@ app.post('/setConsumoAgua', async (req, res) => {
 /**
  * Rota: GET /getConsumoAguaPorDia
  * Busca o consumo diário de água do usuário nos últimos N dias.
- * Retorna: JSON com objeto onde as chaves são datas (YYYY-MM-DD) e valores a soma do consumo naquele dia.
+ * 
+ * Query params:
+ *  - usuarioId (string): ID do usuário.
+ *  - dias (number): Quantidade de dias anteriores para buscar (ex: 1, 7, 30).
+ * 
+ * Retorna:
+ *  - JSON com objeto onde as chaves são datas (YYYY-MM-DD) e valores a soma do consumo naquele dia.
  */
 app.get('/getConsumoAguaPorDia', async (req, res) => {
   const { usuarioId, dias } = req.query;
-
+  console.log(req.query)
   if (!usuarioId || !dias) {
     return res.status(400).json({ error: 'Parâmetros usuarioId e dias são obrigatórios.' });
   }

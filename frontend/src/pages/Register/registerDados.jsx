@@ -4,15 +4,17 @@ import logo from '../../assets/logo.png'
 import api from '../../services/api.js' 
 
 function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
+  // Função para voltar para a tela anterior
   const voltarLocal = () => {
     voltar()
   }
 
+  // Função para voltar para a tela inicial/home
   const voltarHomeLocal = () => {
     voltarHome()
   }
 
-  // Função reutilizável
+  // Função para registrar o usuário na API, usando o email e senha do objeto usuario
   const registrarUsuario = async () => {
     try {
       await api.post('/register', {
@@ -25,23 +27,25 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     }
   };
 
+  // Função para registrar metas associadas ao usuário, recebe o userId retornado ao salvar o perfil
   const registrarMeta = async (userId) => {
     try {
-      const response = await api.post('/setMeta', { userId }); 
+      await api.post('/setMeta', { userId }); 
     } catch (error) {
       console.error('Erro ao registrar metas:', error);
     }
   };
 
+  // Ao montar o componente, registra o usuário (apenas uma vez)
   useEffect(() => {
     registrarUsuario();
   }, []);
 
-  
-
+  // Função que trata o envio do formulário com dados pessoais
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Coleta dados dos inputs do formulário
     const nome = event.target.nome.value;
     const sobrenome = event.target.sobrenome.value;
     const dataNascimento = event.target.data_nascimento.value;
@@ -53,6 +57,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     const email = usuario.email;
 
     try {
+      // Envia os dados do perfil para a API
       const response = await api.post('/setPerfil', {
         email,
         nome,
@@ -63,16 +68,15 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
         sexo,
         objetivo,
         nivelAtividade
-    });
-    
-
-    if (response.status === 200) {
-      const userId = response.data.userId;
-      await registrarMeta(userId);
-      irParaConteudo(response.data);
-    } else {
-      alert(response.data?.message || 'Erro inesperado ao registrar perfil.');
-    }
+      });
+      
+      if (response.status === 200) {
+        const userId = response.data.userId;  // Recebe o userId retornado pela API
+        await registrarMeta(userId);          // Registra as metas do usuário
+        irParaConteudo(response.data);       // Navega para a tela principal com os dados recebidos
+      } else {
+        alert(response.data?.message || 'Erro inesperado ao registrar perfil.');
+      }
 
     } catch (error) {
       console.error('Erro ao salvar dados:', error);
@@ -80,16 +84,16 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
     }
   };
 
-
   return (
     <>
-      {/* Navbar fixa */}
+      {/* Navbar fixa no topo */}
       <nav
         id="nav_bar_cadastro"
         className="navbar navbar-expand-lg bg-white px-4 py-2 position-fixed w-100 shadow-sm start-0 top-0"
         style={{ zIndex: 1000 }}
       >
         <div className="container-fluid justify-content-between">
+          {/* Logo */}
           <a className="navbar-brand mx-auto d-flex align-items-center" href="#" id="logo">
             <img src={logo} alt="Logo" style={{ height: '40px' }} />
             <span className="ms-2 fw-bold text-success d-none d-lg-inline">
@@ -99,32 +103,38 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
         </div>
       </nav>
 
-      {/* Conteúdo principal */}
+      {/* Conteúdo principal da página */}
       <main className="d-flex align-items-center justify-content-center min-vh-100 pt-5">
         <div className="card shadow p-4 bg-white w-100 position-relative" style={{ maxWidth: '600px' }}>
-          {/* Botão Fechar */}
+          {/* Botão fechar - volta para home */}
           <button type="button" className="btn-close position-absolute top-0 end-0 m-3" onClick={voltarHomeLocal} />
 
+          {/* Título da seção */}
           <h4 className="text-center fw-semibold mb-4 mt-2">
             Complete seus <span className="text-success">dados</span> pessoais
           </h4>
 
+          {/* Formulário com dados pessoais */}
           <form id="form_dados" onSubmit={handleSubmit}>
+            {/* Nome */}
             <div className="mb-3">
               <label htmlFor="nome" className="form-label">Nome</label>
               <input type="text" id="nome" name="nome" className="form-control" placeholder="Digite seu nome" required />
             </div>
 
+            {/* Sobrenome */}
             <div className="mb-3">
               <label htmlFor="sobrenome" className="form-label">Sobrenome</label>
               <input type="text" id="sobrenome" name="sobrenome" className="form-control" placeholder="Digite seu sobrenome" required />
             </div>
 
+            {/* Data de nascimento */}
             <div className="mb-3">
               <label htmlFor="data_nascimento" className="form-label">Data de Nascimento</label>
               <input type="date" id="data_nascimento" name="data_nascimento" className="form-control" required />
             </div>
 
+            {/* Peso e Altura */}
             <div className="row">
               <div className="col-md-6 mb-3">
                 <label htmlFor="peso" className="form-label">Peso (kg)</label>
@@ -136,6 +146,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
               </div>
             </div>
 
+            {/* Sexo */}
             <div className="mb-3">
               <label htmlFor="sexo" className="form-label">Sexo</label>
               <select id="sexo" name="sexo" className="form-select" required>
@@ -146,6 +157,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
               </select>
             </div>
 
+            {/* Objetivo */}
             <div className="mb-4">
               <label htmlFor="objetivo" className="form-label">Qual é a sua objetivo?</label>
               <select id="objetivo" name="objetivo" className="form-select" required>
@@ -156,6 +168,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
               </select>
             </div>
 
+            {/* Nível de atividade física */}
             <div className="mb-4">
               <label htmlFor="nivel_atividade" className="form-label">Qual é o seu nível de atividade física?</label>
               <select id="nivel_atividade" name="nivel_atividade" className="form-select" required>
@@ -167,6 +180,7 @@ function RegisterDados({ usuario, irParaConteudo, voltar, voltarHome }) {
               </select>
             </div>
 
+            {/* Botão salvar */}
             <div className="d-grid">
               <button type="submit" className="btn btn-success">Salvar dados</button>
             </div>
